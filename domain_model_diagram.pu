@@ -32,12 +32,15 @@ note right of 経歴
 西暦to: 1970年以上のint型、西暦fromよりも大きい数字
 end note
 
-package スキル {
+package ユーザースキル {
   object ユーザースキル {
     タグ名
     評価
     年数
   }
+}
+
+package メンタースキル {
   object メンタースキル {
     タグ名
     評価
