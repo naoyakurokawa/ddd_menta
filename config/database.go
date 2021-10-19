@@ -1,28 +1,34 @@
 package config
 
 import (
-	"fmt"
-	"os"
+	// "fmt"
+	// "os"
 
-	"github.com/joho/godotenv"
+	// "github.com/joho/godotenv"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 )
 
 // NewDB DBと接続する
 func NewDB() *gorm.DB {
-	err := godotenv.Load(fmt.Sprintf("../%s.env", os.Getenv("GO_ENV")))
-	if err != nil {
-		// .env読めなかった場合の処理
-	}
+	// err := godotenv.Load()
 
-	USER := os.Getenv("DB_USER")
-	PASS := os.Getenv("DB_PASS")
-	PROTOCOL := "tcp(" + os.Getenv("DB_ADDRESS") + ")"
-	DB_NAME := os.Getenv("DB_NAME")
-	CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DB_NAME
+	// if err != nil {
+	// 	fmt.Printf("読み込み出来ませんでした: %v", err)
+	// }
 
-	db, err := gorm.Open("mysql", CONNECT)
+	// USER := os.Getenv("DB_USER")
+	// PASS := os.Getenv("DB_PASS")
+	// PROTOCOL := "tcp(" + os.Getenv("DB_ADDRESS") + ")"
+	// DB_NAME := os.Getenv("DB_NAME")
+	// CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DB_NAME
+
+	// db, err := gorm.Open("mysql", CONNECT)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	db, err := gorm.Open("mysql", "ddd_menta:ddd_menta@tcp(dockerMySQL)/ddd_menta")
 	if err != nil {
 		panic(err)
 	}

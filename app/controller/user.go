@@ -8,7 +8,7 @@ import (
 	"github.com/labstack/echo"
 )
 
-// TaskHandler task handlerのinterface
+// UserHandler user handlerのinterface
 type UserHandler interface {
 	Post() echo.HandlerFunc
 }
@@ -17,7 +17,7 @@ type UserHandlerImpl struct {
 	userUsecase useruc.UserUsecase
 }
 
-// NewTaskHandler task handlerのコンストラクタ
+// NewUserHandler user handlerのコンストラクタ
 func NewUserHandler(userUsecase useruc.UserUsecase) UserHandler {
 	return &UserHandlerImpl{userUsecase: userUsecase}
 }
@@ -33,7 +33,7 @@ type responseUser struct {
 	UserId string
 }
 
-// Post taskを保存するときのハンドラー
+// Post userを保存するときのハンドラー
 func (uh *UserHandlerImpl) Post() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var req requestUser
