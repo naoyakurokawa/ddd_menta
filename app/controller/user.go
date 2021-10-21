@@ -29,13 +29,12 @@ type requestUser struct {
 	Profile  string
 }
 
-type responseUser struct {
-	UserId string
-}
-
 // Post userを保存するときのハンドラー
 func (uh *UserHandlerImpl) Post() echo.HandlerFunc {
 	return func(c echo.Context) error {
+		type responseUser struct {
+			UserId string
+		}
 		var req requestUser
 		if err := c.Bind(&req); err != nil {
 			return c.JSON(http.StatusBadRequest, err.Error())
