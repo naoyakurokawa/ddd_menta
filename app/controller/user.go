@@ -41,6 +41,7 @@ func (uh *UserHandlerImpl) Post() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, err.Error())
 		}
 
+		//usecaseのCreate　→ infraのCreate
 		createdUser, err := uh.userUsecase.Create(req.Name, req.Email, req.Password, req.Profile)
 		if err != nil {
 			return c.JSON(http.StatusBadRequest, err.Error())

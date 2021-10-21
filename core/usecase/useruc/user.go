@@ -25,6 +25,7 @@ func (uu *UserUsecaseImpl) Create(name string, email string, password string, pr
 		return nil, err
 	}
 
+	//最終的にinfraのCreateメソッドを実行することになる
 	createdUser, err := uu.userRepo.Create(user)
 	if err != nil {
 		return nil, err
