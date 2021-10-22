@@ -1,25 +1,17 @@
 package userdm
 
 import (
-	"log"
-
 	"github.com/google/uuid"
 )
 
-type UserId struct {
-	UserId string
-}
+type UserId string
 
-func NewUserId() (*UserId, error) {
+func NewUserId() (UserId, error) {
 	u, err := uuid.NewRandom()
 	if err != nil {
-		log.Println(err)
-		return nil, err
+		return UserId(""), err
 	}
 	us := u.String()
-	user_id := &UserId{
-		UserId: us,
-	}
 
-	return user_id, nil
+	return UserId(us), nil
 }
