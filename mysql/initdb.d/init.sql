@@ -10,8 +10,8 @@ CREATE TABLE users
   name varchar(50) not null,
   email varchar(50) not null,
   password varchar(255) not null,
-  profile varchar(255) not null,
-  created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  profile text not null,
+  created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 INSERT INTO users (user_id, name, email, password, profile) VALUES ("Menta", "test_user", "test@co.jp", "AJRUsjquq", "テストユーザーです");
@@ -22,3 +22,9 @@ INSERT INTO users (user_id, name, email, password, profile) VALUES ("Menta", "te
 --   name varchar(50),
 --   password varchar(255)
 -- );
+
+-- 実行されない場合
+-- docker exec -it dockerMySQL /bin/bash
+-- mysql -uddd_menta -pddd_menta
+-- use ddd_menta
+-- create,insert実行

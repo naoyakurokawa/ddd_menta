@@ -17,7 +17,7 @@ services:
     container_name: dockerMySQL
     volumes:
       - ./mysql/conf.d/my.cnf:/etc/mysql/conf.d/my.cnf
-      - ./mysql/data:/docker-entrypoint-initdb.d
+      - ./mysql/initdb.d:/docker-entrypoint-initdb.d
     environment:
       MYSQL_DATABASE: ddd_menta
       MYSQL_HOST: dockerMySQL  # 追加!!
