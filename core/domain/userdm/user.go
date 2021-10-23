@@ -19,7 +19,7 @@ const nameMaxLength = 255
 const profileMaxLength = 2000
 
 // NewUser userのコンストラクタ
-func NewUser(name string, email string, password string, profile string) (*User, error) {
+func NewUser(userId UserId, name string, email Email, password string, profile string) (*User, error) {
 	//入力データチェック
 	if len(name) == 0 {
 		return nil, xerrors.New("name must not be empty")
@@ -34,19 +34,12 @@ func NewUser(name string, email string, password string, profile string) (*User,
 		return nil, xerrors.Errorf("profile must less than %d: %s", profileMaxLength, profile)
 	}
 
-	userId, err := NewUserId()
-	if err != nil {
-		return nil, err
-	}
 	now := time.Now()
-	emailIns, err := NewEmail(email)
-	if err != nil {
-		return nil, err
-	}
+
 	user := &User{
 		UserId:    userId,
 		Name:      name,
-		Email:     emailIns,
+		Email:     email,
 		Password:  password,
 		Profile:   profile,
 		CreatedAt: now,

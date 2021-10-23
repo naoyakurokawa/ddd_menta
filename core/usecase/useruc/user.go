@@ -20,7 +20,15 @@ func NewUserUsecase(userRepo userdm.UserRepository) UserUsecase {
 
 // Create userを保存するときのユースケース
 func (uu *UserUsecaseImpl) Create(name string, email string, password string, profile string) (*userdm.User, error) {
-	user, err := userdm.NewUser(name, email, password, profile)
+	userId, err := userdm.NewUserId()
+	if err != nil {
+		return nil, err
+	}
+	emailIns, err := userdm.NewEmail(email)
+	if err != nil {
+		return nil, err
+	}
+	user, err := userdm.NewUser(userId, name, emailIns, password, profile)
 	if err != nil {
 		return nil, err
 	}

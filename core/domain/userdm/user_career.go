@@ -10,7 +10,7 @@ import (
 
 type UserCareer struct {
 	Id        int
-	UserId    string
+	UserId    UserId
 	From      string
 	To        string
 	Detail    string
@@ -20,7 +20,7 @@ type UserCareer struct {
 const detailMaxLength = 1000
 
 // NewUserCareer user_careerのコンストラクタ
-func NewUserCareer(userId string, from string, to string, detail string) (*UserCareer, error) {
+func NewUserCareer(userId UserId, from string, to string, detail string) (*UserCareer, error) {
 	//入力データチェック
 	if len(userId) == 0 {
 		return nil, xerrors.New("userId must not be empty")
