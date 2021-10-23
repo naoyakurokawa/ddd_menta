@@ -5,7 +5,6 @@ import (
 
 	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
 	"github.com/naoyakurokawa/ddd_menta/core/usecase/useruc"
-	"golang.org/x/xerrors"
 
 	"github.com/labstack/echo"
 )
@@ -34,13 +33,13 @@ func (uh *UserHandler) Create() echo.HandlerFunc {
 		}
 		var req requestUser
 		if err := c.Bind(&req); err != nil {
-			return xerrors.New("Insufficient request parameters")
+			return c.JSON(http.StatusBadRequest, err.Error())
 		}
 
 		//usecaseのCreate　→ infraのCreate
 		createdUser, err := uh.userUsecase.Create(req.Name, req.Email, req.Password, req.Profile)
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, err.Error())
+			return err
 		}
 
 		res := responseUser{
