@@ -29,7 +29,7 @@ type requestUser struct {
 func (uh *UserHandler) Create() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		type responseUser struct {
-			UserId userdm.UserId
+			userId userdm.UserID
 		}
 		var req requestUser
 		if err := c.Bind(&req); err != nil {
@@ -43,7 +43,7 @@ func (uh *UserHandler) Create() echo.HandlerFunc {
 		}
 
 		res := responseUser{
-			UserId: createdUser.UserId,
+			userId: createdUser.UserID,
 		}
 
 		return c.JSON(http.StatusCreated, res)

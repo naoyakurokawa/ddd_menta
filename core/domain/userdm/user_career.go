@@ -2,25 +2,26 @@ package userdm
 
 import (
 	"regexp"
-	"strconv"
 	"time"
 
 	"golang.org/x/xerrors"
 )
 
 type UserCareer struct {
-	Id        int
-	UserId    UserId
-	From      string
-	To        string
+	ID        int
+	UserID    UserID
+	From      time.Time
+	To        time.Time
 	Detail    string
-	CreatedAt string
+	CreatedAt time.Time
 }
 
 const detailMaxLength = 1000
 
+var oldestCareerYear = time.Date(1970, 1, 1, 0, 0, 0, 0, time.UTC)
+
 // NewUserCareer user_careerのコンストラクタ
-func NewUserCareer(userId UserId, from string, to string, detail string) (*UserCareer, error) {
+func NewUserCareer(userId UserID, from string, to string, detail string) (*UserCareer, error) {
 	//入力データチェック
 	if len(userId) == 0 {
 		return nil, xerrors.New("userId must not be empty")
@@ -28,6 +29,7 @@ func NewUserCareer(userId UserId, from string, to string, detail string) (*UserC
 	if len(from) == 0 {
 		return nil, xerrors.New("career period must not be empty")
 	}
+
 	if !dateCheck(from) {
 		return nil, xerrors.New("career from must be in date format")
 	}
@@ -37,10 +39,14 @@ func NewUserCareer(userId UserId, from string, to string, detail string) (*UserC
 	if !dateCheck(to) {
 		return nil, xerrors.New("career to must be in date format")
 	}
-	fromInt := dateConvert(from)
-	toInt := dateConvert(to)
-	if fromInt >= toInt {
+	fromTime := stringToTime(from)
+	toTime := stringToTime(to)
+	if fromTime.After(toTime) {
 		return nil, xerrors.New("career from must smaller than career to")
+	}
+	//1970年以上となっているか確認
+	if fromTime.Before(oldestCareerYear) || toTime.Before(oldestCareerYear) {
+		return nil, xerrors.New("career year must larger than 1970")
 	}
 
 	if len(detail) == 0 {
@@ -51,9 +57,9 @@ func NewUserCareer(userId UserId, from string, to string, detail string) (*UserC
 	}
 
 	userCareer := &UserCareer{
-		UserId: userId,
-		From:   from,
-		To:     to,
+		UserID: userId,
+		From:   fromTime,
+		To:     toTime,
 		Detail: detail,
 	}
 
@@ -73,9 +79,16 @@ func dateCheck(dateStr string) bool {
 	return err == nil
 }
 
-func dateConvert(dateStr string) int {
-	reg := regexp.MustCompile(`[-|/|:| |　]`)
-	str := reg.ReplaceAllString(dateStr, "")
-	dateInt, _ := strconv.Atoi(str)
-	return dateInt
+const layout = "2006-01-02 15:04:05"
+
+func stringToTime(str string) time.Time {
+	t, _ := time.Parse(layout, str)
+	return t
 }
+
+// func dateConvert(dateStr string) int {
+// 	reg := regexp.MustCompile(`[-|/|:| |　]`)
+// 	str := reg.ReplaceAllString(dateStr, "")
+// 	dateInt, _ := strconv.Atoi(str)
+// 	return dateInt
+// }

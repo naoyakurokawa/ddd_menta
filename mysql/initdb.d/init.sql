@@ -11,7 +11,7 @@ CREATE TABLE users
   email varchar(50) not null,
   password varchar(255) not null,
   profile text not null,
-  created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 INSERT INTO users (user_id, name, email, password, profile) VALUES ("Menta", "test_user", "test@co.jp", "AJRUsjquq", "テストユーザーです");

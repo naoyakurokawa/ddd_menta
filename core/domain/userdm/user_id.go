@@ -4,14 +4,14 @@ import (
 	"github.com/google/uuid"
 )
 
-type UserId string
+type UserID string
 
-func NewUserId() (UserId, error) {
+func NewUserId() (UserID, error) {
 	u, err := uuid.NewRandom()
 	if err != nil {
-		return UserId(""), err
+		return UserID(""), err
 	}
 	us := u.String()
 
-	return UserId(us), nil
+	return UserID(us), nil
 }
