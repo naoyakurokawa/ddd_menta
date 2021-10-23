@@ -21,10 +21,10 @@ const detailMaxLength = 1000
 var oldestCareerYear = time.Date(1970, 1, 1, 0, 0, 0, 0, time.UTC)
 
 // NewUserCareer user_careerのコンストラクタ
-func NewUserCareer(userId UserID, from string, to string, detail string) (*UserCareer, error) {
+func NewUserCareer(userID UserID, from string, to string, detail string) (*UserCareer, error) {
 	//入力データチェック
-	if len(userId) == 0 {
-		return nil, xerrors.New("userId must not be empty")
+	if len(userID) == 0 {
+		return nil, xerrors.New("userID must not be empty")
 	}
 	if len(from) == 0 {
 		return nil, xerrors.New("career period must not be empty")
@@ -46,7 +46,7 @@ func NewUserCareer(userId UserID, from string, to string, detail string) (*UserC
 	}
 	//1970年以上となっているか確認
 	if fromTime.Before(oldestCareerYear) || toTime.Before(oldestCareerYear) {
-		return nil, xerrors.New("career year must larger than 1970")
+		return nil, xerrors.Errorf("career year must larger than %d", oldestCareerYear.Year())
 	}
 
 	if len(detail) == 0 {
@@ -57,7 +57,7 @@ func NewUserCareer(userId UserID, from string, to string, detail string) (*UserC
 	}
 
 	userCareer := &UserCareer{
-		UserID: userId,
+		UserID: userID,
 		From:   fromTime,
 		To:     toTime,
 		Detail: detail,
