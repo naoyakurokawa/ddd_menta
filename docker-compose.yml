@@ -14,19 +14,18 @@ services:
   mysql:
     platform: linux/x86_64
     image: mysql:8.0
+    # image: mysql/mysql-server:5.7.28
     container_name: dockerMySQL
     volumes:
       - ./mysql/conf.d/my.cnf:/etc/mysql/conf.d/my.cnf
       - ./mysql/initdb.d:/docker-entrypoint-initdb.d
     environment:
       MYSQL_DATABASE: ddd_menta
-      MYSQL_HOST: dockerMySQL  # 追加!!
+      MYSQL_HOST: dockerMySQL
       MYSQL_USER: ddd_menta
       MYSQL_PASSWORD: ddd_menta
       MYSQL_ROOT_PASSWORD: ddd_menta
       TZ: Asia/Tokyo
-    cap_add:
-      - SYS_NICE
     ports:
       - 3306:3306
 
