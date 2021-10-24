@@ -1,8 +1,3 @@
-flush privileges;
-create user 'root' identified by 'ddd_menta';
-grant all privileges on *.* to 'root';
-flush privileges;
-
 DROP SCHEMA IF EXISTS ddd_menta;
 CREATE SCHEMA ddd_menta;
 USE ddd_menta;
