@@ -1,16 +1,16 @@
 version: '3'
 services:
-  app:
-    build: .
-    ports:
-      - 8080:8080
-    container_name: app
-    volumes:
-      - ./:/go
-    tty: true
-    restart: always
-    depends_on:
-      - menta_db
+  # app:
+  #   build: .
+  #   ports:
+  #     - 8080:8080
+  #   container_name: app
+  #   volumes:
+  #     - ./:/go
+  #   tty: true
+  #   restart: always
+  #   depends_on:
+  #     - menta_db
   menta_db:
     platform: linux/x86_64
     image: mysql:8.0

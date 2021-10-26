@@ -32,7 +32,7 @@ func NewDB() *gorm.DB {
 	// if err != nil {
 	// 	panic(err)
 	// }
-	db, err := gorm.Open("mysql", "ddd_menta:ddd_menta@tcp(menta_db)/ddd_menta")
+	db, err := gorm.Open("mysql", "ddd_menta:ddd_menta@tcp(localhost)/ddd_menta")
 	if err != nil {
 		panic(err)
 	}
