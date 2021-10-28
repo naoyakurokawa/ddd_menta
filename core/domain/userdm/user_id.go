@@ -6,7 +6,7 @@ import (
 
 type UserID string
 
-func NewUserId() (UserID, error) {
+func NewUserID() (UserID, error) {
 	u, err := uuid.NewRandom()
 	if err != nil {
 		return UserID(""), err
