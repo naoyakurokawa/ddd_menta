@@ -3,34 +3,29 @@ package useruc
 import (
 	"testing"
 
-	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
-	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/repoimpl"
+	// "github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
+	// "github.com/naoyakurokawa/ddd_menta/core/infrastructure/repoimpl"
+	"github.com/golang/mock/gomock"
+
+	mock "github.com/naoyakurokawa/ddd_menta/core/usecase/useruc/mock_useruc"
+	// "time"
 )
 
-const (
-	Name     = "テスト"
-	Email    = "test@gmail.com"
-	Password = "abcd12341231"
-	Profile  = "プログラマーです"
-)
-
-// Create userを保存するときのユースケース
 func TestCreate(t *testing.T) {
-	userID, err := userdm.NewUserId()
-	if err != nil {
-		t.Errorf("failed to NewUserId: %v", err)
-	}
-	emailIns, err := userdm.NewEmail(Email)
-	if err != nil {
-		t.Errorf("failed to NewEmail: %v", err)
-	}
-	user, err := userdm.NewUser(userID, Name, emailIns, Password, Profile)
-	if err != nil {
-		t.Errorf("failed to NewUser: %v", err)
-	}
-	userRepository := repoimpl.NewUserRepositoryImpl(repoimpl.NewDB())
+	const (
+		name     = "テスト"
+		email    = "test@gmail.com"
+		password = "abcd12341231"
+		profile  = "プログラマーです"
+	)
 
-	_, err = userRepository.Create(user)
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	mockUserUsecase := mock.NewMockUserUsecase(ctrl)
+
+	mockUserUsecase.EXPECT().Create(name, email, password, profile)
+	_, err := mockUserUsecase.Create(name, email, password, profile)
+
 	if err != nil {
 		t.Errorf("failed to userRepository.Create: %v", err)
 	}
