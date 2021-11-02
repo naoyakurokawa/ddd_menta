@@ -48,3 +48,9 @@ func (ur *UserRepositoryImpl) Create(user *userdm.User) (*userdm.User, error) {
 
 	return user, nil
 }
+
+func (ur *UserRepositoryImpl) FindByID(user *userdm.User) (*userdm.User) {
+	ur.Conn.Where("user_id = ?", user.UserID).Find(&user)
+
+	return user
+}
