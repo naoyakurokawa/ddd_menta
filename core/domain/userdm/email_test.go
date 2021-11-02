@@ -9,7 +9,7 @@ func TestNewEmail(t *testing.T) {
 	emailBlank := ""
 	emailOver := ""
 	emailNotSuitableFormat := "aaaa"
-	for i := 0; i < 300; i++ {
+	for i := 0; i < 256; i++ {
 		emailOver += "a"
 	}
 	//when：操作
