@@ -32,11 +32,11 @@ func TestCreate(t *testing.T) {
 	}
 
 	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-	mockUserUsecase := mock.NewMockUserRepository(ctrl)
 
-	mockUserUsecase.EXPECT().Create(user)
-	_, err = mockUserUsecase.Create(user)
+	mockUserRepository := mock.NewMockUserRepository(ctrl)
+	mockUserRepository.EXPECT().Create(user).Return(user, nil)
+	userusecase := NewUserUsecase(mockUserRepository)
+	_, err = userusecase.Create(name, email, password, profile);
 
 	if err != nil {
 		t.Errorf("failed to userRepository.Create: %v", err)

@@ -7,6 +7,7 @@ import (
 // UserUsecase user usecaseのinterface
 type UserUsecase interface {
 	Create(name string, email string, password string, profile string) (*userdm.User, error)
+	FindByID(user *userdm.User) (*userdm.User)
 }
 
 type UserUsecaseImpl struct {
@@ -40,4 +41,9 @@ func (uu *UserUsecaseImpl) Create(name string, email string, password string, pr
 	}
 
 	return createdUser, nil
+}
+
+func (uu *UserUsecaseImpl) FindByID(user *userdm.User) (*userdm.User) {
+	uu.userRepo.FindByID(user)
+	return user
 }
