@@ -50,16 +50,16 @@ func (mr *MockUserRepositoryMockRecorder) Create(user interface{}) *gomock.Call 
 }
 
 // FindByID mocks base method.
-func (m *MockUserRepository) FindByID(user *userdm.User) (*userdm.User, error) {
+func (m *MockUserRepository) FindByID(userID userdm.UserID) (*userdm.User, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindByID", user)
+	ret := m.ctrl.Call(m, "FindByID", userID)
 	ret0, _ := ret[0].(*userdm.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // FindByID indicates an expected call of FindByID.
-func (mr *MockUserRepositoryMockRecorder) FindByID(user interface{}) *gomock.Call {
+func (mr *MockUserRepositoryMockRecorder) FindByID(userID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByID", reflect.TypeOf((*MockUserRepository)(nil).FindByID), user)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByID", reflect.TypeOf((*MockUserRepository)(nil).FindByID), userID)
 }

@@ -4,6 +4,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
+	"time"
 )
 
 type UserRepositoryImpl struct {
@@ -49,9 +50,17 @@ func (ur *UserRepositoryImpl) Create(user *userdm.User) (*userdm.User, error) {
 	return user, nil
 }
 
-func (ur *UserRepositoryImpl) FindByID(user *userdm.User) (*userdm.User, error) {
-	if err := ur.Conn.Where("user_id = ?", user.UserID).Find(&user).Error; err != nil {
+func (ur *UserRepositoryImpl) FindByID(userID userdm.UserID) (*userdm.User, error) {
+	dataModelUser := &userdm.User{
+		UserID:    "",
+		Name:      "",
+		Email:     "",
+		Password:  "",
+		Profile:   "",
+		CreatedAt: time.Now(),
+	}
+	if err := ur.Conn.Where("user_id = ?", userID).Find(&dataModelUser).Error; err != nil {
 		return nil, err
 	}
-	return user, nil
+	return dataModelUser, nil
 }

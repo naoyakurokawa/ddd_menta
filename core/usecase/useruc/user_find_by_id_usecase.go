@@ -6,7 +6,7 @@ import (
 
 // UserUsecase user usecaseのinterface
 type UserFindByIDUsecase interface {
-	FindByID(user *userdm.User) (*userdm.User, error)
+	FindByID(userID userdm.UserID) (*userdm.User, error)
 }
 
 type UserFindByIDUsecaseImpl struct {
@@ -18,8 +18,8 @@ func NewUserFindByIDUsecase(userRepo userdm.UserRepository) UserFindByIDUsecase 
 	return &UserFindByIDUsecaseImpl{userRepo: userRepo}
 }
 
-func (uu *UserFindByIDUsecaseImpl) FindByID(user *userdm.User) (*userdm.User, error) {
-	selectedUser, err := uu.userRepo.FindByID(user)
+func (uu *UserFindByIDUsecaseImpl) FindByID(userID userdm.UserID) (*userdm.User, error) {
+	selectedUser, err := uu.userRepo.FindByID(userID)
 	if err != nil {
 		return nil, err
 	}

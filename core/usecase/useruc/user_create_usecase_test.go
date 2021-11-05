@@ -4,11 +4,10 @@ import (
 	"testing"
 
 	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
-	// "github.com/naoyakurokawa/ddd_menta/core/infrastructure/repoimpl"
+	"github.com/naoyakurokawa/ddd_menta/core/usecase/useruc"
 	"github.com/golang/mock/gomock"
 
 	mock "github.com/naoyakurokawa/ddd_menta/core/domain/userdm/mock_userdm"
-	// "time"
 )
 
 func TestCreate(t *testing.T) {
@@ -35,7 +34,7 @@ func TestCreate(t *testing.T) {
 
 	mockUserRepository := mock.NewMockUserRepository(ctrl)
 	mockUserRepository.EXPECT().Create(gomock.Any()).Return(user, nil)
-	userusecase := NewUserUsecase(mockUserRepository)
+	userusecase := useruc.NewUserCreateUsecase(mockUserRepository)
 	_, err = userusecase.Create(name, email, password, profile);
 
 	if err != nil {
