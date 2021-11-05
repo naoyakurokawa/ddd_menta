@@ -15,3 +15,11 @@ func NewUserID() (UserID, error) {
 
 	return UserID(us), nil
 }
+
+func IsEqualUserID(userID1, userID2 UserID) bool {
+	if userID1 == userID2 {
+		return true
+	} else {
+		return false
+	}
+}

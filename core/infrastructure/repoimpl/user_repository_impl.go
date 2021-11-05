@@ -32,7 +32,7 @@ func NewDB() *gorm.DB {
 	// if err != nil {
 	// 	panic(err)
 	// }
-	db, err := gorm.Open("mysql", "ddd_menta:ddd_menta@tcp(localhost)/ddd_menta")
+	db, err := gorm.Open("mysql", "ddd_menta:ddd_menta@tcp(localhost)/ddd_menta?parseTime=true")
 	if err != nil {
 		panic(err)
 	}
@@ -49,8 +49,9 @@ func (ur *UserRepositoryImpl) Create(user *userdm.User) (*userdm.User, error) {
 	return user, nil
 }
 
-func (ur *UserRepositoryImpl) FindByID(user *userdm.User) (*userdm.User) {
-	ur.Conn.Where("user_id = ?", user.UserID).Find(&user)
-
-	return user
+func (ur *UserRepositoryImpl) FindByID(user *userdm.User) (*userdm.User, error) {
+	if err := ur.Conn.Where("user_id = ?", user.UserID).Find(&user).Error; err != nil {
+		return nil, err
+	}
+	return user, nil
 }

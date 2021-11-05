@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestCreate(t *testing.T) {
+func TestUserRepo_Create(t *testing.T) {
 	const (
 		name     = "テスト"
 		email    = "test@gmail.com"
@@ -26,9 +26,15 @@ func TestCreate(t *testing.T) {
 	}
 
 	userRepository := NewUserRepositoryImpl(NewDB())
-	user2, err := userRepository.Create(user)
-	user3 := userRepository.FindByID(user2);
-	if user2.UserID != user3.UserID {
+	createdUser, err := userRepository.Create(user)
+	if err != nil {
+		t.Errorf("failed to userRepository.Create: %v", err)
+	}
+	selectedUser, err := userRepository.FindByID(createdUser);
+	if err != nil {
+		t.Errorf("failed to FindByID: %v", err)
+	}
+	if !userdm.IsEqualUserID(createdUser.UserID, selectedUser.UserID) {
 		t.Errorf("failed to CreateUser")
 	}
 }

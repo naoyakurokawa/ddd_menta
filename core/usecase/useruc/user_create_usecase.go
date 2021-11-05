@@ -5,22 +5,21 @@ import (
 )
 
 // UserUsecase user usecaseのinterface
-type UserUsecase interface {
+type UserCreateUsecase interface {
 	Create(name string, email string, password string, profile string) (*userdm.User, error)
-	FindByID(user *userdm.User) (*userdm.User)
 }
 
-type UserUsecaseImpl struct {
+type UserCreateUsecaseImpl struct {
 	userRepo userdm.UserRepository
 }
 
 // user usecaseのコンストラクタ
-func NewUserUsecase(userRepo userdm.UserRepository) UserUsecase {
-	return &UserUsecaseImpl{userRepo: userRepo}
+func NewUserCreateUsecase(userRepo userdm.UserRepository) UserCreateUsecase {
+	return &UserCreateUsecaseImpl{userRepo: userRepo}
 }
 
 // Create userを保存するときのユースケース
-func (uu *UserUsecaseImpl) Create(name string, email string, password string, profile string) (*userdm.User, error) {
+func (uu *UserCreateUsecaseImpl) Create(name string, email string, password string, profile string) (*userdm.User, error) {
 	userID, err := userdm.NewUserID()
 	if err != nil {
 		return nil, err
@@ -41,9 +40,4 @@ func (uu *UserUsecaseImpl) Create(name string, email string, password string, pr
 	}
 
 	return createdUser, nil
-}
-
-func (uu *UserUsecaseImpl) FindByID(user *userdm.User) (*userdm.User) {
-	uu.userRepo.FindByID(user)
-	return user
 }

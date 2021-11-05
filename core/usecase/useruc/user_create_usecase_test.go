@@ -1,4 +1,4 @@
-package useruc
+package useruc_test
 
 import (
 	"testing"
@@ -34,7 +34,7 @@ func TestCreate(t *testing.T) {
 	ctrl := gomock.NewController(t)
 
 	mockUserRepository := mock.NewMockUserRepository(ctrl)
-	mockUserRepository.EXPECT().Create(user).Return(user, nil)
+	mockUserRepository.EXPECT().Create(gomock.Any()).Return(user, nil)
 	userusecase := NewUserUsecase(mockUserRepository)
 	_, err = userusecase.Create(name, email, password, profile);
 

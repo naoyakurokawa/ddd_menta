@@ -4,16 +4,16 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/labstack/echo"
 	"github.com/naoyakurokawa/ddd_menta/app/controller"
-	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/repoimpl"
-	"github.com/naoyakurokawa/ddd_menta/core/usecase/useruc"
+	// "github.com/naoyakurokawa/ddd_menta/core/infrastructure/repoimpl"
+	// "github.com/naoyakurokawa/ddd_menta/core/usecase/useruc"
 )
 
 func main() {
-	userRepository := repoimpl.NewUserRepositoryImpl(repoimpl.NewDB())
-	userUsecase := useruc.NewUserUsecase(userRepository)
-	userHandler := controller.NewUserHandler(userUsecase)
+	// userRepository := repoimpl.NewUserRepositoryImpl(repoimpl.NewDB())
+	// userUsecase := useruc.NewUserCreateUsecase(userRepository)
+	// userHandler := controller.NewUserHandler(userUsecase)
 
 	e := echo.New()
-	controller.InitRouting(e, userHandler)
+	controller.InitRouting(e)
 	e.Logger.Fatal(e.Start(":8080"))
 }
