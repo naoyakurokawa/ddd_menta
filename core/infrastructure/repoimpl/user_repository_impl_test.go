@@ -34,7 +34,7 @@ func TestUserRepo_Create(t *testing.T) {
 	if err != nil {
 		t.Errorf("failed to FindByID: %v", err)
 	}
-	if !userdm.Equals(createdUser.UserID, selectedUser.UserID) {
+	if !userdm.UserID.Equals(createdUser.UserID, selectedUser.UserID) {
 		t.Errorf("failed to CreateUser")
 	}
 }

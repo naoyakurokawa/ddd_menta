@@ -16,10 +16,14 @@ func NewUserID() (UserID, error) {
 	return UserID(us), nil
 }
 
-func Equals(userID1, userID2 UserID) bool {
-	if userID1 == userID2 {
+func (u UserID) Equals(u2 UserID) bool {
+	if u == u2 {
 		return true
 	} else {
 		return false
 	}
+}
+
+func (u UserID) Value() string {
+	return string(u)
 }
