@@ -5,8 +5,8 @@ import (
 )
 
 // InitRouting routesの初期化
-func InitRouting(e *echo.Echo, userHandler *UserHandler) {
+func InitRouting(e *echo.Echo) {
 
-	e.POST("/user", userHandler.Create())
+	e.POST("/user", UserCreate())
 
 }

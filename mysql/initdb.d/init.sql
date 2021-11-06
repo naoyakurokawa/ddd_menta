@@ -24,7 +24,7 @@ INSERT INTO users (user_id, name, email, password, profile) VALUES ("Menta", "te
 -- );
 
 -- 実行されない場合
--- docker exec -it dockerMySQL /bin/bash
+-- docker exec -it menta_db /bin/bash
 -- mysql -uddd_menta -pddd_menta
 -- use ddd_menta
 -- create,insert実行

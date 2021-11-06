@@ -1,26 +1,27 @@
 version: '3'
 services:
-  app:
-    build: .
-    ports:
-      - 8080:8080
-    container_name: app
-    volumes:
-      - ./:/go
-    tty: true
-    restart: always
-    depends_on:
-      - mysql
-  mysql:
+  # app:
+  #   build: .
+  #   ports:
+  #     - 8080:8080
+  #   container_name: app
+  #   volumes:
+  #     - ./:/go
+  #   tty: true
+  #   restart: always
+  #   depends_on:
+  #     - menta_db
+  menta_db:
     platform: linux/x86_64
     image: mysql:8.0
-    container_name: dockerMySQL
+    # image: mysql/mysql-server:5.7.28
+    container_name: menta_db
     volumes:
       - ./mysql/conf.d/my.cnf:/etc/mysql/conf.d/my.cnf
       - ./mysql/initdb.d:/docker-entrypoint-initdb.d
     environment:
       MYSQL_DATABASE: ddd_menta
-      MYSQL_HOST: dockerMySQL  # 追加!!
+      MYSQL_HOST: menta_db
       MYSQL_USER: ddd_menta
       MYSQL_PASSWORD: ddd_menta
       MYSQL_ROOT_PASSWORD: ddd_menta

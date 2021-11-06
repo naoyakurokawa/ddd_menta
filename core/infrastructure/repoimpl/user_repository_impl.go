@@ -4,6 +4,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
+	"time"
 )
 
 type UserRepositoryImpl struct {
@@ -32,7 +33,7 @@ func NewDB() *gorm.DB {
 	// if err != nil {
 	// 	panic(err)
 	// }
-	db, err := gorm.Open("mysql", "ddd_menta:ddd_menta@tcp(dockerMySQL)/ddd_menta")
+	db, err := gorm.Open("mysql", "ddd_menta:ddd_menta@tcp(localhost)/ddd_menta?parseTime=true")
 	if err != nil {
 		panic(err)
 	}
@@ -47,4 +48,19 @@ func (ur *UserRepositoryImpl) Create(user *userdm.User) (*userdm.User, error) {
 	}
 
 	return user, nil
+}
+
+func (ur *UserRepositoryImpl) FindByID(userID userdm.UserID) (*userdm.User, error) {
+	dataModelUser := &userdm.User{
+		UserID:    "",
+		Name:      "",
+		Email:     "",
+		Password:  "",
+		Profile:   "",
+		CreatedAt: time.Now(),
+	}
+	if err := ur.Conn.Where("user_id = ?", userID.Value()).Find(&dataModelUser).Error; err != nil {
+		return nil, err
+	}
+	return dataModelUser, nil
 }

@@ -6,7 +6,7 @@ import (
 
 type UserID string
 
-func NewUserId() (UserID, error) {
+func NewUserID() (UserID, error) {
 	u, err := uuid.NewRandom()
 	if err != nil {
 		return UserID(""), err
@@ -14,4 +14,16 @@ func NewUserId() (UserID, error) {
 	us := u.String()
 
 	return UserID(us), nil
+}
+
+func (u UserID) Equals(u2 UserID) bool {
+	if u == u2 {
+		return true
+	} else {
+		return false
+	}
+}
+
+func (u UserID) Value() string {
+	return string(u)
 }
