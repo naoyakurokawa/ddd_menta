@@ -59,7 +59,8 @@ func (ur *UserRepositoryImpl) FindByID(userID userdm.UserID) (*userdm.User, erro
 		Profile:   "",
 		CreatedAt: time.Now(),
 	}
-	if err := ur.Conn.Where("user_id = ?", userID).Find(&dataModelUser).Error; err != nil {
+	selectedUserID := userID
+	if err := ur.Conn.Where("user_id = ?", selectedUserID).Find(&dataModelUser).Error; err != nil {
 		return nil, err
 	}
 	return dataModelUser, nil
