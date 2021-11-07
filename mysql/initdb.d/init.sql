@@ -16,6 +16,20 @@ CREATE TABLE users
 
 INSERT INTO users (user_id, name, email, password, profile) VALUES ("Menta", "test_user", "test@co.jp", "AJRUsjquq", "テストユーザーです");
 
+DROP TABLE IF EXISTS user_careers;
+
+CREATE TABLE user_careers
+(
+  user_career_id varchar(255) not null,
+  user_id varchar(255) not null,
+  `from` date not null,
+  `to` date not null,
+  detail text not null,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO user_careers (user_career_id, user_id, `from`, `to`, detail) VALUES ("Menta", "Menta", "2020-04-01", "2020-10-01", "ddd");
+
 -- CREATE TABLE users
 -- (
 --   id int unsigned primary key auto_increment,

@@ -8,12 +8,16 @@ import (
 )
 
 type UserCareer struct {
-	ID        int
-	UserID    UserID
-	From      time.Time
-	To        time.Time
-	Detail    string
-	CreatedAt time.Time
+	UserCareerID UserCareerID
+	UserID       UserID
+	From         time.Time
+	To           time.Time
+	Detail       string
+	CreatedAt    time.Time
+}
+
+type UserCareers struct {
+	List []*UserCareer
 }
 
 const detailMaxLength = 1000
@@ -21,7 +25,7 @@ const detailMaxLength = 1000
 var oldestCareerYear = time.Date(1970, 1, 1, 0, 0, 0, 0, time.UTC)
 
 // NewUserCareer user_careerのコンストラクタ
-func NewUserCareer(userID UserID, from string, to string, detail string) (*UserCareer, error) {
+func NewUserCareer(userCareerID UserCareerID, userID UserID, from string, to string, detail string) (*UserCareer, error) {
 	//入力データチェック
 	if len(userID) == 0 {
 		return nil, xerrors.New("userID must not be empty")
@@ -57,10 +61,11 @@ func NewUserCareer(userID UserID, from string, to string, detail string) (*UserC
 	}
 
 	userCareer := &UserCareer{
-		UserID: userID,
-		From:   fromTime,
-		To:     toTime,
-		Detail: detail,
+		UserCareerID: userCareerID,
+		UserID:       userID,
+		From:         fromTime,
+		To:           toTime,
+		Detail:       detail,
 	}
 
 	return userCareer, nil
@@ -84,6 +89,10 @@ const layout = "2006-01-02 15:04:05"
 func stringToTime(str string) time.Time {
 	t, _ := time.Parse(layout, str)
 	return t
+}
+
+func (u UserCareers) AddUserCareers(userCareer *UserCareer) {
+	u.List = append(u.List, userCareer)
 }
 
 // func dateConvert(dateStr string) int {
