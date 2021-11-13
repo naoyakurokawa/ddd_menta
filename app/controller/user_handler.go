@@ -7,6 +7,7 @@ import (
 	"github.com/naoyakurokawa/ddd_menta/core/usecase/useruc"
 	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/repoimpl"
 	"github.com/labstack/echo"
+	"time"
 )
 
 type UserHandler struct {
@@ -23,6 +24,9 @@ type requestUser struct {
 	Email    string
 	Password string
 	Profile  string
+	From     []string
+	To       []string
+	Detail   []string
 }
 
 // Create userを保存するときのハンドラー
@@ -39,7 +43,7 @@ func UserCreate() echo.HandlerFunc {
 		}
 
 		//usecaseのCreate → infraのCreate
-		createdUser, err := userCreateUsecase.Create(req.Name, req.Email, req.Password, req.Profile)
+		createdUser, err := userCreateUsecase.Create(req.Name, req.Email, req.Password, req.Profile, req.From, req.To, req.Detail)
 		if err != nil {
 			return err
 		}

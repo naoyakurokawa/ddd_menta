@@ -6,7 +6,7 @@ import (
 
 // UserUsecase user usecaseのinterface
 type UserCreateUsecase interface {
-	Create(name string, email string, password string, profile string) (*userdm.User, error)
+	Create(name string, email string, password string, profile string, from []string, to []string, detail []string) (*userdm.User, error)
 }
 
 type UserCreateUsecaseImpl struct {
@@ -19,7 +19,7 @@ func NewUserCreateUsecase(userRepo userdm.UserRepository) UserCreateUsecase {
 }
 
 // Create userを保存するときのユースケース
-func (uu *UserCreateUsecaseImpl) Create(name string, email string, password string, profile string) (*userdm.User, error) {
+func (uu *UserCreateUsecaseImpl) Create(name string, email string, password string, profile string, from []string, to []string, detail []string) (*userdm.User, error) {
 	userID, err := userdm.NewUserID()
 	if err != nil {
 		return nil, err
@@ -28,7 +28,16 @@ func (uu *UserCreateUsecaseImpl) Create(name string, email string, password stri
 	if err != nil {
 		return nil, err
 	}
-	user, err := userdm.NewUser(userID, name, emailIns, password, profile)
+	userCareerID, err := userdm.NewUserCareerID()
+	for i := 0; i < len(from); i++ {
+		userCareerID, err := userdm.NewUserCareerID()
+		if err != nil {
+			return nil, err
+		}
+		userCareer, err := userdm.NewUserCareer(userCareerID, userID, from[i], to[i], detail[i])
+		userdm.UserCareers.AddUserCareers(userCareer)
+	}
+	user, err := userdm.NewUser(userID, name, emailIns, password, profile, userdm.UserCareers)
 	if err != nil {
 		return nil, err
 	}

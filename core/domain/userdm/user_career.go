@@ -52,20 +52,20 @@ func NewUserCareer(userCareerID UserCareerID, userID UserID, from string, to str
 	if fromTime.Before(oldestCareerYear) || toTime.Before(oldestCareerYear) {
 		return nil, xerrors.Errorf("career year must larger than %d", oldestCareerYear.Year())
 	}
-
 	if len(detail) == 0 {
 		return nil, xerrors.New("career detail must not be empty")
 	}
 	if len(detail) > detailMaxLength {
 		return nil, xerrors.Errorf("detail must less than %d: %s", detailMaxLength, detail)
 	}
-
+	now := time.Now()
 	userCareer := &UserCareer{
 		UserCareerID: userCareerID,
 		UserID:       userID,
 		From:         fromTime,
 		To:           toTime,
 		Detail:       detail,
+		CreatedAt:    now,
 	}
 
 	return userCareer, nil
@@ -91,7 +91,7 @@ func stringToTime(str string) time.Time {
 	return t
 }
 
-func (u UserCareers) AddUserCareers(userCareer *UserCareer) {
+func (u *UserCareers) AddUserCareers(userCareer *UserCareer) {
 	u.List = append(u.List, userCareer)
 }
 
