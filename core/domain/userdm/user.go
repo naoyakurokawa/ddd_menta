@@ -7,13 +7,13 @@ import (
 )
 
 type User struct {
-	UserID     UserID
-	Name       string
-	Email      Email
-	Password   string
-	Profile    string
-	CreatedAt  time.Time
-	UserCareers []UserCareer
+	userID      UserID
+	name        string
+	email       Email
+	password    string
+	profile     string
+	createdAt   time.Time
+	userCareers []UserCareer
 }
 
 const nameMaxLength = 255
@@ -38,14 +38,42 @@ func NewUser(userID UserID, name string, email Email, password string, profile s
 	now := time.Now()
 
 	user := &User{
-		UserID:     userID,
-		Name:       name,
-		Email:      email,
-		Password:   password,
-		Profile:    profile,
-		CreatedAt:  now,
-		UserCareers: userCareers,
+		userID:      userID,
+		name:        name,
+		email:       email,
+		password:    password,
+		profile:     profile,
+		createdAt:   now,
+		userCareers: userCareers,
 	}
 
 	return user, nil
+}
+
+func (u *User) UserID() UserID {
+	return u.userID
+}
+
+func (u *User) Name() string {
+	return u.name
+}
+
+func (u *User) Email() Email {
+	return u.email
+}
+
+func (u *User) Password() string {
+	return u.password
+}
+
+func (u *User) Profile() string {
+	return u.profile
+}
+
+func (u *User) CreatedAt() time.Time {
+	return u.createdAt
+}
+
+func (u *User) UserCareers() []UserCareer {
+	return u.userCareers
 }

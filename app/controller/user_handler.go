@@ -48,7 +48,7 @@ func UserCreate() echo.HandlerFunc {
 		}
 
 		res := responseUser{
-			userID: createdUser.UserID,
+			userID: createdUser.UserID(),
 		}
 
 		return c.JSON(http.StatusCreated, res)

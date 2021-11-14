@@ -22,13 +22,13 @@ CREATE TABLE user_careers
 (
   user_career_id varchar(255) not null,
   user_id varchar(255) not null,
-  `from` date not null,
-  `to` date not null,
+  `from` datetime not null,
+  `to` datetime not null,
   detail text not null,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO user_careers (user_career_id, user_id, `from`, `to`, detail) VALUES ("Menta", "Menta", "2020-04-01", "2020-10-01", "ddd");
+INSERT INTO user_careers (user_career_id, user_id, `from`, `to`, detail) VALUES ("Menta", "Menta", "2006-01-02 15:04:05", "2006-01-02 15:04:05", "ddd");
 
 -- CREATE TABLE users
 -- (

@@ -30,10 +30,6 @@ func (uu *UserCreateUsecaseImpl) Create(name string, email string, password stri
 	}
 
 	userCareers := []userdm.UserCareer{}
-	user, err := userdm.NewUser(userID, name, emailIns, password, profile, userCareers)
-	if err != nil {
-		return nil, err
-	}
 	for i := 0; i < len(from); i++ {
 		userCareerID, err := userdm.NewUserCareerID()
 		if err != nil {
@@ -43,7 +39,12 @@ func (uu *UserCreateUsecaseImpl) Create(name string, email string, password stri
 		if err != nil {
 			return nil, err
 		}
-		user.UserCareers = append(user.UserCareers, *userCareer)
+		userCareers = append(userCareers, *userCareer)
+	}
+
+	user, err := userdm.NewUser(userID, name, emailIns, password, profile, userCareers)
+	if err != nil {
+		return nil, err
 	}
 
 	//最終的にinfraのCreateメソッドを実行することになる
