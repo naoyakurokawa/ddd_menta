@@ -42,3 +42,4 @@ INSERT INTO user_careers (user_career_id, user_id, `from`, `to`, detail) VALUES 
 -- mysql -uddd_menta -pddd_menta
 -- use ddd_menta
 -- create,insert実行
+-- select * from user_careers;

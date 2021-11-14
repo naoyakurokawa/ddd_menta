@@ -7,20 +7,20 @@ import (
 )
 
 type User struct {
-	UserID    UserID
-	Name      string
-	Email     Email
-	Password  string
-	Profile   string
-	CreatedAt time.Time
-	UserCareers UserCareers
+	UserID     UserID
+	Name       string
+	Email      Email
+	Password   string
+	Profile    string
+	CreatedAt  time.Time
+	UserCareers []UserCareer
 }
 
 const nameMaxLength = 255
 const profileMaxLength = 2000
 
 // NewUser userのコンストラクタ
-func NewUser(userID UserID, name string, email Email, password string, profile string, userCareers UserCareers) (*User, error) {
+func NewUser(userID UserID, name string, email Email, password string, profile string, userCareers []UserCareer) (*User, error) {
 	//入力データチェック
 	if len(name) == 0 {
 		return nil, xerrors.New("name must not be empty")
@@ -38,12 +38,12 @@ func NewUser(userID UserID, name string, email Email, password string, profile s
 	now := time.Now()
 
 	user := &User{
-		UserID:    userID,
-		Name:      name,
-		Email:     email,
-		Password:  password,
-		Profile:   profile,
-		CreatedAt: now,
+		UserID:     userID,
+		Name:       name,
+		Email:      email,
+		Password:   password,
+		Profile:    profile,
+		CreatedAt:  now,
 		UserCareers: userCareers,
 	}
 

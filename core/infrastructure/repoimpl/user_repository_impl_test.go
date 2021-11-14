@@ -1,8 +1,9 @@
 package repoimpl
 
 import (
-	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
 	"testing"
+
+	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
 )
 
 func TestUserRepo_Create(t *testing.T) {
@@ -11,6 +12,9 @@ func TestUserRepo_Create(t *testing.T) {
 		email    = "test@gmail.com"
 		password = "abcd12341231"
 		profile  = "プログラマーです"
+		from     = "2020-03-03"
+		to       = "2020-04-04"
+		detail   = "DDD"
 	)
 	userID, err := userdm.NewUserID()
 	if err != nil {
@@ -30,7 +34,7 @@ func TestUserRepo_Create(t *testing.T) {
 	if err != nil {
 		t.Errorf("failed to userRepository.Create: %v", err)
 	}
-	selectedUser, err := userRepository.FindByID(createdUser.UserID);
+	selectedUser, err := userRepository.FindByID(createdUser.UserID)
 	if err != nil {
 		t.Errorf("failed to FindByID: %v", err)
 	}

@@ -16,10 +16,6 @@ type UserCareer struct {
 	CreatedAt    time.Time
 }
 
-type UserCareers struct {
-	List []*UserCareer
-}
-
 const detailMaxLength = 1000
 
 var oldestCareerYear = time.Date(1970, 1, 1, 0, 0, 0, 0, time.UTC)
@@ -90,14 +86,3 @@ func stringToTime(str string) time.Time {
 	t, _ := time.Parse(layout, str)
 	return t
 }
-
-func (u *UserCareers) AddUserCareers(userCareer *UserCareer) {
-	u.List = append(u.List, userCareer)
-}
-
-// func dateConvert(dateStr string) int {
-// 	reg := regexp.MustCompile(`[-|/|:| |　]`)
-// 	str := reg.ReplaceAllString(dateStr, "")
-// 	dateInt, _ := strconv.Atoi(str)
-// 	return dateInt
-// }
