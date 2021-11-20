@@ -43,7 +43,6 @@ func NewDB() *gorm.DB {
 	return db
 }
 
-// Create userの保存
 // todo:gormのスライスによるinsertは以下のエラー発生 要調査
 // エラー：reflect: call of reflect.Value.Interface on zero Value
 func (ur *UserRepositoryImpl) Create(user *userdm.User) (*userdm.User, error) {
@@ -57,38 +56,26 @@ func (ur *UserRepositoryImpl) Create(user *userdm.User) (*userdm.User, error) {
 	u.CreatedAt = user.CreatedAt()
 	u.UserCareers = user.UserCareers()
 
-	insertUser := datamodel.User{
-		UserID:      u.UserID,
-		Name:        u.Name,
-		Email:       u.Email,
-		Password:    u.Password,
-		Profile:     u.Profile,
-		CreatedAt:   u.CreatedAt,
-		UserCareers: u.UserCareers}
-
-	// var UserCareers datamodel.UserCareers
+	tx := ur.Conn.Begin()
+	if err := tx.Create(&u).Error; err != nil {
+		tx.Rollback()
+		return nil, err
+	}
 	for i := 0; i < len(u.UserCareers); i++ {
 		userCareer := &datamodel.UserCareer{
-			UserCareerID: u.UserCareers[i].UserCareerID,
-			UserID:       u.UserID,
+			UserCareerID: userdm.UserCareerID.Value(u.UserCareers[i].UserCareerID),
+			UserID:       userdm.UserID.Value(u.UserID),
 			From:         u.UserCareers[i].From,
 			To:           u.UserCareers[i].To,
 			Detail:       u.UserCareers[i].Detail,
 			CreatedAt:    u.UserCareers[i].CreatedAt,
 		}
-		if err := ur.Conn.Create(&userCareer).Error; err != nil {
+		if err := tx.Create(&userCareer).Error; err != nil {
+			tx.Rollback()
 			return nil, err
 		}
-		// UserCareers = append(UserCareers, *userCareer)
 	}
-
-	if err := ur.Conn.Create(&insertUser).Error; err != nil {
-		return nil, err
-	}
-	// if err := ur.Conn.Create(&UserCareers).Error; err != nil {
-	// 	return nil, err
-	// }
-
+	tx.Commit()
 	return user, nil
 }
 

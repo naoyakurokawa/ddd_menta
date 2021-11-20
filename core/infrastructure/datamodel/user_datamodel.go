@@ -17,12 +17,10 @@ type User struct {
 }
 
 type UserCareer struct {
-	UserCareerID userdm.UserCareerID
-	UserID       userdm.UserID
+	UserCareerID string
+	UserID       string
 	From         time.Time
 	To           time.Time
 	Detail       string
 	CreatedAt    time.Time
 }
-
-type UserCareers []UserCareer
