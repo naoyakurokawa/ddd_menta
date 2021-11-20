@@ -23,6 +23,9 @@ var oldestCareerYear = time.Date(1970, 1, 1, 0, 0, 0, 0, time.UTC)
 // NewUserCareer user_careerのコンストラクタ
 func NewUserCareer(userCareerID UserCareerID, userID UserID, from string, to string, detail string) (*UserCareer, error) {
 	//入力データチェック
+	if len(userCareerID) == 0 {
+		return nil, xerrors.New("userCareerID must not be empty")
+	}
 	if len(userID) == 0 {
 		return nil, xerrors.New("userID must not be empty")
 	}
