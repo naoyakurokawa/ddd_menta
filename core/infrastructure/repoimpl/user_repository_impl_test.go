@@ -19,7 +19,7 @@ func TestUserRepo_Create(t *testing.T) {
 		t.Errorf("failed to NewUserID: %v", err)
 	}
 
-	userCareers := []userdm.UserCareer{}
+	userCareers := make([]userdm.UserCareer, 2)
 	userCareerID1, err := userdm.NewUserCareerID()
 	if err != nil {
 		t.Errorf("failed to NewUserCareerID: %v", err)
@@ -40,7 +40,8 @@ func TestUserRepo_Create(t *testing.T) {
 		t.Errorf("failed to NewUserCareer: %v", err)
 		return
 	}
-	userCareers = append(userCareers, *userCareer1, *userCareer2)
+	userCareers[0] = *userCareer1
+	userCareers[1] = *userCareer2
 
 	emailIns, err := userdm.NewEmail(email)
 	if err != nil {
