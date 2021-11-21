@@ -7,6 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
 	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/datamodel"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UserRepositoryImpl struct {
@@ -46,10 +47,16 @@ func NewDB() *gorm.DB {
 func (ur *UserRepositoryImpl) Create(user *userdm.User) (*userdm.User, error) {
 	var u datamodel.User
 
+	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password().Value()), 12)
+	if err != nil {
+		return nil, err
+	}
+	// hex.EncodeToString([]byte("あ"))
+
 	u.UserID = user.UserID().Value()
 	u.Name = user.Name()
 	u.Email = user.Email().Value()
-	u.Password = user.Password().Value()
+	u.Password = string(hash)
 	u.Profile = user.Profile()
 	u.CreatedAt = user.CreatedAt()
 	u.UserCareers = user.UserCareers()

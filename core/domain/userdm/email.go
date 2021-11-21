@@ -1,7 +1,6 @@
 package userdm
 
 import (
-	"reflect"
 	"regexp"
 
 	"golang.org/x/xerrors"
@@ -42,5 +41,5 @@ func EmailType(strEmail string) Email {
 }
 
 func (e Email) Equals(e2 Email) bool {
-	return reflect.DeepEqual(e, e2)
+	return e.Value() == e2.Value()
 }

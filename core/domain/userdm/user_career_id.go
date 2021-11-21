@@ -17,11 +17,7 @@ func NewUserCareerID() (UserCareerID, error) {
 }
 
 func (u UserCareerID) Equals(u2 UserCareerID) bool {
-	if u == u2 {
-		return true
-	} else {
-		return false
-	}
+	return u.Value() == u2.Value()
 }
 
 func (u UserCareerID) Value() string {

@@ -86,11 +86,3 @@ func (u *User) CreatedAt() time.Time {
 func (u *User) UserCareers() []UserCareer {
 	return u.userCareers
 }
-
-func (u *User) EqualsUserID(u2 UserID) bool {
-	if u.userID == u2 {
-		return true
-	} else {
-		return false
-	}
-}
