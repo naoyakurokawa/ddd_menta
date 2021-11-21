@@ -37,6 +37,10 @@ func (e Email) Value() string {
 	return string(e)
 }
 
+func EmailType(strEmail string) Email {
+	return Email(strEmail)
+}
+
 func (e Email) Equals(e2 Email) bool {
 	return reflect.DeepEqual(e, e2)
 }

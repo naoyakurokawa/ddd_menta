@@ -23,29 +23,35 @@ func TestUserRepo_Create(t *testing.T) {
 	userCareerID1, err := userdm.NewUserCareerID()
 	if err != nil {
 		t.Errorf("failed to NewUserCareerID: %v", err)
+		return
 	}
 	userCareerID2, err := userdm.NewUserCareerID()
 	if err != nil {
 		t.Errorf("failed to NewUserCareerID: %v", err)
+		return
 	}
 	userCareer1, err := userdm.NewUserCareer(userCareerID1, userID, "2013-06-02 15:04:05", "2013-06-02 15:04:05", "PHPエンジニア")
 	if err != nil {
 		t.Errorf("failed to NewUserCareer: %v", err)
+		return
 	}
 	userCareer2, err := userdm.NewUserCareer(userCareerID2, userID, "2013-06-02 15:04:05", "2013-06-02 15:04:05", "Goエンジニア")
 	if err != nil {
 		t.Errorf("failed to NewUserCareer: %v", err)
+		return
 	}
 	userCareers = append(userCareers, *userCareer1, *userCareer2)
 
 	emailIns, err := userdm.NewEmail(email)
 	if err != nil {
 		t.Errorf("failed to NewEmail: %v", err)
+		return
 	}
 
 	user, err := userdm.NewUser(userID, name, emailIns, password, profile, userCareers)
 	if err != nil {
 		t.Errorf("failed to NewUser: %v", err)
+		return
 	}
 
 	userRepository := NewUserRepositoryImpl(NewDB())

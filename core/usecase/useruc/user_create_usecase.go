@@ -28,8 +28,13 @@ func (uu *UserCreateUsecaseImpl) Create(name string, email string, password stri
 	if err != nil {
 		return nil, err
 	}
+	passwordIns, err := userdm.NewPassword(password)
+	if err != nil {
+		return nil, err
+	}
 
-	userCareers := []userdm.UserCareer{}
+	// userCareers := []userdm.UserCareer{}
+	userCareers := make([]userdm.UserCareer, len(from))
 	for i := 0; i < len(from); i++ {
 		userCareerID, err := userdm.NewUserCareerID()
 		if err != nil {
@@ -39,10 +44,10 @@ func (uu *UserCreateUsecaseImpl) Create(name string, email string, password stri
 		if err != nil {
 			return nil, err
 		}
-		userCareers = append(userCareers, *userCareer)
+		userCareers[i] = *userCareer
 	}
 
-	user, err := userdm.NewUser(userID, name, emailIns, password, profile, userCareers)
+	user, err := userdm.NewUser(userID, name, emailIns, passwordIns, profile, userCareers)
 	if err != nil {
 		return nil, err
 	}

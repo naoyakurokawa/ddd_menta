@@ -8,12 +8,12 @@ import (
 )
 
 type UserCareer struct {
-	UserCareerID UserCareerID
-	UserID       UserID
-	From         time.Time
-	To           time.Time
-	Detail       string
-	CreatedAt    time.Time
+	userCareerID UserCareerID
+	userID       UserID
+	from         time.Time
+	to           time.Time
+	detail       string
+	createdAt    time.Time
 }
 
 const detailMaxLength = 1000
@@ -59,12 +59,12 @@ func NewUserCareer(userCareerID UserCareerID, userID UserID, from string, to str
 	}
 	now := time.Now()
 	userCareer := &UserCareer{
-		UserCareerID: userCareerID,
-		UserID:       userID,
-		From:         fromTime,
-		To:           toTime,
-		Detail:       detail,
-		CreatedAt:    now,
+		userCareerID: userCareerID,
+		userID:       userID,
+		from:         fromTime,
+		to:           toTime,
+		detail:       detail,
+		createdAt:    now,
 	}
 
 	return userCareer, nil
@@ -88,4 +88,28 @@ const layout = "2006-01-02 15:04:05"
 func stringToTime(str string) time.Time {
 	t, _ := time.Parse(layout, str)
 	return t
+}
+
+func (u *UserCareer) UserCareerID() UserCareerID {
+	return u.userCareerID
+}
+
+func (u *UserCareer) UserID() UserID {
+	return u.userID
+}
+
+func (u *UserCareer) From() time.Time {
+	return u.from
+}
+
+func (u *UserCareer) To() time.Time {
+	return u.to
+}
+
+func (u *UserCareer) Detail() string {
+	return u.detail
+}
+
+func (u *UserCareer) CreatedAt() time.Time {
+	return u.createdAt
 }

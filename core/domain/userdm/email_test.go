@@ -1,8 +1,8 @@
 package userdm
 
 import (
-	"testing"
 	"strings"
+	"testing"
 )
 
 func TestNewEmail(t *testing.T) {
@@ -10,7 +10,7 @@ func TestNewEmail(t *testing.T) {
 		emailBlank := ""
 		_, err := NewEmail(emailBlank)
 		if err == nil {
-			t.Errorf("failed to email empty validation: %v", err)
+			t.Errorf("failed to email empty validation: %v", emailBlank)
 		}
 	})
 
@@ -19,16 +19,16 @@ func TestNewEmail(t *testing.T) {
 		emailOver += "@gmail.com"
 		_, err := NewEmail(emailOver)
 		if err == nil {
-			t.Errorf("failed to email max length validation: %v", err)
+			t.Errorf("failed to email max length validation: %v", emailOver)
 		}
 	})
 
 	t.Run("Emailがフォーマットエラー", func(t *testing.T) {
 		emailNotSuitableFormat := "aaaa"
 		_, err := NewEmail(emailNotSuitableFormat)
-	
+
 		if err == nil {
-			t.Errorf("failed to email max length validation: %v", err)
+			t.Errorf("failed to email max length validation: %v", emailNotSuitableFormat)
 		}
 	})
 }

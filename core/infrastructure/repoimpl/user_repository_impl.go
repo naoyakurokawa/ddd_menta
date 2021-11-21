@@ -19,18 +19,16 @@ func NewUserRepositoryImpl(conn *gorm.DB) userdm.UserRepository {
 
 // NewDB DBと接続する
 func NewDB() *gorm.DB {
+	//todo: 環境変数化
 	// err := godotenv.Load()
-
 	// if err != nil {
 	// 	fmt.Printf("読み込み出来ませんでした: %v", err)
 	// }
-
 	// USER := os.Getenv("DB_USER")
 	// PASS := os.Getenv("DB_PASS")
 	// PROTOCOL := "tcp(" + os.Getenv("DB_ADDRESS") + ")"
 	// DB_NAME := os.Getenv("DB_NAME")
 	// CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DB_NAME
-
 	// db, err := gorm.Open("mysql", CONNECT)
 	// if err != nil {
 	// 	panic(err)
@@ -48,27 +46,26 @@ func NewDB() *gorm.DB {
 func (ur *UserRepositoryImpl) Create(user *userdm.User) (*userdm.User, error) {
 	var u datamodel.User
 
-	u.UserID = user.UserID()
+	u.UserID = user.UserID().Value()
 	u.Name = user.Name()
-	u.Email = user.Email()
-	u.Password = user.Password()
+	u.Email = user.Email().Value()
+	u.Password = user.Password().Value()
 	u.Profile = user.Profile()
 	u.CreatedAt = user.CreatedAt()
 	u.UserCareers = user.UserCareers()
 
 	tx := ur.Conn.Begin()
 	if err := tx.Create(&u).Error; err != nil {
-		tx.Rollback()
 		return nil, err
 	}
 	for i := 0; i < len(u.UserCareers); i++ {
 		userCareer := &datamodel.UserCareer{
-			UserCareerID: userdm.UserCareerID.Value(u.UserCareers[i].UserCareerID),
-			UserID:       userdm.UserID.Value(u.UserID),
-			From:         u.UserCareers[i].From,
-			To:           u.UserCareers[i].To,
-			Detail:       u.UserCareers[i].Detail,
-			CreatedAt:    u.UserCareers[i].CreatedAt,
+			UserCareerID: userdm.UserCareerID.Value(u.UserCareers[i].UserCareerID()),
+			UserID:       u.UserID,
+			From:         u.UserCareers[i].From(),
+			To:           u.UserCareers[i].To(),
+			Detail:       u.UserCareers[i].Detail(),
+			CreatedAt:    u.UserCareers[i].CreatedAt(),
 		}
 		if err := tx.Create(&userCareer).Error; err != nil {
 			tx.Rollback()
@@ -94,10 +91,10 @@ func (ur *UserRepositoryImpl) FindByID(userID userdm.UserID) (*userdm.User, erro
 		return nil, err
 	}
 	user, err := userdm.NewUser(
-		dataModelUser.UserID,
+		userdm.UserIDType(dataModelUser.UserID),
 		dataModelUser.Name,
-		dataModelUser.Email,
-		dataModelUser.Password,
+		userdm.EmailType(dataModelUser.Email),
+		userdm.PasswordType(dataModelUser.Password),
 		dataModelUser.Profile,
 		dataModelUser.UserCareers)
 	if err != nil {
