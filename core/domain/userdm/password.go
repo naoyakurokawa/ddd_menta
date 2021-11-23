@@ -1,7 +1,6 @@
 package userdm
 
 import (
-	"reflect"
 	"unicode"
 
 	"golang.org/x/xerrors"
@@ -20,22 +19,22 @@ func NewPassword(password string) (Password, error) {
 		return Password(""), xerrors.Errorf("password must more than %d length", passwordMinLength)
 	}
 
-	if !CheckIncludeSpace(password) {
+	if !checkIncludeSpace(password) {
 		return Password(""), xerrors.Errorf("password not use spase")
 	}
 
-	if !CheckIncludeAlphabet(password) {
+	if !checkIncludeAlphabet(password) {
 		return Password(""), xerrors.Errorf("password must use alphabet more than one")
 	}
 
-	if !CheckIncludeNumber(password) {
+	if !checkIncludeNumber(password) {
 		return Password(""), xerrors.Errorf("password must use number more than one")
 	}
 
 	return Password(password), nil
 }
 
-func CheckIncludeAlphabet(password string) bool {
+func checkIncludeAlphabet(password string) bool {
 	for _, s := range password {
 		if unicode.IsLower(s) || unicode.IsUpper(s) {
 			return true
@@ -44,7 +43,7 @@ func CheckIncludeAlphabet(password string) bool {
 	return false
 }
 
-func CheckIncludeNumber(password string) bool {
+func checkIncludeNumber(password string) bool {
 	for _, s := range password {
 		if unicode.IsNumber(s) {
 			return true
@@ -53,7 +52,7 @@ func CheckIncludeNumber(password string) bool {
 	return false
 }
 
-func CheckIncludeSpace(password string) bool {
+func checkIncludeSpace(password string) bool {
 	for _, s := range password {
 		if unicode.IsSpace(s) {
 			return false
@@ -71,5 +70,5 @@ func PasswordType(strPassword string) Password {
 }
 
 func (p Password) Equals(p2 Password) bool {
-	return reflect.DeepEqual(p, p2)
+	return p.Value() == p2.Value()
 }

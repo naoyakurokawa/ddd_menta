@@ -10,7 +10,7 @@ func TestNewPassword(t *testing.T) {
 		passwordBlank := ""
 		_, err := NewPassword(passwordBlank)
 		if err == nil {
-			t.Errorf("failed to password empty validation: %v", passwordBlank)
+			t.Errorf("failed to password empty validation")
 		}
 	})
 

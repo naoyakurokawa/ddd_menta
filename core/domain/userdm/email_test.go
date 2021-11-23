@@ -10,7 +10,7 @@ func TestNewEmail(t *testing.T) {
 		emailBlank := ""
 		_, err := NewEmail(emailBlank)
 		if err == nil {
-			t.Errorf("failed to email empty validation: %v", emailBlank)
+			t.Errorf("failed to email empty validation")
 		}
 	})
 

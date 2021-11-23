@@ -33,7 +33,7 @@ func TestNewUser(t *testing.T) {
 		BlankUserID := UserID("")
 		_, err := NewUser(BlankUserID, name, emailIns, passwordIns, profile, userCareers)
 		if err == nil {
-			t.Errorf("failed to UserID empty validation: %v", BlankUserID)
+			t.Errorf("failed to UserID empty validation")
 		}
 	})
 
@@ -41,7 +41,7 @@ func TestNewUser(t *testing.T) {
 		blankName := ""
 		_, err := NewUser(userID, blankName, emailIns, passwordIns, profile, userCareers)
 		if err == nil {
-			t.Errorf("failed to Name empty validation: %v", blankName)
+			t.Errorf("failed to Name empty validation")
 		}
 	})
 
@@ -57,7 +57,7 @@ func TestNewUser(t *testing.T) {
 		blankEmail := Email("")
 		_, err := NewUser(userID, name, blankEmail, passwordIns, profile, userCareers)
 		if err == nil {
-			t.Errorf("failed to Email empty validation: %v", blankEmail)
+			t.Errorf("failed to Email empty validation")
 		}
 	})
 
@@ -65,7 +65,7 @@ func TestNewUser(t *testing.T) {
 		blankPassword := Password("")
 		_, err := NewUser(userID, name, email, blankPassword, profile, userCareers)
 		if err == nil {
-			t.Errorf("failed to Password empty validation: %v", blankPassword)
+			t.Errorf("failed to Password empty validation")
 		}
 	})
 
@@ -73,7 +73,7 @@ func TestNewUser(t *testing.T) {
 		blankProfile := ""
 		_, err := NewUser(userID, name, email, passwordIns, blankProfile, userCareers)
 		if err == nil {
-			t.Errorf("failed to Profile empty validation: %v", blankProfile)
+			t.Errorf("failed to Profile empty validation")
 		}
 	})
 
