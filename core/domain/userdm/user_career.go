@@ -8,12 +8,12 @@ import (
 )
 
 type UserCareer struct {
-	ID        int
-	UserID    UserID
-	From      time.Time
-	To        time.Time
-	Detail    string
-	CreatedAt time.Time
+	userCareerID UserCareerID
+	userID       UserID
+	from         time.Time
+	to           time.Time
+	detail       string
+	createdAt    time.Time
 }
 
 const detailMaxLength = 1000
@@ -21,8 +21,11 @@ const detailMaxLength = 1000
 var oldestCareerYear = time.Date(1970, 1, 1, 0, 0, 0, 0, time.UTC)
 
 // NewUserCareer user_careerのコンストラクタ
-func NewUserCareer(userID UserID, from string, to string, detail string) (*UserCareer, error) {
+func NewUserCareer(userCareerID UserCareerID, userID UserID, from string, to string, detail string) (*UserCareer, error) {
 	//入力データチェック
+	if len(userCareerID) == 0 {
+		return nil, xerrors.New("userCareerID must not be empty")
+	}
 	if len(userID) == 0 {
 		return nil, xerrors.New("userID must not be empty")
 	}
@@ -48,19 +51,20 @@ func NewUserCareer(userID UserID, from string, to string, detail string) (*UserC
 	if fromTime.Before(oldestCareerYear) || toTime.Before(oldestCareerYear) {
 		return nil, xerrors.Errorf("career year must larger than %d", oldestCareerYear.Year())
 	}
-
 	if len(detail) == 0 {
 		return nil, xerrors.New("career detail must not be empty")
 	}
 	if len(detail) > detailMaxLength {
 		return nil, xerrors.Errorf("detail must less than %d: %s", detailMaxLength, detail)
 	}
-
+	now := time.Now()
 	userCareer := &UserCareer{
-		UserID: userID,
-		From:   fromTime,
-		To:     toTime,
-		Detail: detail,
+		userCareerID: userCareerID,
+		userID:       userID,
+		from:         fromTime,
+		to:           toTime,
+		detail:       detail,
+		createdAt:    now,
 	}
 
 	return userCareer, nil
@@ -86,9 +90,26 @@ func stringToTime(str string) time.Time {
 	return t
 }
 
-// func dateConvert(dateStr string) int {
-// 	reg := regexp.MustCompile(`[-|/|:| |　]`)
-// 	str := reg.ReplaceAllString(dateStr, "")
-// 	dateInt, _ := strconv.Atoi(str)
-// 	return dateInt
-// }
+func (u *UserCareer) UserCareerID() UserCareerID {
+	return u.userCareerID
+}
+
+func (u *UserCareer) UserID() UserID {
+	return u.userID
+}
+
+func (u *UserCareer) From() time.Time {
+	return u.from
+}
+
+func (u *UserCareer) To() time.Time {
+	return u.to
+}
+
+func (u *UserCareer) Detail() string {
+	return u.detail
+}
+
+func (u *UserCareer) CreatedAt() time.Time {
+	return u.createdAt
+}

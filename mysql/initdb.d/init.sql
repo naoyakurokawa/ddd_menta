@@ -16,6 +16,20 @@ CREATE TABLE users
 
 INSERT INTO users (user_id, name, email, password, profile) VALUES ("Menta", "test_user", "test@co.jp", "AJRUsjquq", "テストユーザーです");
 
+DROP TABLE IF EXISTS user_careers;
+
+CREATE TABLE user_careers
+(
+  user_career_id varchar(255) not null,
+  user_id varchar(255) not null,
+  `from` datetime not null,
+  `to` datetime not null,
+  detail text not null,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO user_careers (user_career_id, user_id, `from`, `to`, detail) VALUES ("Menta", "Menta", "2006-01-02 15:04:05", "2006-01-02 15:04:05", "ddd");
+
 -- CREATE TABLE users
 -- (
 --   id int unsigned primary key auto_increment,
@@ -28,3 +42,4 @@ INSERT INTO users (user_id, name, email, password, profile) VALUES ("Menta", "te
 -- mysql -uddd_menta -pddd_menta
 -- use ddd_menta
 -- create,insert実行
+-- select * from user_careers;
