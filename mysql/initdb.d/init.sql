@@ -30,6 +30,18 @@ CREATE TABLE user_careers
 
 INSERT INTO user_careers (user_career_id, user_id, `from`, `to`, detail) VALUES ("Menta", "Menta", "2006-01-02 15:04:05", "2006-01-02 15:04:05", "ddd");
 
+DROP TABLE IF EXISTS user_skills;
+CREATE TABLE user_skills
+(
+  user_skill_id varchar(255) not null,
+  user_id varchar(255) not null,
+  tag varchar(255) not null,
+  assessment int not null,
+  experience_years int not null,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+INSERT INTO user_skills (user_id, tag, assessment, experience_years) VALUES ("e2e908dc-5981-4c4a-8e98-4487d3e122ad", "Go", 1, 1);
+
 -- CREATE TABLE users
 -- (
 --   id int unsigned primary key auto_increment,
