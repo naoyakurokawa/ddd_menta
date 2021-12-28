@@ -28,13 +28,15 @@ func (e ExperienceYears) String() string {
 	return e.Names()[e]
 }
 
-const experienceYearsMinNum = 0
-const experienceYearsMaxNum = 5
+const (
+	experienceYearsMinNum = 0
+	experienceYearsMaxNum = 5
+)
 
 // コンストラクタ
 func NewExperienceYears(experienceYears int) (ExperienceYears, error) {
 	if experienceYears < experienceYearsMinNum || experienceYearsMaxNum < experienceYears {
-		return -1, xerrors.New("experienceYears must between 0 and 5")
+		return -1, xerrors.Errorf("experienceYears must between %d and %d", experienceYearsMinNum, experienceYearsMaxNum)
 	}
 
 	return ExperienceYears(experienceYears), nil

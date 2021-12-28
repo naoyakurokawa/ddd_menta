@@ -16,19 +16,15 @@ type UserSkill struct {
 	createdAt       time.Time
 }
 
-const tagMaxLength = 30
-const assessmentMinNum = 1
-const assessmentMaxNum = 5
+const (
+	tagMaxLength     = 30
+	assessmentMinNum = 1
+	assessmentMaxNum = 5
+)
 
 // NewUserSkill userSkillのコンストラクタ
 func NewUserSkill(userSkillID UserSkillID, userID userdm.UserID, tag string, assessment int, experienceYears ExperienceYears) (*UserSkill, error) {
 	//入力データチェック
-	if len(userSkillID) == 0 {
-		return nil, xerrors.New("userSkillID must not be empty")
-	}
-	if len(userID) == 0 {
-		return nil, xerrors.New("userID must not be empty")
-	}
 	if len(tag) == 0 {
 		return nil, xerrors.New("tag must not be empty")
 	}
