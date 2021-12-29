@@ -2,6 +2,7 @@ package userskilldm
 
 import (
 	"github.com/google/uuid"
+	"golang.org/x/xerrors"
 )
 
 type UserSkillID string
@@ -24,6 +25,9 @@ func (u UserSkillID) Value() string {
 	return string(u)
 }
 
-func UserIDType(strUserSkillID string) UserSkillID {
-	return UserSkillID(strUserSkillID)
+func UserIDType(strUserSkillID string) (UserSkillID, error) {
+	if len(strUserSkillID) == 0 {
+		return UserSkillID(""), xerrors.New("tag must not be empty")
+	}
+	return UserSkillID(strUserSkillID), nil
 }

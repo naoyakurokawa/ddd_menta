@@ -4,7 +4,7 @@ import (
 	"golang.org/x/xerrors"
 )
 
-type ExperienceYears int
+type ExperienceYears uint16
 
 const (
 	HalfYear ExperienceYears = iota
@@ -36,7 +36,7 @@ const (
 // コンストラクタ
 func NewExperienceYears(experienceYears int) (ExperienceYears, error) {
 	if experienceYears < experienceYearsMinNum || experienceYearsMaxNum < experienceYears {
-		return -1, xerrors.Errorf("experienceYears must between %d and %d", experienceYearsMinNum, experienceYearsMaxNum)
+		return 0, xerrors.Errorf("experienceYears must between %d and %d", experienceYearsMinNum, experienceYearsMaxNum)
 	}
 
 	return ExperienceYears(experienceYears), nil

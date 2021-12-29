@@ -3,6 +3,8 @@ package userskilldm
 import (
 	"time"
 
+	"unicode/utf8"
+
 	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
 	"golang.org/x/xerrors"
 )
@@ -11,7 +13,7 @@ type UserSkill struct {
 	userSkillID     UserSkillID
 	userID          userdm.UserID
 	tag             string
-	assessment      int
+	assessment      uint16
 	experienceYears ExperienceYears
 	createdAt       time.Time
 }
@@ -23,12 +25,12 @@ const (
 )
 
 // NewUserSkill userSkillのコンストラクタ
-func NewUserSkill(userSkillID UserSkillID, userID userdm.UserID, tag string, assessment int, experienceYears ExperienceYears) (*UserSkill, error) {
+func NewUserSkill(userSkillID UserSkillID, userID userdm.UserID, tag string, assessment uint16, experienceYears ExperienceYears) (*UserSkill, error) {
 	//入力データチェック
 	if len(tag) == 0 {
 		return nil, xerrors.New("tag must not be empty")
 	}
-	if len(tag) > tagMaxLength {
+	if utf8.RuneCountInString(tag) > tagMaxLength {
 		return nil, xerrors.Errorf("tag must less than %d: %s", tagMaxLength, tag)
 	}
 	if assessment < assessmentMinNum || assessmentMaxNum < assessment {
@@ -61,7 +63,7 @@ func (u *UserSkill) Tag() string {
 	return u.tag
 }
 
-func (u *UserSkill) Assessment() int {
+func (u *UserSkill) Assessment() uint16 {
 	return u.assessment
 }
 

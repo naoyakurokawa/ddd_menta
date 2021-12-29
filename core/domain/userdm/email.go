@@ -2,6 +2,7 @@ package userdm
 
 import (
 	"regexp"
+	"unicode/utf8"
 
 	"golang.org/x/xerrors"
 )
@@ -21,7 +22,7 @@ func NewEmail(email string) (Email, error) {
 		return Email(""), xerrors.New("email must not be empty")
 	}
 
-	if len(email) > emailMaxLength {
+	if utf8.RuneCountInString(email) > emailMaxLength {
 		return Email(""), xerrors.Errorf("email must less than %d: %s", emailMaxLength, email)
 	}
 
