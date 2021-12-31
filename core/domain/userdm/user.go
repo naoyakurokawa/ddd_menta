@@ -2,6 +2,7 @@ package userdm
 
 import (
 	"time"
+	"unicode/utf8"
 
 	"golang.org/x/xerrors"
 )
@@ -28,7 +29,7 @@ func NewUser(userID UserID, name string, email Email, password Password, profile
 	if len(name) == 0 {
 		return nil, xerrors.New("name must not be empty")
 	}
-	if len(name) > nameMaxLength {
+	if utf8.RuneCountInString(name) > nameMaxLength {
 		return nil, xerrors.Errorf("name must less than %d: %s", nameMaxLength, name)
 	}
 	if len(email) == 0 {
@@ -40,7 +41,7 @@ func NewUser(userID UserID, name string, email Email, password Password, profile
 	if len(profile) == 0 {
 		return nil, xerrors.New("profile must not be empty")
 	}
-	if len(profile) > profileMaxLength {
+	if utf8.RuneCountInString(profile) > profileMaxLength {
 		return nil, xerrors.Errorf("profile must less than %d: %s", profileMaxLength, profile)
 	}
 

@@ -3,6 +3,7 @@ package userdm
 import (
 	"regexp"
 	"time"
+	"unicode/utf8"
 
 	"golang.org/x/xerrors"
 )
@@ -54,7 +55,7 @@ func NewUserCareer(userCareerID UserCareerID, userID UserID, from string, to str
 	if len(detail) == 0 {
 		return nil, xerrors.New("career detail must not be empty")
 	}
-	if len(detail) > detailMaxLength {
+	if utf8.RuneCountInString(detail) > detailMaxLength {
 		return nil, xerrors.Errorf("detail must less than %d: %s", detailMaxLength, detail)
 	}
 	now := time.Now()
