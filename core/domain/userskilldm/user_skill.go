@@ -34,7 +34,7 @@ func NewUserSkill(userSkillID UserSkillID, userID userdm.UserID, tag string, ass
 		return nil, xerrors.Errorf("tag must less than %d: %s", tagMaxLength, tag)
 	}
 	if assessment < assessmentMinNum || assessmentMaxNum < assessment {
-		return nil, xerrors.New("assessment must between 1 and 5")
+		return nil, xerrors.Errorf("assessment must between %d and %d", assessmentMinNum, assessmentMaxNum)
 	}
 
 	now := time.Now()
