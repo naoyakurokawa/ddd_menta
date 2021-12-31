@@ -1,6 +1,7 @@
 package userskilldm
 
 import (
+	"strconv"
 	"time"
 
 	"unicode/utf8"
@@ -65,6 +66,14 @@ func (u *UserSkill) Tag() string {
 
 func (u *UserSkill) Assessment() uint16 {
 	return u.assessment
+}
+
+func AssessmentCastUint(assessment string) (uint16, error) {
+	uintAssessment, err := strconv.ParseUint(assessment, 10, 16)
+	if err != nil {
+		return 0, err
+	}
+	return uint16(uintAssessment), nil
 }
 
 func (u *UserSkill) ExperienceYears() ExperienceYears {

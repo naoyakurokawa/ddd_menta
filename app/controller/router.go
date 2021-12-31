@@ -8,5 +8,6 @@ import (
 func InitRouting(e *echo.Echo) {
 
 	e.POST("/user", UserCreate())
+	e.POST("/user_skill", UserSkillCreate())
 
 }
