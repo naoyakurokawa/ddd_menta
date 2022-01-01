@@ -8,16 +8,16 @@ import (
 	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/datamodel"
 )
 
-type UserSkillRepositoryImpl struct {
-	Conn *gorm.DB
+type userSkillRepositoryImpl struct {
+	conn *gorm.DB
 }
 
 func NewUserSkillRepositoryImpl(conn *gorm.DB) userskilldm.UserSkillRepository {
-	return &UserSkillRepositoryImpl{Conn: conn}
+	return &userSkillRepositoryImpl{conn: conn}
 }
 
-func (ur *UserSkillRepositoryImpl) Create(userSkills []*userskilldm.UserSkill) ([]*userskilldm.UserSkill, error) {
-	tx := ur.Conn.Begin()
+func (ur *userSkillRepositoryImpl) Create(userSkills []*userskilldm.UserSkill) ([]*userskilldm.UserSkill, error) {
+	tx := ur.conn.Begin()
 	for i := 0; i < len(userSkills); i++ {
 		userSkill := &datamodel.UserSkill{
 			UserSkillID:     userskilldm.UserSkillID.Value(userSkills[i].UserSkillID()),

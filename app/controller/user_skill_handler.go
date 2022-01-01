@@ -13,7 +13,6 @@ type UserSkillHandler struct {
 	userSkillCreateUsecase userskilluc.UserSkillCreateUsecase
 }
 
-// NewUserHandler user handlerのコンストラクタ
 func NewUserSkillHandler(uu userskilluc.UserSkillCreateUsecase) *UserSkillHandler {
 	return &UserSkillHandler{userSkillCreateUsecase: uu}
 }
@@ -26,7 +25,6 @@ type requestUserSkill struct {
 	ExperienceYears []string
 }
 
-// Create userを保存するときのハンドラー
 func UserSkillCreate() echo.HandlerFunc {
 	userSkillRepository := repoimpl.NewUserSkillRepositoryImpl(repoimpl.NewDB())
 	userSkillCreateUsecase := userskilluc.NewUserSkillCreateUsecase(userSkillRepository)

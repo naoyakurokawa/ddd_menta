@@ -13,7 +13,6 @@ type UserHandler struct {
 	userCreateUsecase useruc.UserCreateUsecase
 }
 
-// NewUserHandler user handlerのコンストラクタ
 func NewUserHandler(uu useruc.UserCreateUsecase) *UserHandler {
 	return &UserHandler{userCreateUsecase: uu}
 }
@@ -28,7 +27,6 @@ type requestUser struct {
 	Detail   []string
 }
 
-// Create userを保存するときのハンドラー
 func UserCreate() echo.HandlerFunc {
 	userRepository := repoimpl.NewUserRepositoryImpl(repoimpl.NewDB())
 	userCreateUsecase := useruc.NewUserCreateUsecase(userRepository)

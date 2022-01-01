@@ -10,12 +10,12 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type UserRepositoryImpl struct {
-	Conn *gorm.DB
+type userRepositoryImpl struct {
+	conn *gorm.DB
 }
 
 func NewUserRepositoryImpl(conn *gorm.DB) userdm.UserRepository {
-	return &UserRepositoryImpl{Conn: conn}
+	return &userRepositoryImpl{conn: conn}
 }
 
 // NewDB DBと接続する
@@ -44,7 +44,7 @@ func NewDB() *gorm.DB {
 
 // todo:gormのスライスによるinsertは以下のエラー発生 要調査
 // エラー：reflect: call of reflect.Value.Interface on zero Value
-func (ur *UserRepositoryImpl) Create(user *userdm.User) (*userdm.User, error) {
+func (ur *userRepositoryImpl) Create(user *userdm.User) (*userdm.User, error) {
 	var u datamodel.User
 
 	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password().Value()), 12)
@@ -61,7 +61,7 @@ func (ur *UserRepositoryImpl) Create(user *userdm.User) (*userdm.User, error) {
 	u.CreatedAt = user.CreatedAt()
 	u.UserCareers = user.UserCareers()
 
-	tx := ur.Conn.Begin()
+	tx := ur.conn.Begin()
 	if err := tx.Create(&u).Error; err != nil {
 		return nil, err
 	}
@@ -83,7 +83,7 @@ func (ur *UserRepositoryImpl) Create(user *userdm.User) (*userdm.User, error) {
 	return user, nil
 }
 
-func (ur *UserRepositoryImpl) FindByID(userID userdm.UserID) (*userdm.User, error) {
+func (ur *userRepositoryImpl) FindByID(userID userdm.UserID) (*userdm.User, error) {
 	var dataModelCareer []userdm.UserCareer
 	dataModelUser := &datamodel.User{
 		UserID:      "",
@@ -94,7 +94,7 @@ func (ur *UserRepositoryImpl) FindByID(userID userdm.UserID) (*userdm.User, erro
 		CreatedAt:   time.Now(),
 		UserCareers: dataModelCareer,
 	}
-	if err := ur.Conn.Where("user_id = ?", userID.Value()).Find(&dataModelUser).Error; err != nil {
+	if err := ur.conn.Where("user_id = ?", userID.Value()).Find(&dataModelUser).Error; err != nil {
 		return nil, err
 	}
 	user, err := userdm.NewUser(
