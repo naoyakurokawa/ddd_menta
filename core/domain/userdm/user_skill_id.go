@@ -1,4 +1,4 @@
-package userskilldm
+package userdm
 
 import (
 	"github.com/google/uuid"
@@ -25,7 +25,7 @@ func (u UserSkillID) Value() string {
 	return string(u)
 }
 
-func UserIDType(strUserSkillID string) (UserSkillID, error) {
+func UserSkillIDType(strUserSkillID string) (UserSkillID, error) {
 	if len(strUserSkillID) == 0 {
 		return UserSkillID(""), xerrors.New("tag must not be empty")
 	}

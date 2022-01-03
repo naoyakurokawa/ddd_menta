@@ -19,13 +19,16 @@ func NewUserHandler(uu useruc.UserCreateUsecase) *UserHandler {
 }
 
 type requestUser struct {
-	Name     string
-	Email    string
-	Password string
-	Profile  string
-	From     []string
-	To       []string
-	Detail   []string
+	Name            string
+	Email           string
+	Password        string
+	Profile         string
+	From            []string
+	To              []string
+	Detail          []string
+	Tag             []string
+	Assessment      []string
+	ExperienceYears []string
 }
 
 // Create userを保存するときのハンドラー
@@ -42,7 +45,7 @@ func UserCreate() echo.HandlerFunc {
 		}
 
 		//usecaseのCreate → infraのCreate
-		createdUser, err := userCreateUsecase.Create(req.Name, req.Email, req.Password, req.Profile, req.From, req.To, req.Detail)
+		createdUser, err := userCreateUsecase.Create(req.Name, req.Email, req.Password, req.Profile, req.From, req.To, req.Detail, req.Tag, req.Assessment, req.ExperienceYears)
 		if err != nil {
 			return err
 		}

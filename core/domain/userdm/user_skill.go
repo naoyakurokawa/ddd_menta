@@ -1,17 +1,17 @@
-package userskilldm
+package userdm
 
 import (
+	"strconv"
 	"time"
 
 	"unicode/utf8"
 
-	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
 	"golang.org/x/xerrors"
 )
 
 type UserSkill struct {
 	userSkillID     UserSkillID
-	userID          userdm.UserID
+	userID          UserID
 	tag             string
 	assessment      uint16
 	experienceYears ExperienceYears
@@ -25,7 +25,7 @@ const (
 )
 
 // NewUserSkill userSkillのコンストラクタ
-func NewUserSkill(userSkillID UserSkillID, userID userdm.UserID, tag string, assessment uint16, experienceYears ExperienceYears) (*UserSkill, error) {
+func NewUserSkill(userSkillID UserSkillID, userID UserID, tag string, assessment uint16, experienceYears ExperienceYears) (*UserSkill, error) {
 	//入力データチェック
 	if len(tag) == 0 {
 		return nil, xerrors.New("tag must not be empty")
@@ -55,7 +55,7 @@ func (u *UserSkill) UserSkillID() UserSkillID {
 	return u.userSkillID
 }
 
-func (u *UserSkill) UserID() userdm.UserID {
+func (u *UserSkill) UserID() UserID {
 	return u.userID
 }
 
@@ -73,4 +73,12 @@ func (u *UserSkill) ExperienceYears() ExperienceYears {
 
 func (u *UserSkill) CreatedAt() time.Time {
 	return u.createdAt
+}
+
+func (u *UserSkill) AssessmentCastUint(assessment string) (uint16, error) {
+	uintAssessment, err := strconv.ParseUint(assessment, 10, 16)
+	if err != nil {
+		return 0, err
+	}
+	return uint16(uintAssessment), nil
 }

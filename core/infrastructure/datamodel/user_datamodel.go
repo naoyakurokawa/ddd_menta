@@ -14,6 +14,7 @@ type User struct {
 	Profile     string
 	CreatedAt   time.Time
 	UserCareers []userdm.UserCareer
+	UserSkills  []userdm.UserSkill
 }
 
 type UserCareer struct {
@@ -23,4 +24,13 @@ type UserCareer struct {
 	To           time.Time
 	Detail       string
 	CreatedAt    time.Time
+}
+
+type UserSkill struct {
+	UserSkillID     string
+	UserID          string
+	Tag             string
+	Assessment      uint16
+	ExperienceYears uint16
+	CreatedAt       time.Time
 }
