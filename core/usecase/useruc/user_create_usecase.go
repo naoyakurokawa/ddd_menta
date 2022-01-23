@@ -1,12 +1,14 @@
 package useruc
 
 import (
+	"strconv"
+
 	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
 )
 
 // UserUsecase user usecaseのinterface
 type UserCreateUsecase interface {
-	Create(name string, email string, password string, profile string, from []string, to []string, detail []string) (*userdm.User, error)
+	Create(name string, email string, password string, profile string, from []string, to []string, detail []string, tag []string, assessment []string, experienceYears []string) (*userdm.User, error)
 }
 
 type UserCreateUsecaseImpl struct {
@@ -19,7 +21,7 @@ func NewUserCreateUsecase(userRepo userdm.UserRepository) UserCreateUsecase {
 }
 
 // Create userを保存するときのユースケース
-func (uu *UserCreateUsecaseImpl) Create(name string, email string, password string, profile string, from []string, to []string, detail []string) (*userdm.User, error) {
+func (uu *UserCreateUsecaseImpl) Create(name string, email string, password string, profile string, from []string, to []string, detail []string, tag []string, assessment []string, experienceYears []string) (*userdm.User, error) {
 	userID, err := userdm.NewUserID()
 	if err != nil {
 		return nil, err
@@ -47,7 +49,29 @@ func (uu *UserCreateUsecaseImpl) Create(name string, email string, password stri
 		userCareers[i] = *userCareer
 	}
 
-	user, err := userdm.NewUser(userID, name, emailIns, passwordIns, profile, userCareers)
+	userSkills := make([]userdm.UserSkill, len(tag))
+	for i := 0; i < len(tag); i++ {
+		userSkillID, err := userdm.NewUserSkillID()
+		if err != nil {
+			return nil, err
+		}
+		uintAssessment, err := strconv.ParseUint(assessment[i], 10, 16)
+		if err != nil {
+			return nil, err
+		}
+		intExperienceYears, _ := strconv.Atoi(experienceYears[i])
+		experienceYears, err := userdm.NewExperienceYears(intExperienceYears)
+		if err != nil {
+			return nil, err
+		}
+		userSkill, err := userdm.NewUserSkill(userSkillID, userID, tag[i], uint16(uintAssessment), experienceYears)
+		if err != nil {
+			return nil, err
+		}
+		userSkills[i] = *userSkill
+	}
+
+	user, err := userdm.NewUser(userID, name, emailIns, passwordIns, profile, userCareers, userSkills)
 	if err != nil {
 		return nil, err
 	}

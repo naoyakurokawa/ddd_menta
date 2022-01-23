@@ -60,11 +60,14 @@ func (ur *UserRepositoryImpl) Create(user *userdm.User) (*userdm.User, error) {
 	u.Profile = user.Profile()
 	u.CreatedAt = user.CreatedAt()
 	u.UserCareers = user.UserCareers()
+	u.UserSkills = user.UserSkills()
 
 	tx := ur.Conn.Begin()
+	// User登録
 	if err := tx.Create(&u).Error; err != nil {
 		return nil, err
 	}
+	// UserCareer登録
 	for i := 0; i < len(u.UserCareers); i++ {
 		userCareer := &datamodel.UserCareer{
 			UserCareerID: userdm.UserCareerID.Value(u.UserCareers[i].UserCareerID()),
@@ -75,6 +78,21 @@ func (ur *UserRepositoryImpl) Create(user *userdm.User) (*userdm.User, error) {
 			CreatedAt:    u.UserCareers[i].CreatedAt(),
 		}
 		if err := tx.Create(&userCareer).Error; err != nil {
+			tx.Rollback()
+			return nil, err
+		}
+	}
+	// UserSkill登録
+	for i := 0; i < len(u.UserSkills); i++ {
+		userSkill := &datamodel.UserSkill{
+			UserSkillID:     userdm.UserSkillID.Value(u.UserSkills[i].UserSkillID()),
+			UserID:          u.UserID,
+			Tag:             u.UserSkills[i].Tag(),
+			Assessment:      u.UserSkills[i].Assessment(),
+			ExperienceYears: userdm.ExperienceYears.Uint16(u.UserSkills[i].ExperienceYears()),
+			CreatedAt:       u.UserSkills[i].CreatedAt(),
+		}
+		if err := tx.Create(&userSkill).Error; err != nil {
 			tx.Rollback()
 			return nil, err
 		}
@@ -103,7 +121,8 @@ func (ur *UserRepositoryImpl) FindByID(userID userdm.UserID) (*userdm.User, erro
 		userdm.EmailType(dataModelUser.Email),
 		userdm.PasswordType(dataModelUser.Password),
 		dataModelUser.Profile,
-		dataModelUser.UserCareers)
+		dataModelUser.UserCareers,
+		dataModelUser.UserSkills)
 	if err != nil {
 		return nil, err
 	}

@@ -15,13 +15,14 @@ type User struct {
 	profile     string
 	createdAt   time.Time
 	userCareers []UserCareer
+	userSkills  []UserSkill
 }
 
 const nameMaxLength = 255
 const profileMaxLength = 2000
 
 // NewUser userのコンストラクタ
-func NewUser(userID UserID, name string, email Email, password Password, profile string, userCareers []UserCareer) (*User, error) {
+func NewUser(userID UserID, name string, email Email, password Password, profile string, userCareers []UserCareer, userSkills []UserSkill) (*User, error) {
 	//入力データチェック
 	if len(userID) == 0 {
 		return nil, xerrors.New("userID must not be empty")
@@ -55,6 +56,7 @@ func NewUser(userID UserID, name string, email Email, password Password, profile
 		profile:     profile,
 		createdAt:   now,
 		userCareers: userCareers,
+		userSkills:  userSkills,
 	}
 
 	return user, nil
@@ -86,4 +88,8 @@ func (u *User) CreatedAt() time.Time {
 
 func (u *User) UserCareers() []UserCareer {
 	return u.userCareers
+}
+
+func (u *User) UserSkills() []UserSkill {
+	return u.userSkills
 }

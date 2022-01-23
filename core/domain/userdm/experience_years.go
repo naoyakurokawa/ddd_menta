@@ -1,4 +1,4 @@
-package userskilldm
+package userdm
 
 import (
 	"golang.org/x/xerrors"
@@ -26,6 +26,10 @@ func (e ExperienceYears) Names() []string {
 
 func (e ExperienceYears) String() string {
 	return e.Names()[e]
+}
+
+func (e ExperienceYears) Uint16() uint16 {
+	return uint16(e)
 }
 
 const (
