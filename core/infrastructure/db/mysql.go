@@ -1,6 +1,8 @@
 package db
 
 import (
+	"sync"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 )
@@ -21,10 +23,17 @@ func NewDB() *gorm.DB {
 	// if err != nil {
 	// 	panic(err)
 	// }
-	db, err := gorm.Open("mysql", "ddd_menta:ddd_menta@tcp(localhost)/ddd_menta?parseTime=true")
-	if err != nil {
-		panic(err)
-	}
+	var (
+		once sync.Once
+		db   *gorm.DB
+		err  error
+	)
+	once.Do(func() {
+		db, err = gorm.Open("mysql", "ddd_menta:ddd_menta@tcp(localhost)/ddd_menta?parseTime=true")
+		if err != nil {
+			panic(err)
+		}
+	})
 
 	return db
 }
