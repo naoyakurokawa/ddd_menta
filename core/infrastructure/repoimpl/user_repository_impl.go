@@ -18,30 +18,6 @@ func NewUserRepositoryImpl(conn *gorm.DB) userdm.UserRepository {
 	return &UserRepositoryImpl{Conn: conn}
 }
 
-// NewDB DBと接続する
-func NewDB() *gorm.DB {
-	//todo: 環境変数化
-	// err := godotenv.Load()
-	// if err != nil {
-	// 	fmt.Printf("読み込み出来ませんでした: %v", err)
-	// }
-	// USER := os.Getenv("DB_USER")
-	// PASS := os.Getenv("DB_PASS")
-	// PROTOCOL := "tcp(" + os.Getenv("DB_ADDRESS") + ")"
-	// DB_NAME := os.Getenv("DB_NAME")
-	// CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DB_NAME
-	// db, err := gorm.Open("mysql", CONNECT)
-	// if err != nil {
-	// 	panic(err)
-	// }
-	db, err := gorm.Open("mysql", "ddd_menta:ddd_menta@tcp(localhost)/ddd_menta?parseTime=true")
-	if err != nil {
-		panic(err)
-	}
-
-	return db
-}
-
 // todo:gormのスライスによるinsertは以下のエラー発生 要調査
 // エラー：reflect: call of reflect.Value.Interface on zero Value
 func (ur *UserRepositoryImpl) Create(user *userdm.User) (*userdm.User, error) {
@@ -62,9 +38,8 @@ func (ur *UserRepositoryImpl) Create(user *userdm.User) (*userdm.User, error) {
 	u.UserCareers = user.UserCareers()
 	u.UserSkills = user.UserSkills()
 
-	tx := ur.Conn.Begin()
 	// User登録
-	if err := tx.Create(&u).Error; err != nil {
+	if err := ur.Conn.Create(&u).Error; err != nil {
 		return nil, err
 	}
 	// UserCareer登録
@@ -77,8 +52,7 @@ func (ur *UserRepositoryImpl) Create(user *userdm.User) (*userdm.User, error) {
 			Detail:       u.UserCareers[i].Detail(),
 			CreatedAt:    u.UserCareers[i].CreatedAt(),
 		}
-		if err := tx.Create(&userCareer).Error; err != nil {
-			tx.Rollback()
+		if err := ur.Conn.Create(&userCareer).Error; err != nil {
 			return nil, err
 		}
 	}
@@ -92,12 +66,10 @@ func (ur *UserRepositoryImpl) Create(user *userdm.User) (*userdm.User, error) {
 			ExperienceYears: userdm.ExperienceYears.Uint16(u.UserSkills[i].ExperienceYears()),
 			CreatedAt:       u.UserSkills[i].CreatedAt(),
 		}
-		if err := tx.Create(&userSkill).Error; err != nil {
-			tx.Rollback()
+		if err := ur.Conn.Create(&userSkill).Error; err != nil {
 			return nil, err
 		}
 	}
-	tx.Commit()
 	return user, nil
 }
 
