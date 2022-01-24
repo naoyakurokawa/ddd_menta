@@ -38,11 +38,7 @@ func DBMiddlewareFunc(db *gorm.DB) echo.MiddlewareFunc {
 }
 
 func isTransactionMethod(method string) bool {
-	if method == http.MethodPost ||
+	return method == http.MethodPost ||
 		method == http.MethodPut ||
-		method == http.MethodDelete {
-		return true
-	}
-
-	return false
+		method == http.MethodDelete
 }

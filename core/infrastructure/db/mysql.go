@@ -7,6 +7,12 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+var (
+	once sync.Once
+	db   *gorm.DB
+	err  error
+)
+
 // NewDB DBと接続する
 func NewDB() *gorm.DB {
 	//todo: 環境変数化
@@ -23,11 +29,7 @@ func NewDB() *gorm.DB {
 	// if err != nil {
 	// 	panic(err)
 	// }
-	var (
-		once sync.Once
-		db   *gorm.DB
-		err  error
-	)
+
 	once.Do(func() {
 		db, err = gorm.Open("mysql", "ddd_menta:ddd_menta@tcp(localhost)/ddd_menta?parseTime=true")
 		if err != nil {
