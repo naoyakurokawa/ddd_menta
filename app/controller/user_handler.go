@@ -5,6 +5,7 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
+	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/db"
 	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/repoimpl"
 	"github.com/naoyakurokawa/ddd_menta/core/usecase/useruc"
 )
@@ -33,9 +34,10 @@ type requestUser struct {
 
 // Create userを保存するときのハンドラー
 func UserCreate() echo.HandlerFunc {
-	userRepository := repoimpl.NewUserRepositoryImpl(repoimpl.NewDB())
-	userCreateUsecase := useruc.NewUserCreateUsecase(userRepository)
 	return func(c echo.Context) error {
+		conn := db.NewDB()
+		userRepository := repoimpl.NewUserRepositoryImpl(conn)
+		userCreateUsecase := useruc.NewUserCreateUsecase(userRepository)
 		type responseUser struct {
 			userID userdm.UserID
 		}
