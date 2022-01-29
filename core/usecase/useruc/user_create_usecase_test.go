@@ -20,6 +20,9 @@ func TestCreate(t *testing.T) {
 	from := []string{"2013-06-02 15:04:05", "2013-06-02 15:04:05"}
 	to := []string{"2013-06-02 15:04:05", "2013-06-02 15:04:05"}
 	detail := []string{"PHPエンジニア", "Goエンジニア"}
+	tag := []string{"Golang"}
+	assessment := []string{"5"}
+	experienceYears := []string{"5"}
 
 	userID, err := userdm.NewUserID()
 	if err != nil {
@@ -46,11 +49,29 @@ func TestCreate(t *testing.T) {
 	userCareers[0] = *userCareer1
 	userCareers[1] = *userCareer2
 
+	userSkills := make([]userdm.UserSkill, 1)
+	userSkillID, err := userdm.NewUserSkillID()
+	if err != nil {
+		t.Errorf("failed to NewUserSkillID: %v", err)
+		return
+	}
+	experienceYearsIns, err := userdm.NewExperienceYears(1)
+	if err != nil {
+		t.Errorf("failed to NewExperienceYears: %v", err)
+		return
+	}
+	userSkill, err := userdm.NewUserSkill(userSkillID, userID, "Golang", 5, experienceYearsIns)
+	if err != nil {
+		t.Errorf("failed to NewUserSkill: %v", err)
+		return
+	}
+	userSkills[0] = *userSkill
+
 	emailIns, err := userdm.NewEmail(email)
 	if err != nil {
 		t.Errorf("failed to NewEmail: %v", err)
 	}
-	user, err := userdm.NewUser(userID, name, emailIns, password, profile, userCareers)
+	user, err := userdm.NewUser(userID, name, emailIns, password, profile, userCareers, userSkills)
 	if err != nil {
 		t.Errorf("failed to NewUser: %v", err)
 	}
@@ -60,7 +81,7 @@ func TestCreate(t *testing.T) {
 	mockUserRepository := mock.NewMockUserRepository(ctrl)
 	mockUserRepository.EXPECT().Create(gomock.Any()).Return(user, nil)
 	userusecase := useruc.NewUserCreateUsecase(mockUserRepository)
-	_, err = userusecase.Create(name, email, password, profile, from, to, detail)
+	_, err = userusecase.Create(name, email, password, profile, from, to, detail, tag, assessment, experienceYears)
 
 	if err != nil {
 		t.Errorf("failed to userRepository.Create: %v", err)
