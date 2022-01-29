@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
+	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/db"
 )
 
 func TestUserRepo_Create(t *testing.T) {
@@ -43,19 +44,37 @@ func TestUserRepo_Create(t *testing.T) {
 	userCareers[0] = *userCareer1
 	userCareers[1] = *userCareer2
 
+	userSkills := make([]userdm.UserSkill, 1)
+	userSkillID, err := userdm.NewUserSkillID()
+	if err != nil {
+		t.Errorf("failed to NewUserSkillID: %v", err)
+		return
+	}
+	experienceYears, err := userdm.NewExperienceYears(1)
+	if err != nil {
+		t.Errorf("failed to NewExperienceYears: %v", err)
+		return
+	}
+	userSkill, err := userdm.NewUserSkill(userSkillID, userID, "Golang", 5, experienceYears)
+	if err != nil {
+		t.Errorf("failed to NewUserSkill: %v", err)
+		return
+	}
+	userSkills[0] = *userSkill
+
 	emailIns, err := userdm.NewEmail(email)
 	if err != nil {
 		t.Errorf("failed to NewEmail: %v", err)
 		return
 	}
 
-	user, err := userdm.NewUser(userID, name, emailIns, password, profile, userCareers)
+	user, err := userdm.NewUser(userID, name, emailIns, password, profile, userCareers, userSkills)
 	if err != nil {
 		t.Errorf("failed to NewUser: %v", err)
 		return
 	}
 
-	userRepository := NewUserRepositoryImpl(NewDB())
+	userRepository := NewUserRepositoryImpl(db.NewDB())
 	createdUser, err := userRepository.Create(user)
 	if err != nil {
 		t.Errorf("failed to userRepository.Create: %v", err)
