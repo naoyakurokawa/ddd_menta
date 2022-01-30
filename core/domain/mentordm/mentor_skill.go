@@ -2,9 +2,9 @@ package mentordm
 
 import (
 	"strconv"
-	"time"
 	"unicode/utf8"
 
+	"github.com/naoyakurokawa/ddd_menta/core/domain/shared"
 	"golang.org/x/xerrors"
 )
 
@@ -13,7 +13,7 @@ type MentorSkill struct {
 	tag             string
 	assessment      uint16
 	experienceYears ExperienceYears
-	createdAt       time.Time
+	createdAt       shared.CreatedAt
 }
 
 const (
@@ -39,14 +39,12 @@ func newMentorSkill(
 		return nil, xerrors.Errorf("assessment must between %d and %d", assessmentMinNum, assessmentMaxNum)
 	}
 
-	now := time.Now()
-
 	mentorSkill := &MentorSkill{
 		mentorSkillID:   mentorSkillID,
 		tag:             tag,
 		assessment:      assessment,
 		experienceYears: experienceYears,
-		createdAt:       now,
+		createdAt:       shared.GetCurrentTime(),
 	}
 
 	return mentorSkill, nil
@@ -68,7 +66,7 @@ func (u *MentorSkill) ExperienceYears() ExperienceYears {
 	return u.experienceYears
 }
 
-func (u *MentorSkill) CreatedAt() time.Time {
+func (u *MentorSkill) CreatedAt() shared.CreatedAt {
 	return u.createdAt
 }
 

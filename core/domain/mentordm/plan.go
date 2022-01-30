@@ -1,9 +1,9 @@
 package mentordm
 
 import (
-	"time"
 	"unicode/utf8"
 
+	"github.com/naoyakurokawa/ddd_menta/core/domain/shared"
 	"golang.org/x/xerrors"
 )
 
@@ -16,7 +16,7 @@ type Plan struct {
 	planType   PlanType
 	price      uint16
 	planStatus PlanStatus
-	createdAt  time.Time
+	createdAt  shared.CreatedAt
 }
 
 const planTitleMaxLength = 255
@@ -46,8 +46,6 @@ func newPlan(
 		return nil, xerrors.Errorf("detial must less than %d: %s", planDetialMaxLength, detial)
 	}
 
-	now := time.Now()
-
 	plan := &Plan{
 		planID:     planID,
 		title:      title,
@@ -57,7 +55,7 @@ func newPlan(
 		planType:   planType,
 		price:      price,
 		planStatus: planStatus,
-		createdAt:  now,
+		createdAt:  shared.GetCurrentTime(),
 	}
 
 	return plan, nil
