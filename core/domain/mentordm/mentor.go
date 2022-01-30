@@ -150,6 +150,6 @@ func (m *Mentor) AddPlan(
 		}
 		plans[i] = *plan
 	}
-	mentor := &Mentor{plans: plans}
-	return mentor, nil
+	m.plans = plans
+	return m, nil
 }
