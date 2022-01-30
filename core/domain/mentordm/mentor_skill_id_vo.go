@@ -6,7 +6,7 @@ import (
 
 type MentorSkillID string
 
-func NewMentorSkillID() (MentorSkillID, error) {
+func newMentorSkillID() (MentorSkillID, error) {
 	u, err := uuid.NewRandom()
 	if err != nil {
 		return MentorSkillID(""), err

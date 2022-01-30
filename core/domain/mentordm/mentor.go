@@ -17,8 +17,8 @@ type Mentor struct {
 	category     string
 	detial       string
 	createdAt    time.Time
-	plans        []Plan
 	mentorSkills []MentorSkill
+	plans        []Plan
 }
 
 const titleMaxLength = 255
@@ -32,8 +32,9 @@ func NewMentor(
 	subImg string,
 	category string,
 	detial string,
-	plans []Plan,
-	mentorSkills []MentorSkill,
+	tag []string,
+	assessment []uint16,
+	experienceYears []uint16,
 ) (*Mentor, error) {
 	//入力データチェック
 	if utf8.RuneCountInString(title) > titleMaxLength {
@@ -51,6 +52,29 @@ func NewMentor(
 
 	now := time.Now()
 
+	// メンタースキル
+	mentorSkills := make([]MentorSkill, len(tag))
+	for i := 0; i < len(tag); i++ {
+		mentorSkillID, err := newMentorSkillID()
+		if err != nil {
+			return nil, xerrors.New("error newMentorSkillID")
+		}
+		experienceYearsIns, err := newExperienceYears(experienceYears[i])
+		if err != nil {
+			return nil, xerrors.New("error newExperienceYears")
+		}
+		mentorSkill, err := newMentorSkill(
+			mentorSkillID,
+			tag[i],
+			assessment[i],
+			experienceYearsIns,
+		)
+		if err != nil {
+			return nil, xerrors.New("error newMentorSkill")
+		}
+		mentorSkills[i] = *mentorSkill
+	}
+
 	mentor := &Mentor{
 		userID:       userID,
 		mentorID:     mentorID,
@@ -59,9 +83,8 @@ func NewMentor(
 		subImg:       subImg,
 		category:     category,
 		detial:       detial,
-		plans:        plans,
-		mentorSkills: mentorSkills,
 		createdAt:    now,
+		mentorSkills: mentorSkills,
 	}
 
 	return mentor, nil
@@ -91,39 +114,44 @@ func (m *Mentor) Detail() string {
 	return m.detial
 }
 
-func (m *Mentor) NewPlan(
-	title string,
-	category string,
-	tag string,
-	detial string,
-	planType uint16,
-	price uint16,
-	planStatus uint16,
-) (*Plan, error) {
-	planID, err := newPlanID()
-	if err != nil {
-		return nil, err
+func (m *Mentor) AddPlan(
+	title []string,
+	category []string,
+	tag []string,
+	detial []string,
+	planType []uint16,
+	price []uint16,
+	planStatus []uint16,
+) (*Mentor, error) {
+	plans := make([]Plan, len(title))
+	for i := 0; i < len(title); i++ {
+		planID, err := newPlanID()
+		if err != nil {
+			return nil, xerrors.New("error newPlanID")
+		}
+		planType, err := newPlanType(planType[i])
+		if err != nil {
+			return nil, xerrors.New("error newPlanType")
+		}
+		planStatus, err := newPlanStatus(planStatus[i])
+		if err != nil {
+			return nil, xerrors.New("error newPlanStatus")
+		}
+		plan, err := newPlan(
+			planID,
+			title[i],
+			category[i],
+			tag[i],
+			detial[i],
+			planType,
+			price[i],
+			planStatus,
+		)
+		if err != nil {
+			return nil, xerrors.New("error newPlan")
+		}
+		plans[i] = *plan
 	}
-
-	planTypeIns, err := newPlanType(planType)
-	if err != nil {
-		return nil, err
-	}
-
-	planStatusIns, err := newPlanStatus(planStatus)
-	if err != nil {
-		return nil, err
-	}
-
-	plan, err := newPlan(
-		planID,
-		title,
-		category,
-		tag,
-		detial,
-		planTypeIns,
-		price,
-		planStatusIns,
-	)
-	return plan, nil
+	mentor := &Mentor{plans: plans}
+	return mentor, nil
 }
