@@ -36,12 +36,6 @@ func NewMentor(
 	mentorSkills []MentorSkill,
 ) (*Mentor, error) {
 	//入力データチェック
-	if len(userID) == 0 {
-		return nil, xerrors.New("userID must not be empty")
-	}
-	if len(mentorID) == 0 {
-		return nil, xerrors.New("mentorID must not be empty")
-	}
 	if utf8.RuneCountInString(title) > titleMaxLength {
 		return nil, xerrors.Errorf("title must less than %d: %s", titleMaxLength, title)
 	}
@@ -95,4 +89,41 @@ func (m *Mentor) Category() string {
 
 func (m *Mentor) Detail() string {
 	return m.detial
+}
+
+func (m *Mentor) NewPlan(
+	title string,
+	category string,
+	tag string,
+	detial string,
+	planType uint16,
+	price uint16,
+	planStatus uint16,
+) (*Plan, error) {
+	planID, err := newPlanID()
+	if err != nil {
+		return nil, err
+	}
+
+	planTypeIns, err := newPlanType(planType)
+	if err != nil {
+		return nil, err
+	}
+
+	planStatusIns, err := newPlanStatus(planStatus)
+	if err != nil {
+		return nil, err
+	}
+
+	plan, err := newPlan(
+		planID,
+		title,
+		category,
+		tag,
+		detial,
+		planTypeIns,
+		price,
+		planStatusIns,
+	)
+	return plan, nil
 }

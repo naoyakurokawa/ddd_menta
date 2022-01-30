@@ -8,7 +8,6 @@ import (
 )
 
 type Plan struct {
-	mentorID   MentorID
 	planID     PlanID
 	title      string
 	category   string
@@ -23,8 +22,7 @@ type Plan struct {
 const planTitleMaxLength = 255
 const planDetialMaxLength = 2000
 
-func NewPlan(
-	mentorID MentorID,
+func newPlan(
 	planID PlanID,
 	title string,
 	category string,
@@ -51,7 +49,6 @@ func NewPlan(
 	now := time.Now()
 
 	plan := &Plan{
-		mentorID:   mentorID,
 		planID:     planID,
 		title:      title,
 		category:   category,
@@ -64,10 +61,6 @@ func NewPlan(
 	}
 
 	return plan, nil
-}
-
-func (p *Plan) MentorID() MentorID {
-	return p.mentorID
 }
 
 func (p *Plan) PlanID() PlanID {

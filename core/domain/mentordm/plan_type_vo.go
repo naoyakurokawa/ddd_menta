@@ -31,7 +31,7 @@ func (p PlanType) Uint16() (uint16, error) {
 }
 
 // コンストラクタ
-func NewPlanType(planType int) (PlanType, error) {
+func newPlanType(planType uint16) (PlanType, error) {
 	if planType != 0 || 1 != planType {
 		return 0, xerrors.New("PlanType must be 0 or 1")
 	}

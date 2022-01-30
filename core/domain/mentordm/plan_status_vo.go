@@ -33,7 +33,7 @@ func (p PlanStatus) Uint16() (uint16, error) {
 }
 
 // コンストラクタ
-func NewPlanStatus(planStatus int) (PlanStatus, error) {
+func newPlanStatus(planStatus uint16) (PlanStatus, error) {
 	if planStatus != 0 || planStatus != 1 || planStatus != 2 {
 		return 0, xerrors.New("PlanStatus must be 0 or 1 or 2")
 	}

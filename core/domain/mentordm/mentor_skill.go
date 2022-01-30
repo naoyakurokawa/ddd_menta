@@ -9,7 +9,6 @@ import (
 )
 
 type MentorSkill struct {
-	mentorID        MentorID
 	mentorSkillID   MentorSkillID
 	tag             string
 	assessment      uint16
@@ -23,9 +22,7 @@ const (
 	assessmentMaxNum = 5
 )
 
-// NewUserSkill userSkillのコンストラクタ
-func NewUserSkill(
-	mentorID MentorID,
+func newMentorSkill(
 	mentorSkillID MentorSkillID,
 	tag string,
 	assessment uint16,
@@ -45,7 +42,6 @@ func NewUserSkill(
 	now := time.Now()
 
 	mentorSkill := &MentorSkill{
-		mentorID:        mentorID,
 		mentorSkillID:   mentorSkillID,
 		tag:             tag,
 		assessment:      assessment,
@@ -54,10 +50,6 @@ func NewUserSkill(
 	}
 
 	return mentorSkill, nil
-}
-
-func (m *MentorSkill) MentorID() MentorID {
-	return m.mentorID
 }
 
 func (m *MentorSkill) UserSkillID() MentorSkillID {

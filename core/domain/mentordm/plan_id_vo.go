@@ -6,7 +6,7 @@ import (
 
 type PlanID string
 
-func NewPlanID() (PlanID, error) {
+func newPlanID() (PlanID, error) {
 	u, err := uuid.NewRandom()
 	if err != nil {
 		return PlanID(""), err

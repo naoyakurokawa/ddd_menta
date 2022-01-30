@@ -7,7 +7,7 @@ import (
 type ExperienceYears uint16
 
 const (
-	HalfYear ExperienceYears = iota
+	HalfYear ExperienceYears = iota + 1
 	LessThanYear
 	LessThanThreeYears
 	LessThanFiveYears
