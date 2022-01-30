@@ -1,9 +1,9 @@
 package mentordm
 
 import (
-	"time"
 	"unicode/utf8"
 
+	"github.com/naoyakurokawa/ddd_menta/core/domain/shared"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
 	"golang.org/x/xerrors"
 )
@@ -16,7 +16,7 @@ type Mentor struct {
 	subImg       string
 	category     string
 	detial       string
-	createdAt    time.Time
+	createdAt    shared.CreatedAt
 	mentorSkills []MentorSkill
 	plans        []Plan
 }
@@ -50,8 +50,6 @@ func NewMentor(
 		return nil, xerrors.Errorf("detial must less than %d: %s", detialMaxLength, detial)
 	}
 
-	now := time.Now()
-
 	// メンタースキル
 	mentorSkills := make([]MentorSkill, len(tag))
 	for i := 0; i < len(tag); i++ {
@@ -83,7 +81,7 @@ func NewMentor(
 		subImg:       subImg,
 		category:     category,
 		detial:       detial,
-		createdAt:    now,
+		createdAt:    shared.GetCurrentTime(),
 		mentorSkills: mentorSkills,
 	}
 
