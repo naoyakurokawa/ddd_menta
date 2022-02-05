@@ -3,7 +3,7 @@ package mentordm
 import (
 	"unicode/utf8"
 
-	"github.com/naoyakurokawa/ddd_menta/core/domain/shared"
+	"github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
 	"golang.org/x/xerrors"
 )
 
@@ -16,13 +16,13 @@ type Plan struct {
 	planType   PlanType
 	price      uint16
 	planStatus PlanStatus
-	createdAt  shared.CreatedAt
+	createdAt  sharedvo.CreatedAt
 }
 
 const planTitleMaxLength = 255
 const planDetialMaxLength = 2000
 
-func newPlan(
+func NewPlan(
 	planID PlanID,
 	title string,
 	category string,
@@ -55,7 +55,7 @@ func newPlan(
 		planType:   planType,
 		price:      price,
 		planStatus: planStatus,
-		createdAt:  shared.GetCurrentTime(),
+		createdAt:  sharedvo.NewCreatedAt(),
 	}
 
 	return plan, nil

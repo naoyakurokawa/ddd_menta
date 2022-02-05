@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"unicode/utf8"
 
-	"github.com/naoyakurokawa/ddd_menta/core/domain/shared"
+	"github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
 	"golang.org/x/xerrors"
 )
 
@@ -13,7 +13,7 @@ type MentorSkill struct {
 	tag             string
 	assessment      uint16
 	experienceYears ExperienceYears
-	createdAt       shared.CreatedAt
+	createdAt       sharedvo.CreatedAt
 }
 
 const (
@@ -22,7 +22,7 @@ const (
 	assessmentMaxNum = 5
 )
 
-func newMentorSkill(
+func NewMentorSkill(
 	mentorSkillID MentorSkillID,
 	tag string,
 	assessment uint16,
@@ -44,7 +44,7 @@ func newMentorSkill(
 		tag:             tag,
 		assessment:      assessment,
 		experienceYears: experienceYears,
-		createdAt:       shared.GetCurrentTime(),
+		createdAt:       sharedvo.NewCreatedAt(),
 	}
 
 	return mentorSkill, nil
@@ -66,7 +66,7 @@ func (u *MentorSkill) ExperienceYears() ExperienceYears {
 	return u.experienceYears
 }
 
-func (u *MentorSkill) CreatedAt() shared.CreatedAt {
+func (u *MentorSkill) CreatedAt() sharedvo.CreatedAt {
 	return u.createdAt
 }
 

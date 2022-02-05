@@ -5,7 +5,7 @@ import "golang.org/x/xerrors"
 type PlanType uint16
 
 const (
-	Once PlanType = iota
+	Once PlanType = iota + 1
 	Subscription
 )
 

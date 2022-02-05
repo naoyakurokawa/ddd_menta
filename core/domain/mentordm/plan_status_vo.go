@@ -5,7 +5,7 @@ import "golang.org/x/xerrors"
 type PlanStatus uint16
 
 const (
-	Active PlanStatus = iota
+	Active PlanStatus = iota + 1
 	Busy
 	Close
 )

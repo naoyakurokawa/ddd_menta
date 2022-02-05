@@ -3,7 +3,7 @@ package mentordm
 import (
 	"unicode/utf8"
 
-	"github.com/naoyakurokawa/ddd_menta/core/domain/shared"
+	"github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
 	"golang.org/x/xerrors"
 )
@@ -16,7 +16,7 @@ type Mentor struct {
 	subImg       string
 	category     string
 	detial       string
-	createdAt    shared.CreatedAt
+	createdAt    sharedvo.CreatedAt
 	mentorSkills []MentorSkill
 	plans        []Plan
 }
@@ -32,9 +32,6 @@ func NewMentor(
 	subImg string,
 	category string,
 	detial string,
-	tag []string,
-	assessment []uint16,
-	experienceYears []uint16,
 ) (*Mentor, error) {
 	//入力データチェック
 	if utf8.RuneCountInString(title) > titleMaxLength {
@@ -50,39 +47,15 @@ func NewMentor(
 		return nil, xerrors.Errorf("detial must less than %d: %s", detialMaxLength, detial)
 	}
 
-	// メンタースキル
-	mentorSkills := make([]MentorSkill, len(tag))
-	for i := 0; i < len(tag); i++ {
-		mentorSkillID, err := newMentorSkillID()
-		if err != nil {
-			return nil, xerrors.New("error newMentorSkillID")
-		}
-		experienceYearsIns, err := newExperienceYears(experienceYears[i])
-		if err != nil {
-			return nil, xerrors.New("error newExperienceYears")
-		}
-		mentorSkill, err := newMentorSkill(
-			mentorSkillID,
-			tag[i],
-			assessment[i],
-			experienceYearsIns,
-		)
-		if err != nil {
-			return nil, xerrors.New("error newMentorSkill")
-		}
-		mentorSkills[i] = *mentorSkill
-	}
-
 	mentor := &Mentor{
-		userID:       userID,
-		mentorID:     mentorID,
-		title:        title,
-		mainImg:      mainImg,
-		subImg:       subImg,
-		category:     category,
-		detial:       detial,
-		createdAt:    shared.GetCurrentTime(),
-		mentorSkills: mentorSkills,
+		userID:    userID,
+		mentorID:  mentorID,
+		title:     title,
+		mainImg:   mainImg,
+		subImg:    subImg,
+		category:  category,
+		detial:    detial,
+		createdAt: sharedvo.NewCreatedAt(),
 	}
 
 	return mentor, nil
@@ -110,46 +83,4 @@ func (m *Mentor) Category() string {
 
 func (m *Mentor) Detail() string {
 	return m.detial
-}
-
-func (m *Mentor) AddPlan(
-	title []string,
-	category []string,
-	tag []string,
-	detial []string,
-	planType []uint16,
-	price []uint16,
-	planStatus []uint16,
-) (*Mentor, error) {
-	plans := make([]Plan, len(title))
-	for i := 0; i < len(title); i++ {
-		planID, err := newPlanID()
-		if err != nil {
-			return nil, xerrors.New("error newPlanID")
-		}
-		planType, err := newPlanType(planType[i])
-		if err != nil {
-			return nil, xerrors.New("error newPlanType")
-		}
-		planStatus, err := newPlanStatus(planStatus[i])
-		if err != nil {
-			return nil, xerrors.New("error newPlanStatus")
-		}
-		plan, err := newPlan(
-			planID,
-			title[i],
-			category[i],
-			tag[i],
-			detial[i],
-			planType,
-			price[i],
-			planStatus,
-		)
-		if err != nil {
-			return nil, xerrors.New("error newPlan")
-		}
-		plans[i] = *plan
-	}
-	m.plans = plans
-	return m, nil
 }

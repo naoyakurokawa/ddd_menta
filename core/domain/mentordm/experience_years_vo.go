@@ -38,7 +38,7 @@ const (
 )
 
 // コンストラクタ
-func newExperienceYears(experienceYears uint16) (ExperienceYears, error) {
+func NewExperienceYears(experienceYears uint16) (ExperienceYears, error) {
 	if experienceYears < experienceYearsMinNum || experienceYearsMaxNum < experienceYears {
 		return 0, xerrors.Errorf("experienceYears must be between %d and %d", experienceYearsMinNum, experienceYearsMaxNum)
 	}

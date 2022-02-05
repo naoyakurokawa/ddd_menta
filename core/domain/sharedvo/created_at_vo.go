@@ -1,10 +1,10 @@
-package shared
+package sharedvo
 
 import "time"
 
 type CreatedAt time.Time
 
-func GetCurrentTime() CreatedAt {
+func NewCreatedAt() CreatedAt {
 	now := time.Now()
 	return CreatedAt(now)
 }
