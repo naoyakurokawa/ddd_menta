@@ -1,5 +1,20 @@
 package mentordm
 
-import "github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
+import (
+	"github.com/google/uuid"
+	"github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
+)
 
 type MentorSkillID sharedvo.ID
+
+func NewMentorSkillID() MentorSkillID {
+	return MentorSkillID(uuid.New().String())
+}
+
+func NewMentorSkillIDByVal(id string) MentorSkillID {
+	return MentorSkillID(id)
+}
+
+func NewEmptyMentorSkillID() MentorSkillID {
+	return MentorSkillID("")
+}
