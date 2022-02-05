@@ -17,23 +17,22 @@ func (p PlanType) Names() []string {
 }
 
 func (p PlanType) String() (string, error) {
-	if p != Once || Subscription != p {
-		return "", xerrors.New("PlanType must be 0 or 1")
+	if p != Once && Subscription != p {
+		return "", xerrors.New("PlanType must be 1 or 2")
 	}
-	return p.Names()[p], nil
+	return p.Names()[p-1], nil
 }
 
 func (p PlanType) Uint16() (uint16, error) {
-	if p != Once || Subscription != p {
-		return 0, xerrors.New("PlanType must be 0 or 1")
+	if p != Once && Subscription != p {
+		return 0, xerrors.New("PlanType must be 1 or 2")
 	}
 	return uint16(p), nil
 }
 
-// コンストラクタ
-func newPlanType(planType uint16) (PlanType, error) {
-	if planType != 0 || 1 != planType {
-		return 0, xerrors.New("PlanType must be 0 or 1")
+func NewPlanType(planType uint16) (PlanType, error) {
+	if planType != 1 && 2 != planType {
+		return 0, xerrors.New("PlanType must be 1 or 2")
 	}
 	return PlanType(planType), nil
 }
