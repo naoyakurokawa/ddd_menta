@@ -25,7 +25,7 @@ func (e ExperienceYears) Names() []string {
 }
 
 func (e ExperienceYears) String() string {
-	return e.Names()[e]
+	return e.Names()[e-1]
 }
 
 func (e ExperienceYears) Uint16() uint16 {
@@ -37,7 +37,6 @@ const (
 	experienceYearsMaxNum = 5
 )
 
-// コンストラクタ
 func NewExperienceYears(experienceYears uint16) (ExperienceYears, error) {
 	if experienceYears < experienceYearsMinNum || experienceYearsMaxNum < experienceYears {
 		return 0, xerrors.Errorf("experienceYears must be between %d and %d", experienceYearsMinNum, experienceYearsMaxNum)

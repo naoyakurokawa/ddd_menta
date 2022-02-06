@@ -81,6 +81,76 @@ func (m *Mentor) Category() string {
 	return m.category
 }
 
-func (m *Mentor) Detail() string {
-	return m.detial
+func (m *Mentor) MentorSkills() []MentorSkill {
+	return m.mentorSkills
+}
+
+func (m *Mentor) Plans() []Plan {
+	return m.plans
+}
+
+func (m *Mentor) AddMentorSkill(
+	tag []string,
+	assessment []uint16,
+	experienceYears []uint16,
+) (*Mentor, error) {
+	mentorSkills := make([]MentorSkill, len(tag))
+	for i := 0; i < len(tag); i++ {
+		mentorSkillID := NewMentorSkillID()
+		experienceYears, err := NewExperienceYears(experienceYears[i])
+		if err != nil {
+			return nil, xerrors.New("error NewExperienceYears")
+		}
+		mentorSkill, err := NewMentorSkill(
+			mentorSkillID,
+			tag[i],
+			assessment[i],
+			experienceYears,
+		)
+		if err != nil {
+			return nil, xerrors.New("error NewMentorSkill")
+		}
+		mentorSkills[i] = *mentorSkill
+	}
+	m.mentorSkills = mentorSkills
+	return m, nil
+}
+
+func (m *Mentor) AddPlan(
+	title []string,
+	category []string,
+	tag []string,
+	detial []string,
+	planType []uint16,
+	price []uint16,
+	planStatus []uint16,
+) (*Mentor, error) {
+	plans := make([]Plan, len(title))
+	for i := 0; i < len(title); i++ {
+		planID := NewPlanID()
+		planType, err := NewPlanType(planType[i])
+		if err != nil {
+			return nil, xerrors.New("error newPlanType")
+		}
+		planStatus, err := NewPlanStatus(planStatus[i])
+		if err != nil {
+			return nil, xerrors.New("error newPlanStatus")
+		}
+		plan, err := NewPlan(
+			planID,
+			title[i],
+			category[i],
+			tag[i],
+			detial[i],
+			planType,
+			price[i],
+			planStatus,
+		)
+		if err != nil {
+			return nil, xerrors.New("error newPlan")
+		}
+		plans[i] = *plan
+	}
+	m.plans = plans
+	return m, nil
 }
