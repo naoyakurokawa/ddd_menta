@@ -82,9 +82,9 @@ func TestAddMentorSkill(t *testing.T) {
 		m, _ := NewMentor(userID, mentorID, title, mainImg, subImg, category, detial)
 
 		// メンタースキル追加実行
-		tag := []string{"Golang"}
-		assessment := []uint16{5}
-		experienceYears := []uint16{5}
+		tag := "Golang"
+		assessment := uint16(5)
+		experienceYears := uint16(5)
 		actual, err := m.AddMentorSkill(tag, assessment, experienceYears)
 		if err != nil {
 			t.Errorf("failed to AddMentorSkill")
@@ -127,13 +127,13 @@ func TestAddPlan(t *testing.T) {
 		m, _ := NewMentor(userID, mentorID, title, mainImg, subImg, category, detial)
 
 		// プラン追加実行
-		planTitle := []string{"DDDのメンタリング"}
-		planCategory := []string{"設計"}
-		tag := []string{"DDD"}
-		detail := []string{"DDDの設計手法を学べます"}
-		planType := []uint16{2}
-		price := []uint16{1000}
-		planStatus := []uint16{1}
+		planTitle := "DDDのメンタリング"
+		planCategory := "設計"
+		tag := "DDD"
+		detail := "DDDの設計手法を学べます"
+		planType, _ := NewPlanType(uint16(2))
+		price := uint16(1000)
+		planStatus, _ := NewPlanStatus(uint16(1))
 		actual, err := m.AddPlan(planTitle, planCategory, tag, detail, planType, price, planStatus)
 		if err != nil {
 			t.Errorf("failed to AddPlan")

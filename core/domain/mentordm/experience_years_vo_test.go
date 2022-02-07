@@ -23,53 +23,45 @@ func TestNewExperienceYears(t *testing.T) {
 }
 
 func TestStringExperienceYears(t *testing.T) {
-	t.Run("ExperienceYearsが1のとき_「半年未満」がレスポンスされること", func(t *testing.T) {
-		experienceYears, err := NewExperienceYears(1)
-		if err != nil {
-			t.Errorf("failed to newPlanStatus")
-		}
-		expected := "半年未満"
-		actual := experienceYears.String()
-		assert.Equal(t, expected, actual)
-	})
-
-	t.Run("ExperienceYearsが2のとき_「1年未満」がレスポンスされること", func(t *testing.T) {
-		experienceYears, err := NewExperienceYears(2)
-		if err != nil {
-			t.Errorf("failed to newPlanStatus")
-		}
-		expected := "1年未満"
-		actual := experienceYears.String()
-		assert.Equal(t, expected, actual)
-	})
-
-	t.Run("ExperienceYearsが3のとき_「3年未満」がレスポンスされること", func(t *testing.T) {
-		experienceYears, err := NewExperienceYears(3)
-		if err != nil {
-			t.Errorf("failed to newPlanStatus")
-		}
-		expected := "3年未満"
-		actual := experienceYears.String()
-		assert.Equal(t, expected, actual)
-	})
-
-	t.Run("ExperienceYearsが4のとき_「5年未満」がレスポンスされること", func(t *testing.T) {
-		experienceYears, err := NewExperienceYears(4)
-		if err != nil {
-			t.Errorf("failed to newPlanStatus")
-		}
-		expected := "5年未満"
-		actual := experienceYears.String()
-		assert.Equal(t, expected, actual)
-	})
-
-	t.Run("ExperienceYearsが5のとき_「5年以上」がレスポンスされること", func(t *testing.T) {
-		experienceYears, err := NewExperienceYears(5)
-		if err != nil {
-			t.Errorf("failed to newPlanStatus")
-		}
-		expected := "5年以上"
-		actual := experienceYears.String()
-		assert.Equal(t, expected, actual)
-	})
+	asserts := assert.New(t)
+	for _, td := range []struct {
+		title  string
+		input  uint16
+		output string
+	}{
+		{
+			title:  "ExperienceYearsが1のとき_「半年未満」がレスポンスされること",
+			input:  uint16(1),
+			output: "半年未満",
+		},
+		{
+			title:  "ExperienceYearsが2のとき_「1年未満」がレスポンスされること",
+			input:  uint16(2),
+			output: "1年未満",
+		},
+		{
+			title:  "ExperienceYearsが3のとき_「3年未満」がレスポンスされること",
+			input:  uint16(3),
+			output: "3年未満",
+		},
+		{
+			title:  "ExperienceYearsが4のとき_「5年未満」がレスポンスされること",
+			input:  uint16(4),
+			output: "5年未満",
+		},
+		{
+			title:  "ExperienceYearsが5のとき_「5年以上」がレスポンスされること",
+			input:  uint16(5),
+			output: "5年以上",
+		},
+	} {
+		t.Run(td.title, func(t *testing.T) {
+			experienceYears, err := NewExperienceYears(td.input)
+			if err != nil {
+				t.Errorf("failed to newPlanStatus")
+			}
+			actual := experienceYears.String()
+			asserts.Equal(td.output, actual)
+		})
+	}
 }

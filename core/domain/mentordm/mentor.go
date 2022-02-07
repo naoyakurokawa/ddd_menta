@@ -90,67 +90,53 @@ func (m *Mentor) Plans() []Plan {
 }
 
 func (m *Mentor) AddMentorSkill(
-	tag []string,
-	assessment []uint16,
-	experienceYears []uint16,
+	tag string,
+	assessment uint16,
+	experienceYears uint16,
 ) (*Mentor, error) {
-	mentorSkills := make([]MentorSkill, len(tag))
-	for i := 0; i < len(tag); i++ {
-		mentorSkillID := NewMentorSkillID()
-		experienceYears, err := NewExperienceYears(experienceYears[i])
-		if err != nil {
-			return nil, xerrors.New("error NewExperienceYears")
-		}
-		mentorSkill, err := NewMentorSkill(
-			mentorSkillID,
-			tag[i],
-			assessment[i],
-			experienceYears,
-		)
-		if err != nil {
-			return nil, xerrors.New("error NewMentorSkill")
-		}
-		mentorSkills[i] = *mentorSkill
+	mentorSkillID := NewMentorSkillID()
+	experienceYearsIns, err := NewExperienceYears(experienceYears)
+	if err != nil {
+		return nil, xerrors.New("error NewExperienceYears")
 	}
-	m.mentorSkills = mentorSkills
+	mentorSkill, err := NewMentorSkill(
+		mentorSkillID,
+		tag,
+		assessment,
+		experienceYearsIns,
+	)
+	if err != nil {
+		return nil, xerrors.New("error NewMentorSkill")
+	}
+	m.mentorSkills = append(m.mentorSkills, *mentorSkill)
+
 	return m, nil
 }
 
 func (m *Mentor) AddPlan(
-	title []string,
-	category []string,
-	tag []string,
-	detial []string,
-	planType []uint16,
-	price []uint16,
-	planStatus []uint16,
+	title string,
+	category string,
+	tag string,
+	detial string,
+	planType PlanType,
+	price uint16,
+	planStatus PlanStatus,
 ) (*Mentor, error) {
-	plans := make([]Plan, len(title))
-	for i := 0; i < len(title); i++ {
-		planID := NewPlanID()
-		planType, err := NewPlanType(planType[i])
-		if err != nil {
-			return nil, xerrors.New("error newPlanType")
-		}
-		planStatus, err := NewPlanStatus(planStatus[i])
-		if err != nil {
-			return nil, xerrors.New("error newPlanStatus")
-		}
-		plan, err := NewPlan(
-			planID,
-			title[i],
-			category[i],
-			tag[i],
-			detial[i],
-			planType,
-			price[i],
-			planStatus,
-		)
-		if err != nil {
-			return nil, xerrors.New("error newPlan")
-		}
-		plans[i] = *plan
+	planID := NewPlanID()
+	plan, err := NewPlan(
+		planID,
+		title,
+		category,
+		tag,
+		detial,
+		planType,
+		price,
+		planStatus,
+	)
+	if err != nil {
+		return nil, xerrors.New("error newPlan")
 	}
-	m.plans = plans
+	m.plans = append(m.plans, *plan)
+
 	return m, nil
 }
