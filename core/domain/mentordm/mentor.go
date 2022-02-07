@@ -92,18 +92,14 @@ func (m *Mentor) Plans() []Plan {
 func (m *Mentor) AddMentorSkill(
 	tag string,
 	assessment uint16,
-	experienceYears uint16,
+	experienceYears ExperienceYears,
 ) (*Mentor, error) {
 	mentorSkillID := NewMentorSkillID()
-	experienceYearsIns, err := NewExperienceYears(experienceYears)
-	if err != nil {
-		return nil, xerrors.New("error NewExperienceYears")
-	}
 	mentorSkill, err := NewMentorSkill(
 		mentorSkillID,
 		tag,
 		assessment,
-		experienceYearsIns,
+		experienceYears,
 	)
 	if err != nil {
 		return nil, xerrors.New("error NewMentorSkill")

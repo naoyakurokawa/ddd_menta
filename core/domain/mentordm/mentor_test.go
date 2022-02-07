@@ -84,7 +84,7 @@ func TestAddMentorSkill(t *testing.T) {
 		// メンタースキル追加実行
 		tag := "Golang"
 		assessment := uint16(5)
-		experienceYears := uint16(5)
+		experienceYears, _ := NewExperienceYears(uint16(5))
 		actual, err := m.AddMentorSkill(tag, assessment, experienceYears)
 		if err != nil {
 			t.Errorf("failed to AddMentorSkill")
