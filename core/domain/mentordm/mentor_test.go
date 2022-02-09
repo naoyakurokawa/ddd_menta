@@ -4,91 +4,58 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestNewMentor(t *testing.T) {
-	const (
-		title    = "プログラミング全般のメンタリング"
-		mainImg  = "/main.jpg"
-		subImg   = "/sub.jpg"
-		category = "プログライミング"
-		detial   = "設計・開発・テストの一覧をサポートできます"
-	)
-	userID, err := userdm.NewUserID()
-	if err != nil {
-		t.Errorf("failed to NewUserID: %v", err)
-		return
-	}
-	mentorID := NewMentorID()
 
 	t.Run("titleが空の場合_エラーとなること", func(t *testing.T) {
+		setup()
 		blankTitle := ""
-		_, err := NewMentor(userID, mentorID, blankTitle, mainImg, subImg, category, detial)
-		if err == nil {
-			t.Errorf("failed to title blank validation")
-		}
+		_, err := NewMentor(mp.userID, mp.mentorID, blankTitle, mp.mainImg, mp.subImg, mp.category, mp.detial)
+		require.Error(t, err)
 	})
 
 	t.Run("titleが255文字を超えるの場合_エラーとなること", func(t *testing.T) {
+		setup()
 		overTitle := strings.Repeat("a", 256)
-		_, err := NewMentor(userID, mentorID, overTitle, mainImg, subImg, category, detial)
-		if err == nil {
-			t.Errorf("failed to title maxlength validation: %v", overTitle)
-		}
+		_, err := NewMentor(mp.userID, mp.mentorID, overTitle, mp.mainImg, mp.subImg, mp.category, mp.detial)
+		require.Error(t, err)
 	})
 
 	t.Run("detailが空の場合_エラーとなること", func(t *testing.T) {
+		setup()
 		blankDetail := ""
-		_, err := NewMentor(userID, mentorID, title, mainImg, subImg, category, blankDetail)
-		if err == nil {
-			t.Errorf("failed to detail blank validation")
-		}
+		_, err := NewMentor(mp.userID, mp.mentorID, mp.title, mp.mainImg, mp.subImg, mp.category, blankDetail)
+		require.Error(t, err)
 	})
 
 	t.Run("detailが2000文字を超える場合_エラーとなること", func(t *testing.T) {
+		setup()
 		overDetail := strings.Repeat("a", 2001)
-		_, err := NewMentor(userID, mentorID, title, mainImg, subImg, category, overDetail)
-		if err == nil {
-			t.Errorf("failed to title maxlength validation: %v", overDetail)
-		}
+		_, err := NewMentor(mp.userID, mp.mentorID, mp.title, mp.mainImg, mp.subImg, mp.category, overDetail)
+		require.Error(t, err)
 	})
 }
 
 func TestAddMentorSkill(t *testing.T) {
 	t.Run("生成したMentorSkillがMentorに追加されていること", func(t *testing.T) {
+		setup()
+
 		// 期待値
 		expectedTag := "Golang"
 		expectedAssessment := uint16(5)
-		expectedExperienceYears, _ := NewExperienceYears(5)
-
-		// メンター作成テストデータ
-		const (
-			title    = "プログラミング全般のメンタリング"
-			mainImg  = "/main.jpg"
-			subImg   = "/sub.jpg"
-			category = "プログライミング"
-			detial   = "設計・開発・テストの一覧をサポートできます"
-		)
-		userID, err := userdm.NewUserID()
-		if err != nil {
-			t.Errorf("failed to NewUserID: %v", err)
-			return
-		}
-		mentorID := NewMentorID()
+		expectedExperienceYears, err := NewExperienceYears(5)
+		require.NoError(t, err)
 
 		// メンター作成
-		m, _ := NewMentor(userID, mentorID, title, mainImg, subImg, category, detial)
+		m, err := NewMentor(mp.userID, mp.mentorID, mp.title, mp.mainImg, mp.subImg, mp.category, mp.detial)
+		require.NoError(t, err)
 
 		// メンタースキル追加実行
-		tag := "Golang"
-		assessment := uint16(5)
-		experienceYears, _ := NewExperienceYears(uint16(5))
-		actual, err := m.AddMentorSkill(tag, assessment, experienceYears)
-		if err != nil {
-			t.Errorf("failed to AddMentorSkill")
-		}
+		actual, err := m.AddMentorSkill(mp.mentorTag, mp.mentorAssessment, mp.mentorExperienceYears)
+		require.NoError(t, err)
 
 		// 検証
 		assert.Equal(t, expectedTag, actual.MentorSkills()[0].tag)
@@ -99,45 +66,26 @@ func TestAddMentorSkill(t *testing.T) {
 
 func TestAddPlan(t *testing.T) {
 	t.Run("生成したPlanがMentorに追加されていること", func(t *testing.T) {
+		setup()
+
 		// 期待値
 		expectedTitle := "DDDのメンタリング"
 		expectedCategory := "設計"
 		expectedTag := "DDD"
 		expectedDetial := "DDDの設計手法を学べます"
-		expectedPlanType, _ := NewPlanType(2)
+		expectedPlanType, err := NewPlanType(2)
+		require.NoError(t, err)
 		expectedPrice := uint16(1000)
-		expectedPlanStatus, _ := NewPlanStatus(1)
-
-		// メンター作成テストデータ
-		const (
-			title    = "プログラミング全般のメンタリング"
-			mainImg  = "/main.jpg"
-			subImg   = "/sub.jpg"
-			category = "プログライミング"
-			detial   = "設計・開発・テストの一覧をサポートできます"
-		)
-		userID, err := userdm.NewUserID()
-		if err != nil {
-			t.Errorf("failed to NewUserID: %v", err)
-			return
-		}
-		mentorID := NewMentorID()
+		expectedPlanStatus, err := NewPlanStatus(1)
+		require.NoError(t, err)
 
 		// メンター作成
-		m, _ := NewMentor(userID, mentorID, title, mainImg, subImg, category, detial)
+		m, err := NewMentor(mp.userID, mp.mentorID, mp.title, mp.mainImg, mp.subImg, mp.category, mp.detial)
+		require.NoError(t, err)
 
 		// プラン追加実行
-		planTitle := "DDDのメンタリング"
-		planCategory := "設計"
-		tag := "DDD"
-		detail := "DDDの設計手法を学べます"
-		planType, _ := NewPlanType(uint16(2))
-		price := uint16(1000)
-		planStatus, _ := NewPlanStatus(uint16(1))
-		actual, err := m.AddPlan(planTitle, planCategory, tag, detail, planType, price, planStatus)
-		if err != nil {
-			t.Errorf("failed to AddPlan")
-		}
+		actual, err := m.AddPlan(mp.planTitle, mp.planCategory, mp.planTag, mp.planDetial, mp.planType, mp.planPrice, mp.planStatus)
+		require.NoError(t, err)
 
 		// 検証
 		assert.Equal(t, expectedTitle, actual.Plans()[0].title)
