@@ -1,14 +1,13 @@
 package mentordm
 
 import (
-	"github.com/google/uuid"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
 )
 
 type MentorID sharedvo.ID
 
 func NewMentorID() MentorID {
-	return MentorID(uuid.New().String())
+	return MentorID(sharedvo.NewID())
 }
 
 func NewMentorIDByVal(id string) MentorID {
