@@ -7,7 +7,7 @@ import (
 	"golang.org/x/xerrors"
 )
 
-type reconstructMentorParams struct {
+type mentorParams struct {
 	userID                userdm.UserID
 	mentorID              MentorID
 	title                 string
@@ -31,7 +31,7 @@ type reconstructMentorParams struct {
 }
 
 var (
-	mp reconstructMentorParams
+	mp mentorParams
 )
 
 func setup() error {
@@ -53,7 +53,7 @@ func setup() error {
 	if err != nil {
 		return xerrors.New("error NewPlanStatus")
 	}
-	mp = reconstructMentorParams{
+	mp = mentorParams{
 		userID,
 		mentorID,
 		"プログラミング全般のメンタリング",
