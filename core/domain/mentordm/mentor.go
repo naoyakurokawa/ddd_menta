@@ -65,6 +65,10 @@ func (m *Mentor) UserID() userdm.UserID {
 	return m.userID
 }
 
+func (m *Mentor) MentorID() MentorID {
+	return m.mentorID
+}
+
 func (m *Mentor) Title() string {
 	return m.title
 }
@@ -79,6 +83,14 @@ func (m *Mentor) SubImg() string {
 
 func (m *Mentor) Category() string {
 	return m.category
+}
+
+func (m *Mentor) Detail() string {
+	return m.detial
+}
+
+func (m *Mentor) CreatedAt() sharedvo.CreatedAt {
+	return m.createdAt
 }
 
 func (m *Mentor) MentorSkills() []MentorSkill {
