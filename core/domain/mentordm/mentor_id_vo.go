@@ -11,12 +11,12 @@ func NewMentorID() MentorID {
 	return MentorID(sharedvo.NewID())
 }
 
-func NewMentorIDByVal(id string) (MentorID, error) {
-	ID, err := sharedvo.NewIDByVal(id)
+func NewMentorIDByVal(strId string) (MentorID, error) {
+	id, err := sharedvo.NewIDByVal(strId)
 	if err != nil {
 		return MentorID(""), xerrors.New("error NewMentorIDByVal")
 	}
-	return MentorID(ID), nil
+	return MentorID(id), nil
 }
 
 func NewEmptyMentorID() MentorID {
