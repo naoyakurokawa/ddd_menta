@@ -59,8 +59,8 @@ func (mu *MentorCreateUsecaseImpl) Create(
 
 	// メンター作成
 	mentor, err := mentordm.NewMentor(
-		userID,
 		mentorID,
+		userID,
 		title,
 		mainImg,
 		subImg,

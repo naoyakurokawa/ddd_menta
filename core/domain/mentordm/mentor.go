@@ -9,8 +9,8 @@ import (
 )
 
 type Mentor struct {
-	userID       userdm.UserID
 	mentorID     MentorID
+	userID       userdm.UserID
 	title        string
 	mainImg      string
 	subImg       string
@@ -25,8 +25,8 @@ const titleMaxLength = 255
 const detialMaxLength = 2000
 
 func NewMentor(
-	userID userdm.UserID,
 	mentorID MentorID,
+	userID userdm.UserID,
 	title string,
 	mainImg string,
 	subImg string,
@@ -48,8 +48,8 @@ func NewMentor(
 	}
 
 	mentor := &Mentor{
-		userID:    userID,
 		mentorID:  mentorID,
+		userID:    userID,
 		title:     title,
 		mainImg:   mainImg,
 		subImg:    subImg,

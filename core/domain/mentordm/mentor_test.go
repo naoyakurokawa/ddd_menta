@@ -13,28 +13,28 @@ func TestNewMentor(t *testing.T) {
 	t.Run("titleが空の場合_エラーとなること", func(t *testing.T) {
 		setup()
 		blankTitle := ""
-		_, err := NewMentor(mp.userID, mp.mentorID, blankTitle, mp.mainImg, mp.subImg, mp.category, mp.detial)
+		_, err := NewMentor(mp.mentorID, mp.userID, blankTitle, mp.mainImg, mp.subImg, mp.category, mp.detial)
 		require.Error(t, err)
 	})
 
 	t.Run("titleが255文字を超えるの場合_エラーとなること", func(t *testing.T) {
 		setup()
 		overTitle := strings.Repeat("a", 256)
-		_, err := NewMentor(mp.userID, mp.mentorID, overTitle, mp.mainImg, mp.subImg, mp.category, mp.detial)
+		_, err := NewMentor(mp.mentorID, mp.userID, overTitle, mp.mainImg, mp.subImg, mp.category, mp.detial)
 		require.Error(t, err)
 	})
 
 	t.Run("detailが空の場合_エラーとなること", func(t *testing.T) {
 		setup()
 		blankDetail := ""
-		_, err := NewMentor(mp.userID, mp.mentorID, mp.title, mp.mainImg, mp.subImg, mp.category, blankDetail)
+		_, err := NewMentor(mp.mentorID, mp.userID, mp.title, mp.mainImg, mp.subImg, mp.category, blankDetail)
 		require.Error(t, err)
 	})
 
 	t.Run("detailが2000文字を超える場合_エラーとなること", func(t *testing.T) {
 		setup()
 		overDetail := strings.Repeat("a", 2001)
-		_, err := NewMentor(mp.userID, mp.mentorID, mp.title, mp.mainImg, mp.subImg, mp.category, overDetail)
+		_, err := NewMentor(mp.mentorID, mp.userID, mp.title, mp.mainImg, mp.subImg, mp.category, overDetail)
 		require.Error(t, err)
 	})
 }
@@ -50,7 +50,7 @@ func TestAddMentorSkill(t *testing.T) {
 		require.NoError(t, err)
 
 		// メンター作成
-		m, err := NewMentor(mp.userID, mp.mentorID, mp.title, mp.mainImg, mp.subImg, mp.category, mp.detial)
+		m, err := NewMentor(mp.mentorID, mp.userID, mp.title, mp.mainImg, mp.subImg, mp.category, mp.detial)
 		require.NoError(t, err)
 
 		// メンタースキル追加実行
@@ -80,7 +80,7 @@ func TestAddPlan(t *testing.T) {
 		require.NoError(t, err)
 
 		// メンター作成
-		m, err := NewMentor(mp.userID, mp.mentorID, mp.title, mp.mainImg, mp.subImg, mp.category, mp.detial)
+		m, err := NewMentor(mp.mentorID, mp.userID, mp.title, mp.mainImg, mp.subImg, mp.category, mp.detial)
 		require.NoError(t, err)
 
 		// プラン追加実行
