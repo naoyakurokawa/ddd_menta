@@ -88,8 +88,8 @@ CREATE TABLE mentors
   mentor_id VARCHAR(255) NOT NULL,
   user_id VARCHAR(255) NOT NULL,
   title VARCHAR(255) NOT NULL,
-  mainImg VARCHAR(255) NOT NULL,
-  subImg VARCHAR(255) NOT NULL,
+  main_img VARCHAR(255) NOT NULL,
+  sub_img VARCHAR(255) NOT NULL,
   category VARCHAR(255) NOT NULL,
   detail TEXT NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -101,8 +101,8 @@ INSERT INTO mentors (
   mentor_id,
   user_id,
   title,
-  mainImg,
-  subImg,
+  main_img,
+  sub_img,
   category,
   detail
 ) VALUES (
@@ -148,10 +148,11 @@ CREATE TABLE plans
   mentor_id VARCHAR(255) NOT NULL,
   title VARCHAR(255) NOT NULL,
   category VARCHAR(255) NOT NULL,
+  tag VARCHAR(255) NOT NULL,
   detail TEXT NOT NULL,
   plan_type INT NOT NULL,
   price INT NOT NULL,
-  planStatus INT NOT NULL,
+  plan_status INT NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (plan_id),
   FOREIGN KEY (mentor_id) REFERENCES mentors(mentor_id)
@@ -162,15 +163,17 @@ INSERT INTO plans (
   mentor_id,
   title,
   category,
+  tag,
   detail,
   plan_type,
   price,
-  planStatus
+  plan_status
 ) VALUES (
   "e2e908dc-5981-4c4a-8e98-4487d3e122ad", 
   "e2e908dc-5981-4c4a-8e98-4487d3e122ad",
 	"DDDのメンタリング",
 	"設計",
+	"DDD",
 	"DDDの設計手法を学べます",
   2,
   1000,

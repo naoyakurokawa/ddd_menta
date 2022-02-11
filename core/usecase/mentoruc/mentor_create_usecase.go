@@ -8,7 +8,7 @@ import (
 
 type MentorCreateUsecase interface {
 	Create(
-		userID userdm.UserID,
+		userID string,
 		title string,
 		mainImg string,
 		subImg string,
@@ -38,7 +38,7 @@ func NewMentorCreateUsecase(mentorRepo mentordm.MentorRepository) MentorCreateUs
 
 // Create userを保存するときのユースケース
 func (mu *MentorCreateUsecaseImpl) Create(
-	userID userdm.UserID,
+	userID string,
 	title string,
 	mainImg string,
 	subImg string,
@@ -56,11 +56,12 @@ func (mu *MentorCreateUsecaseImpl) Create(
 	planStatus []string,
 ) (*mentordm.Mentor, error) {
 	mentorID := mentordm.NewMentorID()
+	userIDIns := userdm.UserIDType(userID)
 
 	// メンター作成
 	mentor, err := mentordm.NewMentor(
 		mentorID,
-		userID,
+		userIDIns,
 		title,
 		mainImg,
 		subImg,

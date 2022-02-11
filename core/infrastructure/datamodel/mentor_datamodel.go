@@ -13,7 +13,7 @@ type Mentor struct {
 	MainImg      string
 	SubImg       string
 	Category     string
-	Detial       string
+	Detail       string
 	CreatedAt    time.Time
 	Plans        []mentordm.Plan
 	MentorSkills []mentordm.MentorSkill
@@ -21,10 +21,11 @@ type Mentor struct {
 
 type Plan struct {
 	PlanID     string
+	MentorID   string
 	Title      string
 	Category   string
 	Tag        string
-	Detial     string
+	Detail     string
 	PlanType   uint16
 	Price      uint16
 	PlanStatus uint16
@@ -33,6 +34,7 @@ type Plan struct {
 
 type MentorSkill struct {
 	MentorSkillID   string
+	MentorID        string
 	Tag             string
 	Assessment      uint16
 	ExperienceYears uint16

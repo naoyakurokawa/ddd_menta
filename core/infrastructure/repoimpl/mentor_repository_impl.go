@@ -19,13 +19,13 @@ func NewMentorRepositoryImpl(conn *gorm.DB) mentordm.MentorRepository {
 
 func (mr *MentorRepositoryImpl) Create(mentor *mentordm.Mentor) (*mentordm.Mentor, error) {
 	var m datamodel.Mentor
-	m.UserID = mentor.UserID().Value()
-	m.MentorID = mentor.UserID().Value()
+	m.UserID = string(mentor.UserID())
+	m.MentorID = string(mentor.MentorID())
 	m.Title = mentor.Title()
 	m.MainImg = mentor.MainImg()
 	m.SubImg = mentor.SubImg()
 	m.Category = mentor.Category()
-	m.Detial = mentor.Detail()
+	m.Detail = mentor.Detail()
 	m.CreatedAt = time.Time(mentor.CreatedAt())
 	m.Plans = mentor.Plans()
 	m.MentorSkills = mentor.MentorSkills()
@@ -37,10 +37,11 @@ func (mr *MentorRepositoryImpl) Create(mentor *mentordm.Mentor) (*mentordm.Mento
 	for i := 0; i < len(m.Plans); i++ {
 		plans := &datamodel.Plan{
 			PlanID:     string(m.Plans[i].PlanID()),
+			MentorID:   m.MentorID,
 			Title:      m.Plans[i].Title(),
 			Category:   m.Plans[i].Category(),
 			Tag:        m.Plans[i].Tag(),
-			Detial:     m.Plans[i].Detial(),
+			Detail:     m.Plans[i].Detial(),
 			PlanType:   uint16(m.Plans[i].PlanType()),
 			Price:      m.Plans[i].Price(),
 			PlanStatus: uint16(m.Plans[i].PlanStatus()),
@@ -54,6 +55,7 @@ func (mr *MentorRepositoryImpl) Create(mentor *mentordm.Mentor) (*mentordm.Mento
 	for i := 0; i < len(m.MentorSkills); i++ {
 		mentorSkills := &datamodel.MentorSkill{
 			MentorSkillID:   string(m.MentorSkills[i].MentorSkillID()),
+			MentorID:        m.MentorID,
 			Tag:             m.MentorSkills[i].Tag(),
 			Assessment:      m.MentorSkills[i].Assessment(),
 			ExperienceYears: mentordm.ExperienceYears.Uint16(m.MentorSkills[i].ExperienceYears()),

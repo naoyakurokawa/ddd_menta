@@ -5,7 +5,6 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/mentordm"
-	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
 	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/db"
 	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/repoimpl"
 	"github.com/naoyakurokawa/ddd_menta/core/usecase/mentoruc"
@@ -20,22 +19,22 @@ func NewMentorHandler(mu mentoruc.MentorCreateUsecase) *MentorHandler {
 	return &MentorHandler{mentorCreateUsecase: mu}
 }
 
-type requestmentor struct {
-	title                 string
-	mainImg               string
-	subImg                string
-	category              string
-	detial                string
-	mentorTag             []string
-	mentorAssessment      []string
-	mentorExperienceYears []string
-	planTitle             []string
-	planCategory          []string
-	planTag               []string
-	planDetial            []string
-	planType              []string
-	planPrice             []string
-	planStatus            []string
+type requestMentor struct {
+	Title                 string
+	MainImg               string
+	SubImg                string
+	Category              string
+	Detial                string
+	MentorTag             []string
+	MentorAssessment      []string
+	MentorExperienceYears []string
+	PlanTitle             []string
+	PlanCategory          []string
+	PlanTag               []string
+	PlanDetial            []string
+	PlanType              []string
+	PlanPrice             []string
+	PlanStatus            []string
 }
 
 // Create userを保存するときのハンドラー
@@ -47,34 +46,31 @@ func MentorCreate() echo.HandlerFunc {
 		type responseMentor struct {
 			mentorID mentordm.MentorID
 		}
-		var req requestmentor
+		var req requestMentor
 		if err := c.Bind(&req); err != nil {
 			return c.JSON(http.StatusBadRequest, err.Error())
 		}
 
 		//TODO sessionからuserID取得するように変更
-		userID, err := userdm.NewUserID()
-		if err != nil {
-			return err
-		}
+		userID := "e2e908dc-5981-4c4a-8e98-4487d3e122ad"
 		//usecaseのCreate → infraのCreate
 		createdMentor, err := mentorCreateUsecase.Create(
 			userID,
-			req.title,
-			req.mainImg,
-			req.subImg,
-			req.category,
-			req.detial,
-			req.mentorTag,
-			req.mentorAssessment,
-			req.mentorExperienceYears,
-			req.planTitle,
-			req.planCategory,
-			req.planTag,
-			req.planDetial,
-			req.planType,
-			req.planPrice,
-			req.planStatus,
+			req.Title,
+			req.MainImg,
+			req.SubImg,
+			req.Category,
+			req.Detial,
+			req.MentorTag,
+			req.MentorAssessment,
+			req.MentorExperienceYears,
+			req.PlanTitle,
+			req.PlanCategory,
+			req.PlanTag,
+			req.PlanDetial,
+			req.PlanType,
+			req.PlanPrice,
+			req.PlanStatus,
 		)
 
 		if err != nil {
