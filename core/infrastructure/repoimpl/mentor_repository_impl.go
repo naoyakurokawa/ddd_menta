@@ -6,6 +6,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/mentordm"
+	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
 	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/datamodel"
 )
 
@@ -29,11 +30,11 @@ func (mr *MentorRepositoryImpl) Create(mentor *mentordm.Mentor) (*mentordm.Mento
 	m.CreatedAt = time.Time(mentor.CreatedAt())
 	m.Plans = mentor.Plans()
 	m.MentorSkills = mentor.MentorSkills()
-	//メンター概要登録
+	// メンター概要登録
 	if err := mr.Conn.Create(&m).Error; err != nil {
 		return nil, err
 	}
-	//メンタープラン登録
+	// メンタープラン登録
 	for i := 0; i < len(m.Plans); i++ {
 		plans := &datamodel.Plan{
 			PlanID:     string(m.Plans[i].PlanID()),
@@ -51,7 +52,7 @@ func (mr *MentorRepositoryImpl) Create(mentor *mentordm.Mentor) (*mentordm.Mento
 			return nil, err
 		}
 	}
-	// UserSkill登録
+	// メンタースキル登録
 	for i := 0; i < len(m.MentorSkills); i++ {
 		mentorSkills := &datamodel.MentorSkill{
 			MentorSkillID:   string(m.MentorSkills[i].MentorSkillID()),
@@ -66,5 +67,46 @@ func (mr *MentorRepositoryImpl) Create(mentor *mentordm.Mentor) (*mentordm.Mento
 		}
 	}
 
+	return mentor, nil
+}
+
+func (mr *MentorRepositoryImpl) FindByID(mentorID mentordm.MentorID) (*mentordm.Mentor, error) {
+	var (
+		dataModelMentorSkills []mentordm.MentorSkill
+		dataModelPlan         []mentordm.Plan
+	)
+	dataModeMentor := &datamodel.Mentor{
+		UserID:       "",
+		MentorID:     "",
+		Title:        "",
+		MainImg:      "",
+		SubImg:       "",
+		Category:     "",
+		Detail:       "",
+		CreatedAt:    time.Now(),
+		Plans:        dataModelPlan,
+		MentorSkills: dataModelMentorSkills,
+	}
+	if err := mr.Conn.Where("mentor_id = ?", string(mentorID)).Find(&dataModeMentor).Error; err != nil {
+		return nil, err
+	}
+	mentorID, err := mentordm.NewMentorIDByVal(dataModeMentor.MentorID)
+	if err != nil {
+		return nil, err
+	}
+	mentor, err := mentordm.NewMentor(
+		mentorID,
+		userdm.UserIDType(dataModeMentor.UserID),
+		dataModeMentor.Title,
+		dataModeMentor.MainImg,
+		dataModeMentor.SubImg,
+		dataModeMentor.Category,
+		dataModeMentor.Detail,
+		dataModelMentorSkills,
+		dataModelPlan,
+	)
+	if err != nil {
+		return nil, err
+	}
 	return mentor, nil
 }

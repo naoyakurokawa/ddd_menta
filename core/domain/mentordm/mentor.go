@@ -32,6 +32,8 @@ func NewMentor(
 	subImg string,
 	category string,
 	detial string,
+	mentorSkills []MentorSkill,
+	plans []Plan,
 ) (*Mentor, error) {
 	//入力データチェック
 	if utf8.RuneCountInString(title) > titleMaxLength {
@@ -48,14 +50,16 @@ func NewMentor(
 	}
 
 	mentor := &Mentor{
-		mentorID:  mentorID,
-		userID:    userID,
-		title:     title,
-		mainImg:   mainImg,
-		subImg:    subImg,
-		category:  category,
-		detial:    detial,
-		createdAt: sharedvo.NewCreatedAt(),
+		mentorID:     mentorID,
+		userID:       userID,
+		title:        title,
+		mainImg:      mainImg,
+		subImg:       subImg,
+		category:     category,
+		detial:       detial,
+		createdAt:    sharedvo.NewCreatedAt(),
+		mentorSkills: mentorSkills,
+		plans:        plans,
 	}
 
 	return mentor, nil

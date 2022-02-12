@@ -58,6 +58,11 @@ func (mu *MentorCreateUsecaseImpl) Create(
 	mentorID := mentordm.NewMentorID()
 	userIDIns := userdm.UserIDType(userID)
 
+	var (
+		mentorSkills []mentordm.MentorSkill
+		plans        []mentordm.Plan
+	)
+
 	// メンター作成
 	mentor, err := mentordm.NewMentor(
 		mentorID,
@@ -67,6 +72,8 @@ func (mu *MentorCreateUsecaseImpl) Create(
 		subImg,
 		category,
 		detial,
+		mentorSkills,
+		plans,
 	)
 	if err != nil {
 		return nil, err

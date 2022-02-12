@@ -14,7 +14,6 @@ type MentorHandler struct {
 	mentorCreateUsecase mentoruc.MentorCreateUsecase
 }
 
-// NewUserHandler user handlerのコンストラクタ
 func NewMentorHandler(mu mentoruc.MentorCreateUsecase) *MentorHandler {
 	return &MentorHandler{mentorCreateUsecase: mu}
 }
@@ -37,12 +36,12 @@ type requestMentor struct {
 	PlanStatus            []string
 }
 
-// Create userを保存するときのハンドラー
 func MentorCreate() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		conn := db.NewDB()
 		mentorRepository := repoimpl.NewMentorRepositoryImpl(conn)
 		mentorCreateUsecase := mentoruc.NewMentorCreateUsecase(mentorRepository)
+
 		type responseMentor struct {
 			mentorID mentordm.MentorID
 		}
@@ -53,7 +52,6 @@ func MentorCreate() echo.HandlerFunc {
 
 		//TODO sessionからuserID取得するように変更
 		userID := "e2e908dc-5981-4c4a-8e98-4487d3e122ad"
-		//usecaseのCreate → infraのCreate
 		createdMentor, err := mentorCreateUsecase.Create(
 			userID,
 			req.Title,
