@@ -43,7 +43,7 @@ func (mu *MentorCreateUsecaseImpl) Create(
 	mainImg string,
 	subImg string,
 	category string,
-	detial string,
+	detail string,
 	mentorTag []string,
 	mentorAssessment []string,
 	mentorExperienceYears []string,
@@ -71,7 +71,7 @@ func (mu *MentorCreateUsecaseImpl) Create(
 		mainImg,
 		subImg,
 		category,
-		detial,
+		detail,
 		mentorSkills,
 		plans,
 	)

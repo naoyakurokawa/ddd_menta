@@ -6,6 +6,7 @@ import (
 	"github.com/naoyakurokawa/ddd_menta/core/domain/mentordm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
 	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/db"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -25,15 +26,11 @@ func TestCreate(t *testing.T) {
 		userCareers,
 		userSkills,
 	)
-	if err != nil {
-		t.Errorf("failed to NewUser: %v", err)
-		return
-	}
+	require.NoError(t, err)
 	userRepository := NewUserRepositoryImpl(db.NewDB())
 	_, err = userRepository.Create(user)
-	if err != nil {
-		t.Errorf("failed to userRepository.Create: %v", err)
-	}
+	require.NoError(t, err)
+
 	// メンター作成
 	setupMentor()
 	mentorSkill, err := mentordm.NewMentorSkill(
@@ -69,21 +66,15 @@ func TestCreate(t *testing.T) {
 	)
 	require.NoError(t, err)
 
-	if err != nil {
-		t.Errorf("failed to NewUser: %v", err)
-		return
-	}
-
 	mentorRepository := NewMentorRepositoryImpl(db.NewDB())
 	createdMentor, err := mentorRepository.Create(mentor)
-	if err != nil {
-		t.Errorf("failed to mentorRepository.Create: %v", err)
-	}
+	require.NoError(t, err)
+
 	selectedMentor, err := mentorRepository.FindByID(createdMentor.MentorID())
-	if err != nil {
-		t.Errorf("failed to FindByID: %v", err)
-	}
-	if !createdMentor.MentorID().Equals(selectedMentor.MentorID()) {
-		t.Errorf("failed to CreateUser")
-	}
+	require.NoError(t, err)
+
+	// 検証 (作成したメンターがDB登録されているか)
+	expected := createdMentor.MentorID()
+	actual := selectedMentor.MentorID()
+	assert.Equal(t, expected, actual)
 }

@@ -193,3 +193,14 @@ INSERT INTO plans (
 -- use ddd_menta
 -- create,insert実行
 -- select * from user_careers;
+
+-- テーブルデータ削除コマンド
+-- SET FOREIGN_KEY_CHECKS=0;
+-- truncate table plans;
+-- truncate table mentor_skills;
+-- truncate table user_careers;
+-- truncate table user_skills;
+-- truncate table mentor_skills;
+-- truncate table mentors;
+-- truncate table users;
+-- SET FOREIGN_KEY_CHECKS=1;
