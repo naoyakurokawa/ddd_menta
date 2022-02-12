@@ -179,28 +179,3 @@ INSERT INTO plans (
   1000,
   1
 );
-
--- CREATE TABLE users
--- (
---   id INT unsigned PRIMARY KEY auto_increment,
---   name VARCHAR(50),
---   password VARCHAR(255)
--- );
-
--- 実行されない場合
--- docker exec -it menta_db /bin/bash
--- mysql -uddd_menta -pddd_menta
--- use ddd_menta
--- create,insert実行
--- select * from user_careers;
-
--- テーブルデータ削除コマンド
--- SET FOREIGN_KEY_CHECKS=0;
--- truncate table plans;
--- truncate table mentor_skills;
--- truncate table user_careers;
--- truncate table user_skills;
--- truncate table mentor_skills;
--- truncate table mentors;
--- truncate table users;
--- SET FOREIGN_KEY_CHECKS=1;
