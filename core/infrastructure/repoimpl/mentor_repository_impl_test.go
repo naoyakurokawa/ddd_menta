@@ -67,14 +67,14 @@ func TestCreate(t *testing.T) {
 	require.NoError(t, err)
 
 	mentorRepository := NewMentorRepositoryImpl(db.NewDB())
-	createdMentor, err := mentorRepository.Create(mentor)
+	err = mentorRepository.Create(mentor)
 	require.NoError(t, err)
 
-	selectedMentor, err := mentorRepository.FindByID(createdMentor.MentorID())
+	selectedMentor, err := mentorRepository.FindByID(mp.mentorID)
 	require.NoError(t, err)
 
 	// 検証 (作成したメンターがDB登録されているか)
-	expected := createdMentor.MentorID()
+	expected := mp.mentorID
 	actual := selectedMentor.MentorID()
 	assert.Equal(t, expected, actual)
 }

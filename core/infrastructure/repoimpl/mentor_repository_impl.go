@@ -11,14 +11,14 @@ import (
 )
 
 type MentorRepositoryImpl struct {
-	Conn *gorm.DB
+	conn *gorm.DB
 }
 
 func NewMentorRepositoryImpl(conn *gorm.DB) mentordm.MentorRepository {
-	return &MentorRepositoryImpl{Conn: conn}
+	return &MentorRepositoryImpl{conn: conn}
 }
 
-func (mr *MentorRepositoryImpl) Create(mentor *mentordm.Mentor) (*mentordm.Mentor, error) {
+func (mr *MentorRepositoryImpl) Create(mentor *mentordm.Mentor) error {
 	var m datamodel.Mentor
 	m.UserID = string(mentor.UserID())
 	m.MentorID = string(mentor.MentorID())
@@ -31,8 +31,8 @@ func (mr *MentorRepositoryImpl) Create(mentor *mentordm.Mentor) (*mentordm.Mento
 	m.Plans = mentor.Plans()
 	m.MentorSkills = mentor.MentorSkills()
 	// メンター概要登録
-	if err := mr.Conn.Create(&m).Error; err != nil {
-		return nil, err
+	if err := mr.conn.Create(&m).Error; err != nil {
+		return err
 	}
 	// メンタープラン登録
 	for i := 0; i < len(m.Plans); i++ {
@@ -48,8 +48,8 @@ func (mr *MentorRepositoryImpl) Create(mentor *mentordm.Mentor) (*mentordm.Mento
 			PlanStatus: uint16(m.Plans[i].PlanStatus()),
 			CreatedAt:  time.Time(m.Plans[i].CreatedAt()),
 		}
-		if err := mr.Conn.Create(&plans).Error; err != nil {
-			return nil, err
+		if err := mr.conn.Create(&plans).Error; err != nil {
+			return err
 		}
 	}
 	// メンタースキル登録
@@ -62,12 +62,12 @@ func (mr *MentorRepositoryImpl) Create(mentor *mentordm.Mentor) (*mentordm.Mento
 			ExperienceYears: mentordm.ExperienceYears.Uint16(m.MentorSkills[i].ExperienceYears()),
 			CreatedAt:       time.Time(m.MentorSkills[i].CreatedAt()),
 		}
-		if err := mr.Conn.Create(&mentorSkills).Error; err != nil {
-			return nil, err
+		if err := mr.conn.Create(&mentorSkills).Error; err != nil {
+			return err
 		}
 	}
 
-	return mentor, nil
+	return nil
 }
 
 func (mr *MentorRepositoryImpl) FindByID(mentorID mentordm.MentorID) (*mentordm.Mentor, error) {
@@ -87,7 +87,7 @@ func (mr *MentorRepositoryImpl) FindByID(mentorID mentordm.MentorID) (*mentordm.
 		Plans:        dataModelPlan,
 		MentorSkills: dataModelMentorSkills,
 	}
-	if err := mr.Conn.Where("mentor_id = ?", string(mentorID)).Find(&dataModeMentor).Error; err != nil {
+	if err := mr.conn.Where("mentor_id = ?", string(mentorID)).Find(&dataModeMentor).Error; err != nil {
 		return nil, err
 	}
 	mentorID, err := mentordm.NewMentorIDByVal(dataModeMentor.MentorID)

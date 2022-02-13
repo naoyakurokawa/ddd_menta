@@ -7,7 +7,7 @@ import (
 // InitRouting routesの初期化
 func InitRouting(e *echo.Echo) {
 
-	e.POST("/user_create", UserCreate())
-	e.POST("/mentor_create", MentorCreate())
+	e.POST("/user_create", NewCreateUserController())
+	e.POST("/mentor_create", NewCreateMentorController())
 
 }

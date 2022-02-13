@@ -6,34 +6,18 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 
-	"github.com/naoyakurokawa/ddd_menta/core/domain/mentordm"
 	mock "github.com/naoyakurokawa/ddd_menta/core/domain/mentordm/mock_mentordm"
 )
 
 func TestCreate(t *testing.T) {
-	//ユーザー作成
 	setupUser()
-
-	// メンター作成
 	setupMentor()
-	mentor, err := mentordm.NewMentor(
-		mp.mentorID,
-		mp.userID,
-		mp.title,
-		mp.mainImg,
-		mp.subImg,
-		mp.category,
-		mp.detail,
-		mentorSkills,
-		plans,
-	)
-	require.NoError(t, err)
 
 	ctrl := gomock.NewController(t)
 	mockMentorRepository := mock.NewMockMentorRepository(ctrl)
-	mockMentorRepository.EXPECT().Create(gomock.Any()).Return(mentor, nil)
+	mockMentorRepository.EXPECT().Create(gomock.Any()).Return(nil)
 	mentorUsecase := NewMentorCreateUsecase(mockMentorRepository)
-	_, err = mentorUsecase.Create(
+	err := mentorUsecase.Create(
 		string(mp.userID),
 		mp.title,
 		mp.mainImg,

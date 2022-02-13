@@ -4,21 +4,20 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo"
-	"github.com/naoyakurokawa/ddd_menta/core/domain/mentordm"
 	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/db"
 	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/repoimpl"
 	"github.com/naoyakurokawa/ddd_menta/core/usecase/mentoruc"
 )
 
-type MentorHandler struct {
+type MentorController struct {
 	mentorCreateUsecase mentoruc.MentorCreateUsecase
 }
 
-func NewMentorHandler(mu mentoruc.MentorCreateUsecase) *MentorHandler {
-	return &MentorHandler{mentorCreateUsecase: mu}
+func NewMentorController(mu mentoruc.MentorCreateUsecase) *MentorController {
+	return &MentorController{mentorCreateUsecase: mu}
 }
 
-type requestMentor struct {
+type mentorRequest struct {
 	Title                 string
 	MainImg               string
 	SubImg                string
@@ -36,23 +35,20 @@ type requestMentor struct {
 	PlanStatus            []string
 }
 
-func MentorCreate() echo.HandlerFunc {
+func NewCreateMentorController() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		conn := db.NewDB()
 		mentorRepository := repoimpl.NewMentorRepositoryImpl(conn)
 		mentorCreateUsecase := mentoruc.NewMentorCreateUsecase(mentorRepository)
 
-		type responseMentor struct {
-			mentorID mentordm.MentorID
-		}
-		var req requestMentor
+		var req mentorRequest
 		if err := c.Bind(&req); err != nil {
 			return c.JSON(http.StatusBadRequest, err.Error())
 		}
 
 		//TODO sessionからuserID取得するように変更
 		userID := "e2e908dc-5981-4c4a-8e98-4487d3e122ad"
-		createdMentor, err := mentorCreateUsecase.Create(
+		err := mentorCreateUsecase.Create(
 			userID,
 			req.Title,
 			req.MainImg,
@@ -75,10 +71,6 @@ func MentorCreate() echo.HandlerFunc {
 			return err
 		}
 
-		res := responseMentor{
-			mentorID: createdMentor.MentorID(),
-		}
-
-		return c.JSON(http.StatusCreated, res)
+		return c.JSON(http.StatusCreated, "success create mentor")
 	}
 }

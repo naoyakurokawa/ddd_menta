@@ -4,6 +4,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -14,73 +15,76 @@ var (
 )
 
 func TestNewMentor(t *testing.T) {
-
-	t.Run("titleが空の場合_エラーとなること", func(t *testing.T) {
-		setup()
-		blankTitle := ""
-		_, err := NewMentor(mp.mentorID,
-			mp.userID,
-			blankTitle,
-			mp.mainImg,
-			mp.subImg,
-			mp.category,
-			mp.detial,
-			mentorSkills,
-			plans,
-		)
-		require.Error(t, err)
-	})
-
-	t.Run("titleが255文字を超えるの場合_エラーとなること", func(t *testing.T) {
-		setup()
-		overTitle := strings.Repeat("a", 256)
-		_, err := NewMentor(
-			mp.mentorID,
-			mp.userID,
-			overTitle,
-			mp.mainImg,
-			mp.subImg,
-			mp.category,
-			mp.detial,
-			mentorSkills,
-			plans,
-		)
-		require.Error(t, err)
-	})
-
-	t.Run("detailが空の場合_エラーとなること", func(t *testing.T) {
-		setup()
-		blankDetail := ""
-		_, err := NewMentor(
-			mp.mentorID,
-			mp.userID,
-			mp.title,
-			mp.mainImg,
-			mp.subImg,
-			mp.category,
-			blankDetail,
-			mentorSkills,
-			plans,
-		)
-		require.Error(t, err)
-	})
-
-	t.Run("detailが2000文字を超える場合_エラーとなること", func(t *testing.T) {
-		setup()
-		overDetail := strings.Repeat("a", 2001)
-		_, err := NewMentor(
-			mp.mentorID,
-			mp.userID,
-			mp.title,
-			mp.mainImg,
-			mp.subImg,
-			mp.category,
-			overDetail,
-			mentorSkills,
-			plans,
-		)
-		require.Error(t, err)
-	})
+	for _, td := range []struct {
+		title        string
+		userID       userdm.UserID
+		mentorTitle  string
+		mainImg      string
+		subImg       string
+		category     string
+		detail       string
+		mentorSkills []MentorSkill
+		plans        []Plan
+	}{
+		{
+			title:        "titleが空の場合_エラーとなること",
+			userID:       mp.userID,
+			mentorTitle:  "",
+			mainImg:      mp.mainImg,
+			subImg:       mp.subImg,
+			category:     mp.category,
+			detail:       mp.detial,
+			mentorSkills: mentorSkills,
+			plans:        plans,
+		},
+		{
+			title:        "titleが255文字を超えるの場合_エラーとなること",
+			userID:       mp.userID,
+			mentorTitle:  strings.Repeat("a", 256),
+			mainImg:      mp.mainImg,
+			subImg:       mp.subImg,
+			category:     mp.category,
+			detail:       mp.detial,
+			mentorSkills: mentorSkills,
+			plans:        plans,
+		},
+		{
+			title:        "detailが空の場合_エラーとなること",
+			userID:       mp.userID,
+			mentorTitle:  mp.title,
+			mainImg:      mp.mainImg,
+			subImg:       mp.subImg,
+			category:     mp.category,
+			detail:       "",
+			mentorSkills: mentorSkills,
+			plans:        plans,
+		},
+		{
+			title:        "detailが2000文字を超える場合_エラーとなること",
+			userID:       mp.userID,
+			mentorTitle:  mp.title,
+			mainImg:      mp.mainImg,
+			subImg:       mp.subImg,
+			category:     mp.category,
+			detail:       strings.Repeat("a", 2001),
+			mentorSkills: mentorSkills,
+			plans:        plans,
+		},
+	} {
+		t.Run(td.title, func(t *testing.T) {
+			_, err := NewMentor(mp.mentorID,
+				td.userID,
+				td.mentorTitle,
+				td.mainImg,
+				td.subImg,
+				td.category,
+				td.detail,
+				td.mentorSkills,
+				td.plans,
+			)
+			require.Error(t, err)
+		})
+	}
 }
 
 func TestAddMentorSkill(t *testing.T) {

@@ -10,13 +10,12 @@ import (
 	"github.com/naoyakurokawa/ddd_menta/core/usecase/useruc"
 )
 
-type UserHandler struct {
+type UserController struct {
 	userCreateUsecase useruc.UserCreateUsecase
 }
 
-// NewUserHandler user handlerのコンストラクタ
-func NewUserHandler(uu useruc.UserCreateUsecase) *UserHandler {
-	return &UserHandler{userCreateUsecase: uu}
+func NewUserController(uu useruc.UserCreateUsecase) *UserController {
+	return &UserController{userCreateUsecase: uu}
 }
 
 type requestUser struct {
@@ -33,7 +32,7 @@ type requestUser struct {
 }
 
 // Create userを保存するときのハンドラー
-func UserCreate() echo.HandlerFunc {
+func NewCreateUserController() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		conn := db.NewDB()
 		userRepository := repoimpl.NewUserRepositoryImpl(conn)

@@ -24,7 +24,7 @@ type MentorCreateUsecase interface {
 		planType []string,
 		planPrice []string,
 		planStatus []string,
-	) (*mentordm.Mentor, error)
+	) error
 }
 
 type MentorCreateUsecaseImpl struct {
@@ -54,7 +54,7 @@ func (mu *MentorCreateUsecaseImpl) Create(
 	planType []string,
 	planPrice []string,
 	planStatus []string,
-) (*mentordm.Mentor, error) {
+) error {
 	mentorID := mentordm.NewMentorID()
 	userIDIns := userdm.UserIDType(userID)
 
@@ -76,7 +76,7 @@ func (mu *MentorCreateUsecaseImpl) Create(
 		plans,
 	)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	//メンタースキル作成
@@ -84,17 +84,17 @@ func (mu *MentorCreateUsecaseImpl) Create(
 		for i := 0; i < len(mentorTag); i++ {
 			uintMentorAssessment, err := util.CastUint(mentorAssessment[i])
 			if err != nil {
-				return nil, err
+				return err
 			}
 
 			uintMentorExperienceYears, err := util.CastUint(mentorExperienceYears[i])
 			if err != nil {
-				return nil, err
+				return err
 			}
 
 			mentorExperienceYears, err := mentordm.NewExperienceYears(uintMentorExperienceYears)
 			if err != nil {
-				return nil, err
+				return err
 			}
 
 			mentor.AddMentorSkill(
@@ -110,26 +110,26 @@ func (mu *MentorCreateUsecaseImpl) Create(
 		for i := 0; i < len(planTitle); i++ {
 			uintPlanType, err := util.CastUint(planType[i])
 			if err != nil {
-				return nil, err
+				return err
 			}
 
 			planType, err := mentordm.NewPlanType(uintPlanType)
 			if err != nil {
-				return nil, err
+				return err
 			}
 
 			price, err := util.CastUint(planPrice[i])
 			if err != nil {
-				return nil, err
+				return err
 			}
 
 			uintPlanStatus, err := util.CastUint(planStatus[i])
 			if err != nil {
-				return nil, err
+				return err
 			}
 			planStatus, err := mentordm.NewPlanStatus(uintPlanStatus)
 			if err != nil {
-				return nil, err
+				return err
 			}
 
 			mentor.AddPlan(
@@ -145,10 +145,10 @@ func (mu *MentorCreateUsecaseImpl) Create(
 	}
 
 	//最終的にinfraのCreateメソッドを実行することになる
-	createdMentor, err := mu.mentorRepo.Create(mentor)
+	err = mu.mentorRepo.Create(mentor)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return createdMentor, nil
+	return nil
 }
