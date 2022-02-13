@@ -18,15 +18,13 @@ func NewMentorController(mu mentoruc.CreateMentorUsecase) *MentorController {
 }
 
 type mentorRequest struct {
-	Title                 string
-	MainImg               string
-	SubImg                string
-	Category              string
-	Detail                string
-	MentorTag             []string
-	MentorAssessment      []string
-	MentorExperienceYears []string
-	Plans                 []mentoruc.Plan
+	Title        string
+	MainImg      string
+	SubImg       string
+	Category     string
+	Detail       string
+	MentorSkills []mentoruc.MentorSkill
+	Plans        []mentoruc.Plan
 }
 
 func NewCreateMentorController() echo.HandlerFunc {
@@ -49,9 +47,7 @@ func NewCreateMentorController() echo.HandlerFunc {
 			req.SubImg,
 			req.Category,
 			req.Detail,
-			req.MentorTag,
-			req.MentorAssessment,
-			req.MentorExperienceYears,
+			req.MentorSkills,
 			req.Plans,
 		)
 

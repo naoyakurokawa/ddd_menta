@@ -18,19 +18,17 @@ type userParams struct {
 }
 
 type mentorParams struct {
-	userID                userdm.UserID
-	mentorID              mentordm.MentorID
-	title                 string
-	mainImg               string
-	subImg                string
-	category              string
-	detail                string
-	mentorSkillID         mentordm.MentorSkillID
-	mentorTag             []string
-	mentorAssessment      []string
-	mentorExperienceYears []string
-	plans                 []Plan
-	createdAt             time.Time
+	userID        userdm.UserID
+	mentorID      mentordm.MentorID
+	title         string
+	mainImg       string
+	subImg        string
+	category      string
+	detail        string
+	mentorSkillID mentordm.MentorSkillID
+	mentorSkills  []MentorSkill
+	plans         []Plan
+	createdAt     time.Time
 }
 
 var (
@@ -67,9 +65,17 @@ func setupUser() error {
 }
 
 func setupMentor() error {
+	var mentrSkills []MentorSkill
 	var plans []Plan
 	mentorID := mentordm.NewMentorID()
 	mentorSkillID := mentordm.NewMentorSkillID()
+
+	m := MentorSkill{
+		"Golang",
+		"5",
+		"5",
+	}
+	mentrSkills = append(mentrSkills, m)
 
 	p := Plan{
 		"DDDのメンタリング",
@@ -80,7 +86,6 @@ func setupMentor() error {
 		"1000",
 		"1",
 	}
-
 	plans = append(plans, p)
 
 	mp = mentorParams{
@@ -92,9 +97,7 @@ func setupMentor() error {
 		"プログライミング",
 		"設計・開発・テストの一覧をサポートできます",
 		mentorSkillID,
-		[]string{"Golang"},
-		[]string{"5"},
-		[]string{"5"},
+		mentrSkills,
 		plans,
 		time.Date(2000, 1, 1, 0, 0, 0, 0, time.Local),
 	}

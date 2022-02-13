@@ -24,9 +24,7 @@ func TestCreate(t *testing.T) {
 		mp.subImg,
 		mp.category,
 		mp.detail,
-		mp.mentorTag,
-		mp.mentorAssessment,
-		mp.mentorExperienceYears,
+		mp.mentorSkills,
 		mp.plans,
 	)
 

@@ -13,11 +13,15 @@ type CreateMentorUsecase interface {
 		subImg string,
 		category string,
 		detial string,
-		mentorTag []string,
-		mentorAssessment []string,
-		mentorExperienceYears []string,
+		mentorSkills []MentorSkill,
 		plans []Plan,
 	) error
+}
+
+type MentorSkill struct {
+	Tag             string
+	Assessment      string
+	ExperienceYears string
 }
 
 type Plan struct {
@@ -47,17 +51,15 @@ func (mu *CreateMentorUsecaseImpl) Create(
 	subImg string,
 	category string,
 	detail string,
-	mentorTag []string,
-	mentorAssessment []string,
-	mentorExperienceYears []string,
+	mentorSkills []MentorSkill,
 	mentorPlans []Plan,
 ) error {
 	mentorID := mentordm.NewMentorID()
 	userIDIns := userdm.UserIDType(userID)
 
 	var (
-		mentorSkills []mentordm.MentorSkill
-		plans        []mentordm.Plan
+		initMentorSkills []mentordm.MentorSkill
+		initPlans        []mentordm.Plan
 	)
 
 	// メンター作成
@@ -69,76 +71,72 @@ func (mu *CreateMentorUsecaseImpl) Create(
 		subImg,
 		category,
 		detail,
-		mentorSkills,
-		plans,
+		initMentorSkills,
+		initPlans,
 	)
 	if err != nil {
 		return err
 	}
 
 	//メンタースキル作成
-	if len(mentorTag) > 0 {
-		for i := 0; i < len(mentorTag); i++ {
-			uintMentorAssessment, err := mentordm.StrCastUint(mentorAssessment[i])
-			if err != nil {
-				return err
-			}
-
-			uintMentorExperienceYears, err := mentordm.StrCastUint(mentorExperienceYears[i])
-			if err != nil {
-				return err
-			}
-
-			mentorExperienceYears, err := mentordm.NewExperienceYears(uintMentorExperienceYears)
-			if err != nil {
-				return err
-			}
-
-			mentor.AddMentorSkill(
-				mentorTag[i],
-				uintMentorAssessment,
-				mentorExperienceYears,
-			)
+	for _, m := range mentorSkills {
+		uintMentorAssessment, err := mentordm.StrCastUint(m.Assessment)
+		if err != nil {
+			return err
 		}
+
+		uintMentorExperienceYears, err := mentordm.StrCastUint(m.ExperienceYears)
+		if err != nil {
+			return err
+		}
+
+		mentorExperienceYears, err := mentordm.NewExperienceYears(uintMentorExperienceYears)
+		if err != nil {
+			return err
+		}
+
+		mentor.AddMentorSkill(
+			m.Tag,
+			uintMentorAssessment,
+			mentorExperienceYears,
+		)
 	}
 
 	//メンタープラン追加
-	if len(mentorPlans) > 0 {
-		for _, p := range mentorPlans {
-			uintPlanType, err := mentordm.StrCastUint(p.PlanType)
-			if err != nil {
-				return err
-			}
-
-			planType, err := mentordm.NewPlanType(uintPlanType)
-			if err != nil {
-				return err
-			}
-
-			price, err := mentordm.StrCastUint(p.PlanPrice)
-			if err != nil {
-				return err
-			}
-
-			uintPlanStatus, err := mentordm.StrCastUint(p.PlanStatus)
-			if err != nil {
-				return err
-			}
-			planStatus, err := mentordm.NewPlanStatus(uintPlanStatus)
-			if err != nil {
-				return err
-			}
-
-			mentor.AddPlan(
-				p.PlanTitle,
-				p.PlanCategory,
-				p.PlanTag,
-				p.PlanDetial,
-				planType,
-				price,
-				planStatus,
-			)
+	for _, p := range mentorPlans {
+		uintPlanType, err := mentordm.StrCastUint(p.PlanType)
+		if err != nil {
+			return err
 		}
+
+		planType, err := mentordm.NewPlanType(uintPlanType)
+		if err != nil {
+			return err
+		}
+
+		price, err := mentordm.StrCastUint(p.PlanPrice)
+		if err != nil {
+			return err
+		}
+
+		uintPlanStatus, err := mentordm.StrCastUint(p.PlanStatus)
+		if err != nil {
+			return err
+		}
+		planStatus, err := mentordm.NewPlanStatus(uintPlanStatus)
+		if err != nil {
+			return err
+		}
+
+		mentor.AddPlan(
+			p.PlanTitle,
+			p.PlanCategory,
+			p.PlanTag,
+			p.PlanDetial,
+			planType,
+			price,
+			planStatus,
+		)
 	}
 
 	//最終的にinfraのCreateメソッドを実行することになる
