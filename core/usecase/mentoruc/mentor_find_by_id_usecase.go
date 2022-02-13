@@ -15,9 +15,5 @@ func NewmentorFindByIDUsecase(mentorRepo mentordm.MentorRepository) MentorFindBy
 }
 
 func (mu *MentorFindByIDUsecaseImpl) FindByID(mentorID mentordm.MentorID) (*mentordm.Mentor, error) {
-	selectedmentor, err := mu.mentorRepo.FindByID(mentorID)
-	if err != nil {
-		return nil, err
-	}
-	return selectedmentor, nil
+	return mu.mentorRepo.FindByID(mentorID)
 }

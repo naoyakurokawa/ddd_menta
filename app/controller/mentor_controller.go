@@ -10,11 +10,11 @@ import (
 )
 
 type MentorController struct {
-	mentorCreateUsecase mentoruc.MentorCreateUsecase
+	createMentorUsecase mentoruc.CreateMentorUsecase
 }
 
-func NewMentorController(mu mentoruc.MentorCreateUsecase) *MentorController {
-	return &MentorController{mentorCreateUsecase: mu}
+func NewMentorController(mu mentoruc.CreateMentorUsecase) *MentorController {
+	return &MentorController{createMentorUsecase: mu}
 }
 
 type mentorRequest struct {
@@ -26,20 +26,24 @@ type mentorRequest struct {
 	MentorTag             []string
 	MentorAssessment      []string
 	MentorExperienceYears []string
-	PlanTitle             []string
-	PlanCategory          []string
-	PlanTag               []string
-	PlanDetial            []string
-	PlanType              []string
-	PlanPrice             []string
-	PlanStatus            []string
+	Plan                  Plan
+}
+
+type Plan struct {
+	PlanTitle    []string
+	PlanCategory []string
+	PlanTag      []string
+	PlanDetial   []string
+	PlanType     []string
+	PlanPrice    []string
+	PlanStatus   []string
 }
 
 func NewCreateMentorController() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		conn := db.NewDB()
 		mentorRepository := repoimpl.NewMentorRepositoryImpl(conn)
-		mentorCreateUsecase := mentoruc.NewMentorCreateUsecase(mentorRepository)
+		mentorCreateUsecase := mentoruc.NewCreateMentorUsecase(mentorRepository)
 
 		var req mentorRequest
 		if err := c.Bind(&req); err != nil {
@@ -58,13 +62,13 @@ func NewCreateMentorController() echo.HandlerFunc {
 			req.MentorTag,
 			req.MentorAssessment,
 			req.MentorExperienceYears,
-			req.PlanTitle,
-			req.PlanCategory,
-			req.PlanTag,
-			req.PlanDetial,
-			req.PlanType,
-			req.PlanPrice,
-			req.PlanStatus,
+			req.Plan.PlanTitle,
+			req.Plan.PlanCategory,
+			req.Plan.PlanTag,
+			req.Plan.PlanDetial,
+			req.Plan.PlanType,
+			req.Plan.PlanPrice,
+			req.Plan.PlanStatus,
 		)
 
 		if err != nil {

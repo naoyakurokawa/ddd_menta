@@ -6,7 +6,7 @@ import (
 	"github.com/naoyakurokawa/ddd_menta/core/util"
 )
 
-type MentorCreateUsecase interface {
+type CreateMentorUsecase interface {
 	Create(
 		userID string,
 		title string,
@@ -27,17 +27,17 @@ type MentorCreateUsecase interface {
 	) error
 }
 
-type MentorCreateUsecaseImpl struct {
+type CreateMentorUsecaseImpl struct {
 	mentorRepo mentordm.MentorRepository
 }
 
 // user usecaseのコンストラクタ
-func NewMentorCreateUsecase(mentorRepo mentordm.MentorRepository) MentorCreateUsecase {
-	return &MentorCreateUsecaseImpl{mentorRepo: mentorRepo}
+func NewCreateMentorUsecase(mentorRepo mentordm.MentorRepository) CreateMentorUsecase {
+	return &CreateMentorUsecaseImpl{mentorRepo: mentorRepo}
 }
 
 // Create userを保存するときのユースケース
-func (mu *MentorCreateUsecaseImpl) Create(
+func (mu *CreateMentorUsecaseImpl) Create(
 	userID string,
 	title string,
 	mainImg string,
