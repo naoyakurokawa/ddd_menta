@@ -16,14 +16,18 @@ type CreateMentorUsecase interface {
 		mentorTag []string,
 		mentorAssessment []string,
 		mentorExperienceYears []string,
-		planTitle []string,
-		planCategory []string,
-		planTag []string,
-		planDetial []string,
-		planType []string,
-		planPrice []string,
-		planStatus []string,
+		plans []Plan,
 	) error
+}
+
+type Plan struct {
+	PlanTitle    string
+	PlanCategory string
+	PlanTag      string
+	PlanDetial   string
+	PlanType     string
+	PlanPrice    string
+	PlanStatus   string
 }
 
 type CreateMentorUsecaseImpl struct {
@@ -46,13 +50,7 @@ func (mu *CreateMentorUsecaseImpl) Create(
 	mentorTag []string,
 	mentorAssessment []string,
 	mentorExperienceYears []string,
-	planTitle []string,
-	planCategory []string,
-	planTag []string,
-	planDetial []string,
-	planType []string,
-	planPrice []string,
-	planStatus []string,
+	mentorPlans []Plan,
 ) error {
 	mentorID := mentordm.NewMentorID()
 	userIDIns := userdm.UserIDType(userID)
@@ -105,9 +103,9 @@ func (mu *CreateMentorUsecaseImpl) Create(
 	}
 
 	//メンタープラン追加
-	if len(planTitle) > 0 {
-		for i := 0; i < len(planTitle); i++ {
-			uintPlanType, err := mentordm.StrCastUint(planType[i])
+	if len(mentorPlans) > 0 {
+		for _, p := range mentorPlans {
+			uintPlanType, err := mentordm.StrCastUint(p.PlanType)
 			if err != nil {
 				return err
 			}
@@ -117,12 +115,12 @@ func (mu *CreateMentorUsecaseImpl) Create(
 				return err
 			}
 
-			price, err := mentordm.StrCastUint(planPrice[i])
+			price, err := mentordm.StrCastUint(p.PlanPrice)
 			if err != nil {
 				return err
 			}
 
-			uintPlanStatus, err := mentordm.StrCastUint(planStatus[i])
+			uintPlanStatus, err := mentordm.StrCastUint(p.PlanStatus)
 			if err != nil {
 				return err
 			}
@@ -132,10 +130,10 @@ func (mu *CreateMentorUsecaseImpl) Create(
 			}
 
 			mentor.AddPlan(
-				planTitle[i],
-				planCategory[i],
-				planTag[i],
-				planDetial[i],
+				p.PlanTitle,
+				p.PlanCategory,
+				p.PlanTag,
+				p.PlanDetial,
 				planType,
 				price,
 				planStatus,

@@ -27,13 +27,7 @@ func TestCreate(t *testing.T) {
 		mp.mentorTag,
 		mp.mentorAssessment,
 		mp.mentorExperienceYears,
-		mp.planTitle,
-		mp.planCategory,
-		mp.planTag,
-		mp.planDetial,
-		mp.planType,
-		mp.planPrice,
-		mp.planStatus,
+		mp.plans,
 	)
 
 	// 検証 エラーが発生しないこと

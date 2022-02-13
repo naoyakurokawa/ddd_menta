@@ -29,14 +29,7 @@ type mentorParams struct {
 	mentorTag             []string
 	mentorAssessment      []string
 	mentorExperienceYears []string
-	planID                mentordm.PlanID
-	planTitle             []string
-	planCategory          []string
-	planTag               []string
-	planDetial            []string
-	planType              []string
-	planPrice             []string
-	planStatus            []string
+	plans                 []Plan
 	createdAt             time.Time
 }
 
@@ -46,7 +39,6 @@ var (
 	userCareers  []userdm.UserCareer
 	userSkills   []userdm.UserSkill
 	mentorSkills []mentordm.MentorSkill
-	plans        []mentordm.Plan
 )
 
 func setupUser() error {
@@ -75,9 +67,21 @@ func setupUser() error {
 }
 
 func setupMentor() error {
+	var plans []Plan
 	mentorID := mentordm.NewMentorID()
 	mentorSkillID := mentordm.NewMentorSkillID()
-	planID := mentordm.NewPlanID()
+
+	p := Plan{
+		"DDDのメンタリング",
+		"設計",
+		"DDD",
+		"DDDの設計手法を学べます",
+		"2",
+		"1000",
+		"1",
+	}
+
+	plans = append(plans, p)
 
 	mp = mentorParams{
 		up.userID,
@@ -91,14 +95,7 @@ func setupMentor() error {
 		[]string{"Golang"},
 		[]string{"5"},
 		[]string{"5"},
-		planID,
-		[]string{"DDDのメンタリング"},
-		[]string{"設計"},
-		[]string{"DDD"},
-		[]string{"DDDの設計手法を学べます"},
-		[]string{"2"},
-		[]string{"1000"},
-		[]string{"1"},
+		plans,
 		time.Date(2000, 1, 1, 0, 0, 0, 0, time.Local),
 	}
 	return nil

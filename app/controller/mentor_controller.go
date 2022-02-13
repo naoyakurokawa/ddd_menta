@@ -22,21 +22,11 @@ type mentorRequest struct {
 	MainImg               string
 	SubImg                string
 	Category              string
-	Detial                string
+	Detail                string
 	MentorTag             []string
 	MentorAssessment      []string
 	MentorExperienceYears []string
-	Plan                  Plan
-}
-
-type Plan struct {
-	PlanTitle    []string
-	PlanCategory []string
-	PlanTag      []string
-	PlanDetial   []string
-	PlanType     []string
-	PlanPrice    []string
-	PlanStatus   []string
+	Plans                 []mentoruc.Plan
 }
 
 func NewCreateMentorController() echo.HandlerFunc {
@@ -58,17 +48,11 @@ func NewCreateMentorController() echo.HandlerFunc {
 			req.MainImg,
 			req.SubImg,
 			req.Category,
-			req.Detial,
+			req.Detail,
 			req.MentorTag,
 			req.MentorAssessment,
 			req.MentorExperienceYears,
-			req.Plan.PlanTitle,
-			req.Plan.PlanCategory,
-			req.Plan.PlanTag,
-			req.Plan.PlanDetial,
-			req.Plan.PlanType,
-			req.Plan.PlanPrice,
-			req.Plan.PlanStatus,
+			req.Plans,
 		)
 
 		if err != nil {
