@@ -3,7 +3,6 @@ package mentoruc
 import (
 	"github.com/naoyakurokawa/ddd_menta/core/domain/mentordm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
-	"github.com/naoyakurokawa/ddd_menta/core/util"
 )
 
 type CreateMentorUsecase interface {
@@ -82,12 +81,12 @@ func (mu *CreateMentorUsecaseImpl) Create(
 	//メンタースキル作成
 	if len(mentorTag) > 0 {
 		for i := 0; i < len(mentorTag); i++ {
-			uintMentorAssessment, err := util.CastUint(mentorAssessment[i])
+			uintMentorAssessment, err := mentordm.StrCastUint(mentorAssessment[i])
 			if err != nil {
 				return err
 			}
 
-			uintMentorExperienceYears, err := util.CastUint(mentorExperienceYears[i])
+			uintMentorExperienceYears, err := mentordm.StrCastUint(mentorExperienceYears[i])
 			if err != nil {
 				return err
 			}
@@ -108,7 +107,7 @@ func (mu *CreateMentorUsecaseImpl) Create(
 	//メンタープラン追加
 	if len(planTitle) > 0 {
 		for i := 0; i < len(planTitle); i++ {
-			uintPlanType, err := util.CastUint(planType[i])
+			uintPlanType, err := mentordm.StrCastUint(planType[i])
 			if err != nil {
 				return err
 			}
@@ -118,12 +117,12 @@ func (mu *CreateMentorUsecaseImpl) Create(
 				return err
 			}
 
-			price, err := util.CastUint(planPrice[i])
+			price, err := mentordm.StrCastUint(planPrice[i])
 			if err != nil {
 				return err
 			}
 
-			uintPlanStatus, err := util.CastUint(planStatus[i])
+			uintPlanStatus, err := mentordm.StrCastUint(planStatus[i])
 			if err != nil {
 				return err
 			}

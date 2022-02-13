@@ -1,6 +1,7 @@
 package mentordm
 
 import (
+	"strconv"
 	"unicode/utf8"
 
 	"github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
@@ -151,4 +152,12 @@ func (m *Mentor) AddPlan(
 	m.plans = append(m.plans, *plan)
 
 	return m, nil
+}
+
+func StrCastUint(str string) (uint16, error) {
+	ui, err := strconv.ParseUint(str, 10, 16)
+	if err != nil {
+		return 0, err
+	}
+	return uint16(ui), nil
 }
