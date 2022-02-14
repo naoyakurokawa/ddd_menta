@@ -6,7 +6,6 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/mentordm"
-	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
 	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/datamodel"
 )
 
@@ -75,9 +74,10 @@ func (mr *MentorRepositoryImpl) FindByID(mentorID mentordm.MentorID) (*mentordm.
 		dataModelMentorSkills []mentordm.MentorSkill
 		dataModelPlan         []mentordm.Plan
 	)
+
 	dataModeMentor := &datamodel.Mentor{
-		UserID:       "",
 		MentorID:     "",
+		UserID:       "",
 		Title:        "",
 		MainImg:      "",
 		SubImg:       "",
@@ -90,13 +90,10 @@ func (mr *MentorRepositoryImpl) FindByID(mentorID mentordm.MentorID) (*mentordm.
 	if err := mr.conn.Where("mentor_id = ?", string(mentorID)).Find(&dataModeMentor).Error; err != nil {
 		return nil, err
 	}
-	mentorID, err := mentordm.NewMentorIDByVal(dataModeMentor.MentorID)
-	if err != nil {
-		return nil, err
-	}
-	mentor, err := mentordm.NewMentor(
-		mentorID,
-		userdm.UserIDType(dataModeMentor.UserID),
+
+	mentor, err := mentordm.Reconstruct(
+		dataModeMentor.MentorID,
+		dataModeMentor.UserID,
 		dataModeMentor.Title,
 		dataModeMentor.MainImg,
 		dataModeMentor.SubImg,
@@ -108,5 +105,6 @@ func (mr *MentorRepositoryImpl) FindByID(mentorID mentordm.MentorID) (*mentordm.
 	if err != nil {
 		return nil, err
 	}
+
 	return mentor, nil
 }

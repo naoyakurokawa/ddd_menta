@@ -66,12 +66,60 @@ func NewMentor(
 	return mentor, nil
 }
 
+func Reconstruct(
+	mentorID string,
+	userID string,
+	title string,
+	mainImg string,
+	subImg string,
+	category string,
+	detial string,
+	mentorSkills []MentorSkill,
+	plans []Plan,
+) (*Mentor, error) {
+	//入力データチェック
+	if utf8.RuneCountInString(title) > titleMaxLength {
+		return nil, xerrors.Errorf("title must less than %d: %s", titleMaxLength, title)
+	}
+	if len(title) == 0 {
+		return nil, xerrors.New("title must not be empty")
+	}
+	if len(detial) == 0 {
+		return nil, xerrors.New("detial must not be empty")
+	}
+	if utf8.RuneCountInString(detial) > detialMaxLength {
+		return nil, xerrors.Errorf("detial must less than %d: %s", detialMaxLength, detial)
+	}
+
+	castedMentorID := MentorIDType(mentorID)
+	castedUserID := userdm.UserIDType(userID)
+
+	mentor := &Mentor{
+		mentorID:     castedMentorID,
+		userID:       castedUserID,
+		title:        title,
+		mainImg:      mainImg,
+		subImg:       subImg,
+		category:     category,
+		detial:       detial,
+		createdAt:    sharedvo.NewCreatedAt(),
+		mentorSkills: mentorSkills,
+		plans:        plans,
+	}
+
+	return mentor, nil
+}
+
 func (m *Mentor) UserID() userdm.UserID {
 	return m.userID
 }
 
 func (m *Mentor) MentorID() MentorID {
 	return m.mentorID
+}
+
+func MentorIDType(strMentorID string) MentorID {
+	return MentorID(strMentorID)
 }
 
 func (m *Mentor) Title() string {

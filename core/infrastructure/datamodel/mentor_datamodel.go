@@ -7,8 +7,8 @@ import (
 )
 
 type Mentor struct {
-	UserID       string
 	MentorID     string
+	UserID       string
 	Title        string
 	MainImg      string
 	SubImg       string
