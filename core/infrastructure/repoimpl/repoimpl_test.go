@@ -49,10 +49,7 @@ var (
 
 func setupUser() error {
 	//ユーザー
-	userID, err := userdm.NewUserID()
-	if err != nil {
-		return xerrors.New("error NewUserID")
-	}
+	userID := userdm.NewUserID()
 	email, err := userdm.NewEmail("test@gmail.com")
 	if err != nil {
 		return xerrors.New("error NewEmail")

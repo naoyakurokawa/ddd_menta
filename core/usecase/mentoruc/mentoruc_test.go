@@ -18,17 +18,16 @@ type userParams struct {
 }
 
 type mentorParams struct {
-	userID        userdm.UserID
-	mentorID      mentordm.MentorID
-	title         string
-	mainImg       string
-	subImg        string
-	category      string
-	detail        string
-	mentorSkillID mentordm.MentorSkillID
-	mentorSkills  []MentorSkill
-	plans         []Plan
-	createdAt     time.Time
+	userID       userdm.UserID
+	mentorID     mentordm.MentorID
+	title        string
+	mainImg      string
+	subImg       string
+	category     string
+	detail       string
+	mentorSkills []MentorSkill
+	plans        []Plan
+	createdAt    time.Time
 }
 
 var (
@@ -41,10 +40,7 @@ var (
 
 func setupUser() error {
 	//ユーザー
-	userID, err := userdm.NewUserID()
-	if err != nil {
-		return xerrors.New("error NewUserID")
-	}
+	userID := userdm.NewUserID()
 	email, err := userdm.NewEmail("test@gmail.com")
 	if err != nil {
 		return xerrors.New("error NewEmail")
@@ -68,7 +64,6 @@ func setupMentor() error {
 	var mentrSkills []MentorSkill
 	var plans []Plan
 	mentorID := mentordm.NewMentorID()
-	mentorSkillID := mentordm.NewMentorSkillID()
 
 	m := MentorSkill{
 		"Golang",
@@ -96,7 +91,6 @@ func setupMentor() error {
 		"/sub.jpg",
 		"プログライミング",
 		"設計・開発・テストの一覧をサポートできます",
-		mentorSkillID,
 		mentrSkills,
 		plans,
 		time.Date(2000, 1, 1, 0, 0, 0, 0, time.Local),

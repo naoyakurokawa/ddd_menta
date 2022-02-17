@@ -37,17 +37,17 @@ func NewMentor(
 	plans []Plan,
 ) (*Mentor, error) {
 	//入力データチェック
-	if utf8.RuneCountInString(title) > titleMaxLength {
-		return nil, xerrors.Errorf("title must less than %d: %s", titleMaxLength, title)
-	}
-	if len(title) == 0 {
+	if isEmpty(title) {
 		return nil, xerrors.New("title must not be empty")
 	}
-	if len(detial) == 0 {
+	if isOver(title, titleMaxLength) {
+		return nil, xerrors.Errorf("title must less than %d: %s", titleMaxLength, title)
+	}
+	if isEmpty(detial) {
 		return nil, xerrors.New("detial must not be empty")
 	}
-	if utf8.RuneCountInString(detial) > detialMaxLength {
-		return nil, xerrors.Errorf("detial must less than %d: %s", detialMaxLength, detial)
+	if isOver(detial, detialMaxLength) {
+		return nil, xerrors.Errorf("title must less than %d: %s", titleMaxLength, title)
 	}
 
 	mentor := &Mentor{
@@ -78,21 +78,27 @@ func Reconstruct(
 	plans []Plan,
 ) (*Mentor, error) {
 	//入力データチェック
-	if utf8.RuneCountInString(title) > titleMaxLength {
-		return nil, xerrors.Errorf("title must less than %d: %s", titleMaxLength, title)
-	}
-	if len(title) == 0 {
+	if isEmpty(title) {
 		return nil, xerrors.New("title must not be empty")
 	}
-	if len(detial) == 0 {
+	if isOver(title, titleMaxLength) {
+		return nil, xerrors.Errorf("title must less than %d: %s", titleMaxLength, title)
+	}
+	if isEmpty(detial) {
 		return nil, xerrors.New("detial must not be empty")
 	}
-	if utf8.RuneCountInString(detial) > detialMaxLength {
-		return nil, xerrors.Errorf("detial must less than %d: %s", detialMaxLength, detial)
+	if isOver(detial, detialMaxLength) {
+		return nil, xerrors.Errorf("title must less than %d: %s", titleMaxLength, title)
 	}
 
-	castedMentorID := MentorIDType(mentorID)
-	castedUserID := userdm.UserIDType(userID)
+	castedMentorID, err := NewMentorIDByVal(mentorID)
+	if err != nil {
+		return nil, xerrors.New("error NewMentorIDByVal")
+	}
+	castedUserID, err := userdm.NewUserIDByVal(userID)
+	if err != nil {
+		return nil, xerrors.New("error NewUserIDByVal")
+	}
 
 	mentor := &Mentor{
 		mentorID:     castedMentorID,
@@ -152,6 +158,14 @@ func (m *Mentor) MentorSkills() []MentorSkill {
 
 func (m *Mentor) Plans() []Plan {
 	return m.plans
+}
+
+func isEmpty(s string) bool {
+	return len(s) == 0
+}
+
+func isOver(s string, maxlength int) bool {
+	return utf8.RuneCountInString(s) > maxlength
 }
 
 func (m *Mentor) AddMentorSkill(

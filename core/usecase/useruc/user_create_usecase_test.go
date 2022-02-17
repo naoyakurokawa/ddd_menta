@@ -24,11 +24,7 @@ func TestCreate(t *testing.T) {
 	assessment := []string{"5"}
 	experienceYears := []string{"5"}
 
-	userID, err := userdm.NewUserID()
-	if err != nil {
-		t.Errorf("failed to NewUserID: %v", err)
-	}
-	// userCareers := []userdm.UserCareer{}
+	userID := userdm.NewUserID()
 	userCareers := make([]userdm.UserCareer, 2)
 	userCareerID1, err := userdm.NewUserCareerID()
 	if err != nil {

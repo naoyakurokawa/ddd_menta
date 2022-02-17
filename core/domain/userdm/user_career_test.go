@@ -11,11 +11,7 @@ func TestNewUserCareer(t *testing.T) {
 		to     = "2006-01-02 15:04:05"
 		detail = "プログラマー"
 	)
-	userID, err := NewUserID()
-	if err != nil {
-		t.Errorf("failed to NewUserID: %v", err)
-		return
-	}
+	userID := NewUserID()
 	userCareerID, err := NewUserCareerID()
 	if err != nil {
 		t.Errorf("failed to NewUserCareerID: %v", err)

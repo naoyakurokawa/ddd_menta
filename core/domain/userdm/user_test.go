@@ -12,11 +12,7 @@ func TestNewUser(t *testing.T) {
 		password = "test12345678"
 		profile  = "エンジニアです"
 	)
-	userID, err := NewUserID()
-	if err != nil {
-		t.Errorf("failed to NewUserID: %v", err)
-		return
-	}
+	userID := NewUserID()
 	emailIns, err := NewEmail(email)
 	if err != nil {
 		t.Errorf("failed to NewEmail: %v", err)
