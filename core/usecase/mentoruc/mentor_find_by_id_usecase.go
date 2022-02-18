@@ -10,7 +10,7 @@ type MentorFindByIDUsecaseImpl struct {
 	mentorRepo mentordm.MentorRepository
 }
 
-func NewmentorFindByIDUsecase(mentorRepo mentordm.MentorRepository) MentorFindByIDUsecase {
+func NewMentorFindByIDUsecase(mentorRepo mentordm.MentorRepository) MentorFindByIDUsecase {
 	return &MentorFindByIDUsecaseImpl{mentorRepo: mentorRepo}
 }
 
