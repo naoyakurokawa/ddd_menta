@@ -15,11 +15,7 @@ func TestUserRepo_Create(t *testing.T) {
 		profile  = "プログラマーです"
 	)
 
-	userID, err := userdm.NewUserID()
-	if err != nil {
-		t.Errorf("failed to NewUserID: %v", err)
-	}
-
+	userID := userdm.NewUserID()
 	userCareers := make([]userdm.UserCareer, 2)
 	userCareerID1, err := userdm.NewUserCareerID()
 	if err != nil {

@@ -100,3 +100,7 @@ func (p *Plan) Price() uint16 {
 func (p *Plan) PlanStatus() PlanStatus {
 	return p.planStatus
 }
+
+func (p *Plan) CreatedAt() sharedvo.CreatedAt {
+	return p.createdAt
+}

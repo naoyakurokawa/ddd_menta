@@ -22,3 +22,7 @@ func NewMentorIDByVal(strId string) (MentorID, error) {
 func NewEmptyMentorID() MentorID {
 	return MentorID(sharedvo.NewEmptyID())
 }
+
+func (i MentorID) Equals(i2 MentorID) bool {
+	return i == i2
+}

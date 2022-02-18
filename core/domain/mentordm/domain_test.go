@@ -35,10 +35,7 @@ var (
 )
 
 func setup() error {
-	userID, err := userdm.NewUserID()
-	if err != nil {
-		return xerrors.New("error NewUserID")
-	}
+	userID := userdm.NewUserID()
 	mentorID := NewMentorID()
 	planID := NewPlanID()
 	experienceYears, err := NewExperienceYears(uint16(5))

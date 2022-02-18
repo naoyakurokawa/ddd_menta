@@ -22,10 +22,7 @@ func NewUserCreateUsecase(userRepo userdm.UserRepository) UserCreateUsecase {
 
 // Create userを保存するときのユースケース
 func (uu *UserCreateUsecaseImpl) Create(name string, email string, password string, profile string, from []string, to []string, detail []string, tag []string, assessment []string, experienceYears []string) (*userdm.User, error) {
-	userID, err := userdm.NewUserID()
-	if err != nil {
-		return nil, err
-	}
+	userID := userdm.NewUserID()
 	emailIns, err := userdm.NewEmail(email)
 	if err != nil {
 		return nil, err

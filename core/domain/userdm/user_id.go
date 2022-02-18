@@ -1,19 +1,22 @@
 package userdm
 
 import (
-	"github.com/google/uuid"
+	"github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
+	"golang.org/x/xerrors"
 )
 
-type UserID string
+type UserID sharedvo.ID
 
-func NewUserID() (UserID, error) {
-	u, err := uuid.NewRandom()
+func NewUserID() UserID {
+	return UserID(sharedvo.NewID())
+}
+
+func NewUserIDByVal(strId string) (UserID, error) {
+	id, err := sharedvo.NewIDByVal(strId)
 	if err != nil {
-		return UserID(""), err
+		return UserID(""), xerrors.New("error NewUserIDByVal")
 	}
-	us := u.String()
-
-	return UserID(us), nil
+	return UserID(id), nil
 }
 
 func (u UserID) Equals(u2 UserID) bool {

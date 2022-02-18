@@ -1,7 +1,6 @@
 package mentordm
 
 import (
-	"strconv"
 	"unicode/utf8"
 
 	"github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
@@ -50,7 +49,7 @@ func NewMentorSkill(
 	return mentorSkill, nil
 }
 
-func (m *MentorSkill) UserSkillID() MentorSkillID {
+func (m *MentorSkill) MentorSkillID() MentorSkillID {
 	return m.mentorSkillID
 }
 
@@ -68,12 +67,4 @@ func (u *MentorSkill) ExperienceYears() ExperienceYears {
 
 func (u *MentorSkill) CreatedAt() sharedvo.CreatedAt {
 	return u.createdAt
-}
-
-func (u *MentorSkill) AssessmentCastUint(assessment string) (uint16, error) {
-	uintAssessment, err := strconv.ParseUint(assessment, 10, 16)
-	if err != nil {
-		return 0, err
-	}
-	return uint16(uintAssessment), nil
 }
