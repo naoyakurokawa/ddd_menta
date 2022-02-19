@@ -1,6 +1,8 @@
 package contractdm
 
 import (
+	"strconv"
+
 	"github.com/naoyakurokawa/ddd_menta/core/domain/mentordm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
@@ -50,4 +52,16 @@ func (c *Contract) PlanID() mentordm.PlanID {
 
 func (c *Contract) Status() Status {
 	return c.status
+}
+
+func (m *Contract) CreatedAt() sharedvo.CreatedAt {
+	return m.createdAt
+}
+
+func StrCastUint(str string) (uint16, error) {
+	ui, err := strconv.ParseUint(str, 10, 16)
+	if err != nil {
+		return 0, err
+	}
+	return uint16(ui), nil
 }
