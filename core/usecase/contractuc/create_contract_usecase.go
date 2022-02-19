@@ -21,7 +21,6 @@ func NewCreateContractUsecase(contractRepo contractdm.ContractRepository) Create
 	return &CreateContractUsecaseImpl{contractRepo: contractRepo}
 }
 
-// Create userを保存するときのユースケース
 func (cu *CreateContractUsecaseImpl) Create(
 	userID string,
 	planID string,

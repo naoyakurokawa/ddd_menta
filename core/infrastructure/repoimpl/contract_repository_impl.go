@@ -24,7 +24,7 @@ func (cr *ContractRepositoryImpl) Create(contract *contractdm.Contract) error {
 	c.PlanID = string(contract.PlanID())
 	c.Status = uint16(contract.Status())
 	c.CreatedAt = time.Time(contract.CreatedAt())
-	// メンター概要登録
+
 	if err := cr.conn.Create(&c).Error; err != nil {
 		return err
 	}

@@ -16,9 +16,6 @@ type Contract struct {
 	createdAt  sharedvo.CreatedAt
 }
 
-const titleMaxLength = 255
-const detialMaxLength = 2000
-
 func NewContract(
 	userID userdm.UserID,
 	planID mentordm.PlanID,
