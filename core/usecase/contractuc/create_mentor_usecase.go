@@ -10,7 +10,6 @@ type CreateContractUsecase interface {
 	Create(
 		userID string,
 		planID string,
-		status string,
 	) error
 }
 
@@ -18,7 +17,6 @@ type CreateContractUsecaseImpl struct {
 	contractRepo contractdm.ContractRepository
 }
 
-// user usecaseのコンストラクタ
 func NewCreateContractUsecase(contractRepo contractdm.ContractRepository) CreateContractUsecase {
 	return &CreateContractUsecaseImpl{contractRepo: contractRepo}
 }
@@ -27,9 +25,7 @@ func NewCreateContractUsecase(contractRepo contractdm.ContractRepository) Create
 func (cu *CreateContractUsecaseImpl) Create(
 	userID string,
 	planID string,
-	status string,
 ) error {
-	// contractID := contractdm.NewContractID()
 	userIDIns, err := userdm.NewUserIDByVal(userID)
 	if err != nil {
 		return err
@@ -38,26 +34,18 @@ func (cu *CreateContractUsecaseImpl) Create(
 	if err != nil {
 		return err
 	}
-	castedStatus, err := contractdm.StrCastUint(status)
-	if err != nil {
-		return err
-	}
-	statusIns, err := contractdm.NewStatus(castedStatus)
-	if err != nil {
-		return err
-	}
+	//メンティーによる契約リクエスト時のStatusは未承認
+	status := contractdm.Unapproved
 
-	// メンター作成
 	contract, err := contractdm.NewContract(
 		userIDIns,
 		planIDIns,
-		statusIns,
+		status,
 	)
 	if err != nil {
 		return err
 	}
 
-	//最終的にinfraのCreateメソッドを実行することになる
 	err = cu.contractRepo.Create(contract)
 	if err != nil {
 		return err

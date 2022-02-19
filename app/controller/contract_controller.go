@@ -38,7 +38,6 @@ func NewCreateContractController() echo.HandlerFunc {
 		err := contractCreateUsecase.Create(
 			userID,
 			req.PlanID,
-			req.Status,
 		)
 
 		if err != nil {
