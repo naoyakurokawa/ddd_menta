@@ -18,15 +18,16 @@ func NewContractController(cu contractuc.CreateContractUsecase) *ContractControl
 }
 
 type contractRequest struct {
-	PlanID string
-	Status string
+	MentorID string
+	PlanID   string
 }
 
 func NewCreateContractController() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		conn := db.NewDB()
 		contractRepository := repoimpl.NewContractRepositoryImpl(conn)
-		contractCreateUsecase := contractuc.NewCreateContractUsecase(contractRepository)
+		mentorRepository := repoimpl.NewMentorRepositoryImpl(conn)
+		contractCreateUsecase := contractuc.NewCreateContractUsecase(contractRepository, mentorRepository)
 
 		var req contractRequest
 		if err := c.Bind(&req); err != nil {
@@ -37,6 +38,7 @@ func NewCreateContractController() echo.HandlerFunc {
 		userID := "e2e908dc-5981-4c4a-8e98-4487d3e122ad"
 		err := contractCreateUsecase.Create(
 			userID,
+			req.MentorID,
 			req.PlanID,
 		)
 

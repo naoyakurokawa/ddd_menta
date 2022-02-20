@@ -11,6 +11,7 @@ import (
 type Contract struct {
 	contractID ContractID
 	userID     userdm.UserID
+	mentorID   mentordm.MentorID
 	planID     mentordm.PlanID
 	status     Status
 	createdAt  sharedvo.CreatedAt
@@ -18,6 +19,7 @@ type Contract struct {
 
 func NewContract(
 	userID userdm.UserID,
+	mentorID mentordm.MentorID,
 	planID mentordm.PlanID,
 	status Status,
 ) (*Contract, error) {
@@ -27,6 +29,7 @@ func NewContract(
 	contract := &Contract{
 		contractID: contractID,
 		userID:     userID,
+		mentorID:   mentorID,
 		planID:     planID,
 		status:     status,
 		createdAt:  sharedvo.NewCreatedAt(),
@@ -41,6 +44,10 @@ func (c *Contract) ContractID() ContractID {
 
 func (c *Contract) UserID() userdm.UserID {
 	return c.userID
+}
+
+func (c *Contract) MentorID() mentordm.MentorID {
+	return c.mentorID
 }
 
 func (c *Contract) PlanID() mentordm.PlanID {

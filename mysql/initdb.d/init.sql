@@ -185,6 +185,7 @@ CREATE TABLE contracts
 (
   contract_id VARCHAR(255) NOT NULL,
   user_id VARCHAR(255) NOT NULL,
+  mentor_id VARCHAR(255) NOT NULL,
   plan_id VARCHAR(255) NOT NULL,
   `status` INT NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -196,9 +197,11 @@ CREATE TABLE contracts
 INSERT INTO contracts (
   contract_id,
   user_id,
+  mentor_id,
   plan_id,
   `status`
 ) VALUES (
+  "e2e908dc-5981-4c4a-8e98-4487d3e122ad", 
   "e2e908dc-5981-4c4a-8e98-4487d3e122ad", 
   "e2e908dc-5981-4c4a-8e98-4487d3e122ad",
   "e2e908dc-5981-4c4a-8e98-4487d3e122ad",

@@ -70,25 +70,49 @@ func (mr *MentorRepositoryImpl) Create(mentor *mentordm.Mentor) error {
 }
 
 func (mr *MentorRepositoryImpl) FindByID(mentorID mentordm.MentorID) (*mentordm.Mentor, error) {
-	var (
-		dataModelMentorSkills []mentordm.MentorSkill
-		dataModelPlan         []mentordm.Plan
-	)
-
-	dataModeMentor := &datamodel.Mentor{
-		MentorID:     "",
-		UserID:       "",
-		Title:        "",
-		MainImg:      "",
-		SubImg:       "",
-		Category:     "",
-		Detail:       "",
-		CreatedAt:    time.Now(),
-		Plans:        dataModelPlan,
-		MentorSkills: dataModelMentorSkills,
-	}
+	dataModeMentor := &datamodel.Mentor{}
+	dataModelPlans := []datamodel.Plan{}
+	dataModelMentorSkills := []datamodel.MentorSkill{}
 	if err := mr.conn.Where("mentor_id = ?", string(mentorID)).Find(&dataModeMentor).Error; err != nil {
 		return nil, err
+	}
+
+	if err := mr.conn.Where("mentor_id = ?", string(mentorID)).Find(&dataModelPlans).Error; err != nil {
+		return nil, err
+	}
+	mentorPlans := make([]mentordm.Plan, len(dataModelPlans))
+	for _, p := range dataModelPlans {
+		plan, err := mentordm.ReconstructPlan(
+			p.PlanID,
+			p.Title,
+			p.Category,
+			p.Tag,
+			p.Detail,
+			p.PlanType,
+			p.Price,
+			p.PlanStatus,
+		)
+		if err != nil {
+			return nil, err
+		}
+		mentorPlans = append(mentorPlans, *plan)
+	}
+
+	if err := mr.conn.Where("mentor_id = ?", string(mentorID)).Find(&dataModelMentorSkills).Error; err != nil {
+		return nil, err
+	}
+	mentorSkills := make([]mentordm.MentorSkill, len(dataModelMentorSkills))
+	for _, ms := range dataModelMentorSkills {
+		mentorSkill, err := mentordm.ReconstructMentorSkill(
+			ms.MentorSkillID,
+			ms.Tag,
+			ms.Assessment,
+			ms.ExperienceYears,
+		)
+		if err != nil {
+			return nil, err
+		}
+		mentorSkills = append(mentorSkills, *mentorSkill)
 	}
 
 	mentor, err := mentordm.Reconstruct(
@@ -99,8 +123,8 @@ func (mr *MentorRepositoryImpl) FindByID(mentorID mentordm.MentorID) (*mentordm.
 		dataModeMentor.SubImg,
 		dataModeMentor.Category,
 		dataModeMentor.Detail,
-		dataModelMentorSkills,
-		dataModelPlan,
+		mentorSkills,
+		mentorPlans,
 	)
 	if err != nil {
 		return nil, err

@@ -21,6 +21,7 @@ func (cr *ContractRepositoryImpl) Create(contract *contractdm.Contract) error {
 	var c datamodel.Contract
 	c.ContractID = string(contract.ContractID())
 	c.UserID = string(contract.UserID())
+	c.MentorID = string(contract.MentorID())
 	c.PlanID = string(contract.PlanID())
 	c.Status = uint16(contract.Status())
 	c.CreatedAt = time.Time(contract.CreatedAt())
