@@ -83,9 +83,7 @@ func TestCreate(t *testing.T) {
 				string(mp.mentorID),
 				string(mp.planID),
 			)
-			if err == nil {
-				asserts.Equal(err, td.err)
-			}
+			asserts.Equal(err, td.err)
 		})
 	}
 
