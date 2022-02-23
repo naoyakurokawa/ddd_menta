@@ -25,10 +25,31 @@ func (cr *ContractRepositoryImpl) Create(contract *contractdm.Contract) error {
 	c.PlanID = string(contract.PlanID())
 	c.Status = uint16(contract.Status())
 	c.CreatedAt = time.Time(contract.CreatedAt())
+	c.UpdatedAt = time.Time(contract.UpdatedAt())
 
 	if err := cr.conn.Create(&c).Error; err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func (cr *ContractRepositoryImpl) FindByID(contractID contractdm.ContractID) (*contractdm.Contract, error) {
+	dataModeContract := &datamodel.Contract{}
+	if err := cr.conn.Where("contract_id = ?", string(contractID)).Find(&dataModeContract).Error; err != nil {
+		return nil, err
+	}
+
+	contract, err := contractdm.Reconstruct(
+		dataModeContract.ContractID,
+		dataModeContract.UserID,
+		dataModeContract.MentorID,
+		dataModeContract.PlanID,
+		dataModeContract.Status,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return contract, nil
 }

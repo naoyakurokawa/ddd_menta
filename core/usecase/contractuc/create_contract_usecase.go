@@ -47,16 +47,16 @@ func (cu *CreateContractUsecaseImpl) Create(
 	if err != nil {
 		return err
 	}
+	// 希望するプランがアクティブでない場合は、契約リクエスト不可
 	mentorDomainService := mentordm.NewMentorDomainService(cu.mentorRepo)
 	if !mentorDomainService.IsActivePlan(mentorIDIns, planIDIns) {
 		return xerrors.New("This plan is not active")
 	}
-	// mentor := repoimpl.
-	// CheckRequestPlanStatus
-	//メンティーによる契約リクエスト時のStatusは未承認
+	// メンティーによる契約リクエスト時のStatusは未承認
+	contractID := contractdm.NewContractID()
 	status := contractdm.Unapproved
-
 	contract, err := contractdm.NewContract(
+		contractID,
 		userIDIns,
 		mentorIDIns,
 		planIDIns,
@@ -65,7 +65,6 @@ func (cu *CreateContractUsecaseImpl) Create(
 	if err != nil {
 		return err
 	}
-
 	err = cu.contractRepo.Create(contract)
 	if err != nil {
 		return err

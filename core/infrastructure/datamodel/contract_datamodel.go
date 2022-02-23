@@ -11,4 +11,5 @@ type Contract struct {
 	PlanID     string
 	Status     uint16
 	CreatedAt  time.Time
+	UpdatedAt  time.Time
 }
