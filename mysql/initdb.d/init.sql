@@ -187,7 +187,7 @@ CREATE TABLE contracts
   user_id VARCHAR(255) NOT NULL,
   mentor_id VARCHAR(255) NOT NULL,
   plan_id VARCHAR(255) NOT NULL,
-  `status` INT NOT NULL,
+  contract_status INT NOT NULL,
   created_at TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME NOT NULL,
   PRIMARY KEY (contract_id),
@@ -200,7 +200,7 @@ INSERT INTO contracts (
   user_id,
   mentor_id,
   plan_id,
-  `status`,
+  contract_status,
   created_at,
   updated_at
 ) VALUES (

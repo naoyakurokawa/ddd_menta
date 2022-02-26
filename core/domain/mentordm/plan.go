@@ -1,6 +1,8 @@
 package mentordm
 
 import (
+	"unicode/utf8"
+
 	"github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
 	"golang.org/x/xerrors"
 )
@@ -31,25 +33,25 @@ func NewPlan(
 	planStatus PlanStatus,
 ) (*Plan, error) {
 	//入力データチェック
-	if isEmpty(title) {
+	if len(title) == 0 {
 		return nil, xerrors.New("title must not be empty")
 	}
-	if isOver(title, planTitleMaxLength) {
+	if utf8.RuneCountInString(title) > planTitleMaxLength {
 		return nil, xerrors.Errorf("title must less than %d: %s", planTitleMaxLength, title)
 	}
-	if isEmpty(category) {
+	if len(category) == 0 {
 		return nil, xerrors.New("category must not be empty")
 	}
-	if isEmpty(tag) {
+	if len(tag) == 0 {
 		return nil, xerrors.New("tag must not be empty")
 	}
-	if isEmpty(detial) {
+	if len(detial) == 0 {
 		return nil, xerrors.New("detial must not be empty")
 	}
-	if isOver(detial, planDetialMaxLength) {
+	if utf8.RuneCountInString(detial) > planDetialMaxLength {
 		return nil, xerrors.Errorf("detial must less than %d: %s", planDetialMaxLength, detial)
 	}
-	if isZero(price) {
+	if price == 0 {
 		return nil, xerrors.New("price must more than 0")
 	}
 
@@ -78,25 +80,25 @@ func ReconstructPlan(
 	price uint16,
 	planStatus uint16,
 ) (*Plan, error) {
-	if isEmpty(title) {
+	if len(title) == 0 {
 		return nil, xerrors.New("title must not be empty")
 	}
-	if isOver(title, planTitleMaxLength) {
+	if utf8.RuneCountInString(title) > planTitleMaxLength {
 		return nil, xerrors.Errorf("title must less than %d: %s", planTitleMaxLength, title)
 	}
-	if isEmpty(category) {
+	if len(category) == 0 {
 		return nil, xerrors.New("category must not be empty")
 	}
-	if isEmpty(tag) {
+	if len(tag) == 0 {
 		return nil, xerrors.New("tag must not be empty")
 	}
-	if isEmpty(detial) {
+	if len(detial) == 0 {
 		return nil, xerrors.New("detial must not be empty")
 	}
-	if isOver(detial, planDetialMaxLength) {
+	if utf8.RuneCountInString(detial) > planDetialMaxLength {
 		return nil, xerrors.Errorf("detial must less than %d: %s", planDetialMaxLength, detial)
 	}
-	if isZero(price) {
+	if price == 0 {
 		return nil, xerrors.New("price must more than 0")
 	}
 
@@ -160,4 +162,8 @@ func (p *Plan) PlanStatus() PlanStatus {
 
 func (p *Plan) CreatedAt() sharedvo.CreatedAt {
 	return p.createdAt
+}
+
+func (p *Plan) isActive(requestPlanID PlanID) bool {
+	return p.planID == requestPlanID && p.planStatus == Active
 }

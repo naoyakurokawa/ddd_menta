@@ -5,11 +5,11 @@ import (
 )
 
 type Contract struct {
-	ContractID string
-	UserID     string
-	MentorID   string
-	PlanID     string
-	Status     uint16
-	CreatedAt  time.Time
-	UpdatedAt  time.Time
+	ContractID     string
+	UserID         string
+	MentorID       string
+	PlanID         string
+	ContractStatus uint16
+	CreatedAt      time.Time
+	UpdatedAt      time.Time
 }

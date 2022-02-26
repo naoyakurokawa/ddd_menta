@@ -9,13 +9,13 @@ import (
 )
 
 type contractParams struct {
-	contractID ContractID
-	userID     userdm.UserID
-	mentorID   mentordm.MentorID
-	planID     mentordm.PlanID
-	status     Status
-	createdAt  time.Time
-	updatedAt  time.Time
+	contractID     ContractID
+	userID         userdm.UserID
+	mentorID       mentordm.MentorID
+	planID         mentordm.PlanID
+	contractStatus ContractStatus
+	createdAt      time.Time
+	updatedAt      time.Time
 }
 
 var (
@@ -27,16 +27,16 @@ func setup() error {
 	userID := userdm.NewUserID()
 	mentorID := mentordm.NewMentorID()
 	planID := mentordm.NewPlanID()
-	status, err := NewStatus(uint16(1))
+	contractStatus, err := NewContractStatus(uint16(1))
 	if err != nil {
-		return xerrors.New("error NewStatus")
+		return xerrors.New("error NewContractStatus")
 	}
 	cp = contractParams{
 		contractID,
 		userID,
 		mentorID,
 		planID,
-		status,
+		contractStatus,
 		time.Date(2000, 1, 1, 0, 0, 0, 0, time.Local),
 		time.Date(2000, 1, 1, 0, 0, 0, 0, time.Local),
 	}

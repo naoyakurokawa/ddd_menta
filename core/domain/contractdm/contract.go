@@ -10,13 +10,13 @@ import (
 )
 
 type Contract struct {
-	contractID ContractID
-	userID     userdm.UserID
-	mentorID   mentordm.MentorID
-	planID     mentordm.PlanID
-	status     Status
-	createdAt  sharedvo.CreatedAt
-	updatedAt  sharedvo.UpdatedAt
+	contractID     ContractID
+	userID         userdm.UserID
+	mentorID       mentordm.MentorID
+	planID         mentordm.PlanID
+	contractStatus ContractStatus
+	createdAt      sharedvo.CreatedAt
+	updatedAt      sharedvo.UpdatedAt
 }
 
 func NewContract(
@@ -24,17 +24,17 @@ func NewContract(
 	userID userdm.UserID,
 	mentorID mentordm.MentorID,
 	planID mentordm.PlanID,
-	status Status,
+	contractStatus ContractStatus,
 ) (*Contract, error) {
 
 	contract := &Contract{
-		contractID: contractID,
-		userID:     userID,
-		mentorID:   mentorID,
-		planID:     planID,
-		status:     status,
-		createdAt:  sharedvo.NewCreatedAt(),
-		updatedAt:  sharedvo.NewUpdatedAt(),
+		contractID:     contractID,
+		userID:         userID,
+		mentorID:       mentorID,
+		planID:         planID,
+		contractStatus: contractStatus,
+		createdAt:      sharedvo.NewCreatedAt(),
+		updatedAt:      sharedvo.NewUpdatedAt(),
 	}
 
 	return contract, nil
@@ -45,7 +45,7 @@ func Reconstruct(
 	userID string,
 	mentorID string,
 	planID string,
-	status uint16,
+	contractStatus uint16,
 ) (*Contract, error) {
 	castedContractID, err := NewContractIDByVal(contractID)
 	if err != nil {
@@ -63,19 +63,19 @@ func Reconstruct(
 	if err != nil {
 		return nil, xerrors.New("error NewMentorIDByVal")
 	}
-	statusIns, err := NewStatus(status)
+	ContractStatusIns, err := NewContractStatus(contractStatus)
 	if err != nil {
-		return nil, xerrors.New("error NewStatus")
+		return nil, xerrors.New("error NewContractStatus")
 	}
 
 	contract := &Contract{
-		contractID: castedContractID,
-		userID:     castedUserID,
-		mentorID:   castedMentorID,
-		planID:     castedPlanID,
-		status:     statusIns,
-		createdAt:  sharedvo.NewCreatedAt(),
-		updatedAt:  sharedvo.NewUpdatedAt(),
+		contractID:     castedContractID,
+		userID:         castedUserID,
+		mentorID:       castedMentorID,
+		planID:         castedPlanID,
+		contractStatus: ContractStatusIns,
+		createdAt:      sharedvo.NewCreatedAt(),
+		updatedAt:      sharedvo.NewUpdatedAt(),
 	}
 
 	return contract, nil
@@ -97,8 +97,8 @@ func (c *Contract) PlanID() mentordm.PlanID {
 	return c.planID
 }
 
-func (c *Contract) Status() Status {
-	return c.status
+func (c *Contract) ContractStatus() ContractStatus {
+	return c.contractStatus
 }
 
 func (c *Contract) CreatedAt() sharedvo.CreatedAt {

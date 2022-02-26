@@ -19,11 +19,11 @@ func NewContractRepositoryImpl(conn *gorm.DB) contractdm.ContractRepository {
 
 func (cr *ContractRepositoryImpl) Create(contract *contractdm.Contract) error {
 	var c datamodel.Contract
-	c.ContractID = string(contract.ContractID())
-	c.UserID = string(contract.UserID())
-	c.MentorID = string(contract.MentorID())
-	c.PlanID = string(contract.PlanID())
-	c.Status = uint16(contract.Status())
+	c.ContractID = contract.ContractID().String()
+	c.UserID = contract.UserID().String()
+	c.MentorID = contract.MentorID().String()
+	c.PlanID = contract.PlanID().String()
+	c.ContractStatus = uint16(contract.ContractStatus())
 	c.CreatedAt = time.Time(contract.CreatedAt())
 	c.UpdatedAt = time.Time(contract.UpdatedAt())
 
@@ -40,16 +40,12 @@ func (cr *ContractRepositoryImpl) FindByID(contractID contractdm.ContractID) (*c
 		return nil, err
 	}
 
-	contract, err := contractdm.Reconstruct(
+	return contractdm.Reconstruct(
 		dataModeContract.ContractID,
 		dataModeContract.UserID,
 		dataModeContract.MentorID,
 		dataModeContract.PlanID,
-		dataModeContract.Status,
+		dataModeContract.ContractStatus,
 	)
-	if err != nil {
-		return nil, err
-	}
 
-	return contract, nil
 }

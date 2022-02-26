@@ -102,7 +102,6 @@ func TestContractRepoCreate(t *testing.T) {
 	require.NoError(t, err)
 
 	selectedContract, err := contractRepository.FindByID(cp.contractID)
-	// selectedMentor, err := mentorRepository.FindByID(mp.mentorID)
 	require.NoError(t, err)
 
 	// 検証 (作成した契約がDB登録されているか)

@@ -47,7 +47,7 @@ type contractParams struct {
 	userID     userdm.UserID
 	mentorID   mentordm.MentorID
 	planID     mentordm.PlanID
-	status     contractdm.Status
+	status     contractdm.ContractStatus
 	createdAt  time.Time
 	updatedAt  time.Time
 }
@@ -134,7 +134,7 @@ func setupContract() error {
 	userID := userdm.NewUserID()
 	mentorID := mentordm.NewMentorID()
 	planID := mentordm.NewPlanID()
-	status, err := contractdm.NewStatus(uint16(1))
+	status, err := contractdm.NewContractStatus(uint16(1))
 	if err != nil {
 		return xerrors.New("error NewStatus")
 	}

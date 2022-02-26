@@ -13,7 +13,7 @@ func TestNewContract(t *testing.T) {
 			cp.userID,
 			cp.mentorID,
 			cp.planID,
-			cp.status,
+			cp.contractStatus,
 		)
 		require.NoError(t, err)
 	})

@@ -22,3 +22,7 @@ func NewPlanIDByVal(srtID string) (PlanID, error) {
 func NewEmptyPlanID() PlanID {
 	return PlanID(sharedvo.NewEmptyID())
 }
+
+func (i PlanID) String() string {
+	return string(i)
+}

@@ -26,3 +26,7 @@ func NewEmptyContractID() ContractID {
 func (i ContractID) Equals(i2 ContractID) bool {
 	return i == i2
 }
+
+func (i ContractID) String() string {
+	return string(i)
+}
