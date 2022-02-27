@@ -18,3 +18,16 @@ func TestNewContract(t *testing.T) {
 		require.NoError(t, err)
 	})
 }
+
+func TestReconstruct(t *testing.T) {
+	t.Run("実行時に_エラーが発生しないこと", func(t *testing.T) {
+		_, err := Reconstruct(
+			cp.contractID.String(),
+			cp.userID.String(),
+			cp.mentorID.String(),
+			cp.planID.String(),
+			cp.contractStatus.Uint16(),
+		)
+		require.NoError(t, err)
+	})
+}

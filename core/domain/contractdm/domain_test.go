@@ -1,6 +1,7 @@
 package contractdm
 
 import (
+	"testing"
 	"time"
 
 	"github.com/naoyakurokawa/ddd_menta/core/domain/mentordm"
@@ -21,6 +22,11 @@ type contractParams struct {
 var (
 	cp contractParams
 )
+
+func TestMain(m *testing.M) {
+	setup()
+	m.Run()
+}
 
 func setup() error {
 	contractID := NewContractID()

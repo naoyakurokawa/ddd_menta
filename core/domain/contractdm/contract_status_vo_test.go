@@ -8,19 +8,32 @@ import (
 )
 
 func TestNewContractStatus(t *testing.T) {
-	t.Run("ContractStatusが1のとき_エラーが発生しないこと", func(t *testing.T) {
-		_, err := NewContractStatus(1)
-		if err != nil {
-			t.Errorf("failed to NewContractStatus")
-		}
-	})
-
-	t.Run("ExperienceYearsが4のとき_エラーが発生すること", func(t *testing.T) {
-		_, err := NewContractStatus(4)
-		if err == nil {
-			t.Errorf("failed to NewContractStatus")
-		}
-	})
+	asserts := assert.New(t)
+	for _, td := range []struct {
+		title  string
+		input  uint16
+		output string
+	}{
+		{
+			title:  "ContractStatusが1のとき_エラーが発生しないこと",
+			input:  uint16(1),
+			output: "",
+		},
+		{
+			title:  "ExperienceYearsが4のとき_エラーが発生すること",
+			input:  uint16(4),
+			output: "ContractStatus must be 1 or 2 or 3",
+		},
+	} {
+		t.Run(td.title, func(t *testing.T) {
+			_, err := NewContractStatus(td.input)
+			strErr := ""
+			if err != nil {
+				strErr = err.Error()
+			}
+			asserts.Equal(td.output, strErr)
+		})
+	}
 }
 
 func TestStringContractStatus(t *testing.T) {

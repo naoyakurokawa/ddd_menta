@@ -25,11 +25,8 @@ func (s ContractStatus) String() (string, error) {
 	return s.Names()[s-1], nil
 }
 
-func (s ContractStatus) Uint16() (uint16, error) {
-	if !s.isWithinRange() {
-		return 0, xerrors.New("ContractStatus must be 1 or 2 or 3")
-	}
-	return uint16(s), nil
+func (s ContractStatus) Uint16() uint16 {
+	return uint16(s)
 }
 
 func NewContractStatus(s uint16) (ContractStatus, error) {
