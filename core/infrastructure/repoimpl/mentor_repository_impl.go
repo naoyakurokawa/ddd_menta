@@ -19,8 +19,8 @@ func NewMentorRepositoryImpl(conn *gorm.DB) mentordm.MentorRepository {
 
 func (mr *MentorRepositoryImpl) Create(mentor *mentordm.Mentor) error {
 	var m datamodel.Mentor
-	m.UserID = string(mentor.UserID())
-	m.MentorID = string(mentor.MentorID())
+	m.UserID = mentor.UserID().String()
+	m.MentorID = mentor.MentorID().String()
 	m.Title = mentor.Title()
 	m.MainImg = mentor.MainImg()
 	m.SubImg = mentor.SubImg()
@@ -36,16 +36,16 @@ func (mr *MentorRepositoryImpl) Create(mentor *mentordm.Mentor) error {
 	// メンタープラン登録
 	for i := 0; i < len(m.Plans); i++ {
 		plans := &datamodel.Plan{
-			PlanID:     string(m.Plans[i].PlanID()),
+			PlanID:     m.Plans[i].PlanID().String(),
 			MentorID:   m.MentorID,
 			Title:      m.Plans[i].Title(),
 			Category:   m.Plans[i].Category(),
 			Tag:        m.Plans[i].Tag(),
 			Detail:     m.Plans[i].Detial(),
-			PlanType:   uint16(m.Plans[i].PlanType()),
+			PlanType:   m.Plans[i].PlanType().Uint16(),
 			Price:      m.Plans[i].Price(),
-			PlanStatus: uint16(m.Plans[i].PlanStatus()),
-			CreatedAt:  time.Time(m.Plans[i].CreatedAt()),
+			PlanStatus: m.Plans[i].PlanStatus().Uint16(),
+			CreatedAt:  m.Plans[i].CreatedAt().Time(),
 		}
 		if err := mr.conn.Create(&plans).Error; err != nil {
 			return err
@@ -54,12 +54,12 @@ func (mr *MentorRepositoryImpl) Create(mentor *mentordm.Mentor) error {
 	// メンタースキル登録
 	for i := 0; i < len(m.MentorSkills); i++ {
 		mentorSkills := &datamodel.MentorSkill{
-			MentorSkillID:   string(m.MentorSkills[i].MentorSkillID()),
+			MentorSkillID:   m.MentorSkills[i].MentorSkillID().String(),
 			MentorID:        m.MentorID,
 			Tag:             m.MentorSkills[i].Tag(),
 			Assessment:      m.MentorSkills[i].Assessment(),
 			ExperienceYears: mentordm.ExperienceYears.Uint16(m.MentorSkills[i].ExperienceYears()),
-			CreatedAt:       time.Time(m.MentorSkills[i].CreatedAt()),
+			CreatedAt:       m.MentorSkills[i].CreatedAt().Time(),
 		}
 		if err := mr.conn.Create(&mentorSkills).Error; err != nil {
 			return err

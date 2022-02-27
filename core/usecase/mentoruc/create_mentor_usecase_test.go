@@ -18,7 +18,7 @@ func TestCreate(t *testing.T) {
 	mockMentorRepository.EXPECT().Create(gomock.Any()).Return(nil)
 	mentorUsecase := NewCreateMentorUsecase(mockMentorRepository)
 	err := mentorUsecase.Create(
-		string(mp.userID),
+		mp.userID.String(),
 		mp.title,
 		mp.mainImg,
 		mp.subImg,

@@ -16,7 +16,9 @@ func (s *isActivePlanDomainService) Exec(requestMentorID MentorID, requestPlanID
 		return false
 	}
 	for _, p := range mentor.plans {
-		return p.isActive(requestPlanID)
+		if p.isActive(requestPlanID) {
+			return true
+		}
 	}
 	return false
 }

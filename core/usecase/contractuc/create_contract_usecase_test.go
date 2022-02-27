@@ -75,9 +75,9 @@ func TestCreate(t *testing.T) {
 
 			contractUsecase := NewCreateContractUsecase(mockContractRepository, mockMentorRepository)
 			err = contractUsecase.Create(
-				string(up.userID),
-				string(mp.mentorID),
-				string(mp.planID),
+				up.userID.String(),
+				mp.mentorID.String(),
+				mp.planID.String(),
 			)
 
 			strErr := ""

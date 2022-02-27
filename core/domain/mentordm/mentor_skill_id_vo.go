@@ -22,3 +22,7 @@ func NewMentorSkillIDByVal(srtID string) (MentorSkillID, error) {
 func NewEmptyMentorSkillID() MentorSkillID {
 	return MentorSkillID(sharedvo.NewEmptyID())
 }
+
+func (i MentorSkillID) String() string {
+	return string(i)
+}

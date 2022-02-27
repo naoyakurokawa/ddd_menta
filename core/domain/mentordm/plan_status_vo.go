@@ -18,18 +18,12 @@ func (p PlanStatus) Names() []string {
 	}
 }
 
-func (p PlanStatus) String() (string, error) {
-	if p != Active && p != Busy && p != Close {
-		return "", xerrors.New("PlanStatus must be 1 or 2 or 3")
-	}
-	return p.Names()[p-1], nil
+func (p PlanStatus) String() string {
+	return p.Names()[p-1]
 }
 
-func (p PlanStatus) Uint16() (uint16, error) {
-	if p != Active && p != Busy && p != Close {
-		return 0, xerrors.New("PlanStatus must be 1 or 2 or 3")
-	}
-	return uint16(p), nil
+func (p PlanStatus) Uint16() uint16 {
+	return uint16(p)
 }
 
 // コンストラクタ
