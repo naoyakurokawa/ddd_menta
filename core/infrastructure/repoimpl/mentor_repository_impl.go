@@ -34,32 +34,32 @@ func (mr *MentorRepositoryImpl) Create(mentor *mentordm.Mentor) error {
 		return err
 	}
 	// メンタープラン登録
-	for i := 0; i < len(m.Plans); i++ {
+	for _, p := range m.Plans {
 		plans := &datamodel.Plan{
-			PlanID:     m.Plans[i].PlanID().String(),
+			PlanID:     p.PlanID().String(),
 			MentorID:   m.MentorID,
-			Title:      m.Plans[i].Title(),
-			Category:   m.Plans[i].Category(),
-			Tag:        m.Plans[i].Tag(),
-			Detail:     m.Plans[i].Detial(),
-			PlanType:   m.Plans[i].PlanType().Uint16(),
-			Price:      m.Plans[i].Price(),
-			PlanStatus: m.Plans[i].PlanStatus().Uint16(),
-			CreatedAt:  m.Plans[i].CreatedAt().Time(),
+			Title:      p.Title(),
+			Category:   p.Category(),
+			Tag:        p.Tag(),
+			Detail:     p.Detial(),
+			PlanType:   p.PlanType().Uint16(),
+			Price:      p.Price(),
+			PlanStatus: p.PlanStatus().Uint16(),
+			CreatedAt:  p.CreatedAt().Time(),
 		}
 		if err := mr.conn.Create(&plans).Error; err != nil {
 			return err
 		}
 	}
 	// メンタースキル登録
-	for i := 0; i < len(m.MentorSkills); i++ {
+	for _, s := range m.MentorSkills {
 		mentorSkills := &datamodel.MentorSkill{
-			MentorSkillID:   m.MentorSkills[i].MentorSkillID().String(),
+			MentorSkillID:   s.MentorSkillID().String(),
 			MentorID:        m.MentorID,
-			Tag:             m.MentorSkills[i].Tag(),
-			Assessment:      m.MentorSkills[i].Assessment(),
-			ExperienceYears: mentordm.ExperienceYears.Uint16(m.MentorSkills[i].ExperienceYears()),
-			CreatedAt:       m.MentorSkills[i].CreatedAt().Time(),
+			Tag:             s.Tag(),
+			Assessment:      s.Assessment(),
+			ExperienceYears: mentordm.ExperienceYears.Uint16(s.ExperienceYears()),
+			CreatedAt:       s.CreatedAt().Time(),
 		}
 		if err := mr.conn.Create(&mentorSkills).Error; err != nil {
 			return err
@@ -73,11 +73,11 @@ func (mr *MentorRepositoryImpl) FindByID(mentorID mentordm.MentorID) (*mentordm.
 	dataModeMentor := &datamodel.Mentor{}
 	dataModelPlans := []datamodel.Plan{}
 	dataModelMentorSkills := []datamodel.MentorSkill{}
-	if err := mr.conn.Where("mentor_id = ?", string(mentorID)).Find(&dataModeMentor).Error; err != nil {
+	if err := mr.conn.Where("mentor_id = ?", mentorID.String()).Find(&dataModeMentor).Error; err != nil {
 		return nil, err
 	}
 
-	if err := mr.conn.Where("mentor_id = ?", string(mentorID)).Find(&dataModelPlans).Error; err != nil {
+	if err := mr.conn.Where("mentor_id = ?", mentorID.String()).Find(&dataModelPlans).Error; err != nil {
 		return nil, err
 	}
 	mentorPlans := make([]mentordm.Plan, len(dataModelPlans))

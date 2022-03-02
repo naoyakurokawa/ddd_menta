@@ -35,17 +35,17 @@ func (cr *ContractRepositoryImpl) Create(contract *contractdm.Contract) error {
 }
 
 func (cr *ContractRepositoryImpl) FindByID(contractID contractdm.ContractID) (*contractdm.Contract, error) {
-	dataModeContract := &datamodel.Contract{}
-	if err := cr.conn.Where("contract_id = ?", string(contractID)).Find(&dataModeContract).Error; err != nil {
+	dataModelContract := datamodel.Contract{}
+	if err := cr.conn.Where("contract_id = ?", string(contractID)).Find(&dataModelContract).Error; err != nil {
 		return nil, err
 	}
 
 	return contractdm.Reconstruct(
-		dataModeContract.ContractID,
-		dataModeContract.UserID,
-		dataModeContract.MentorID,
-		dataModeContract.PlanID,
-		dataModeContract.ContractStatus,
+		dataModelContract.ContractID,
+		dataModelContract.UserID,
+		dataModelContract.MentorID,
+		dataModelContract.PlanID,
+		dataModelContract.ContractStatus,
 	)
 
 }

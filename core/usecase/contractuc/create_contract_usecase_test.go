@@ -1,13 +1,14 @@
 package contractuc
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/golang/mock/gomock"
 	mock "github.com/naoyakurokawa/ddd_menta/core/domain/contractdm/mock_contractdm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/mentordm"
 	mockMentor "github.com/naoyakurokawa/ddd_menta/core/domain/mentordm/mock_mentordm"
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestCreate(t *testing.T) {
@@ -16,7 +17,6 @@ func TestCreate(t *testing.T) {
 		mentorRepository   *mockMentor.MockMentorRepository
 	}
 	var mentorSkills []mentordm.MentorSkill
-	asserts := assert.New(t)
 
 	for _, td := range []struct {
 		title          string
@@ -24,15 +24,15 @@ func TestCreate(t *testing.T) {
 		userID         string
 		mentorID       string
 		planID         string
-		output         string
+		expectedErr    error
 		prepareMock    func(f *fields) error
 	}{
 		{
-			title:    "PlanStatusがActiveのとき_エラーが発生しないこと",
-			userID:   up.userID.String(),
-			mentorID: mp.mentorID.String(),
-			planID:   mp.planID.String(),
-			output:   "",
+			title:       "PlanStatusがActiveのとき_エラーが発生しないこと",
+			userID:      up.userID.String(),
+			mentorID:    mp.mentorID.String(),
+			planID:      mp.planID.String(),
+			expectedErr: nil,
 			prepareMock: func(f *fields) error {
 				planStatus, err := mentordm.NewPlanStatus(1)
 				if err != nil {
@@ -75,35 +75,35 @@ func TestCreate(t *testing.T) {
 			},
 		},
 		{
-			title:       "UserIDがからの時_エラーが発生すること",
+			title:       "UserIDが空の時_エラーが発生すること",
 			userID:      "",
 			mentorID:    mp.mentorID.String(),
 			planID:      mp.planID.String(),
-			output:      "error NewUserIDByVal",
+			expectedErr: errors.New("error NewUserIDByVal"),
 			prepareMock: nil,
 		},
 		{
-			title:       "MentorIDがからの時_エラーが発生すること",
+			title:       "MentorIDが空の時_エラーが発生すること",
 			userID:      up.userID.String(),
 			mentorID:    "",
 			planID:      mp.planID.String(),
-			output:      "error NewMentorIDByVal",
+			expectedErr: errors.New("error NewMentorIDByVal"),
 			prepareMock: nil,
 		},
 		{
-			title:       "PlanIDがからの時_エラーが発生すること",
+			title:       "PlanIDが空の時_エラーが発生すること",
 			userID:      up.userID.String(),
 			mentorID:    mp.planID.String(),
 			planID:      "",
-			output:      "error NewPlanIDByVal",
+			expectedErr: errors.New("error NewPlanIDByVal"),
 			prepareMock: nil,
 		},
 		{
-			title:    "PlanStatusがBusyのとき_エラーが発生すること",
-			userID:   up.userID.String(),
-			mentorID: mp.mentorID.String(),
-			planID:   mp.planID.String(),
-			output:   "This plan is not active",
+			title:       "PlanStatusがBusyのとき_エラーが発生すること",
+			userID:      up.userID.String(),
+			mentorID:    mp.mentorID.String(),
+			planID:      mp.planID.String(),
+			expectedErr: errors.New("This plan is not active"),
 			prepareMock: func(f *fields) error {
 				planStatus, err := mentordm.NewPlanStatus(2)
 				if err != nil {
@@ -163,12 +163,11 @@ func TestCreate(t *testing.T) {
 				td.planID,
 			)
 
-			strErr := ""
-			if err != nil {
-				strErr = err.Error()
+			if td.expectedErr != nil {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
 			}
-
-			asserts.Equal(td.output, strErr)
 		})
 	}
 

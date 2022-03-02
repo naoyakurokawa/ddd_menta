@@ -25,8 +25,7 @@ var (
 )
 
 func TestMain(m *testing.M) {
-	err := setup()
-	if err != nil {
+	if err := setup(); err != nil {
 		fmt.Printf("%+v", err)
 		return
 	}

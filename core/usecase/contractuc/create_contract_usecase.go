@@ -63,10 +63,5 @@ func (cu *CreateContractUsecaseImpl) Create(
 	if err != nil {
 		return err
 	}
-	err = cu.contractRepo.Create(contract)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return cu.contractRepo.Create(contract)
 }
