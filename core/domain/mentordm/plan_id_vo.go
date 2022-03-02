@@ -14,7 +14,7 @@ func NewPlanID() PlanID {
 func NewPlanIDByVal(srtID string) (PlanID, error) {
 	id, err := sharedvo.NewIDByVal(srtID)
 	if err != nil {
-		return PlanID(""), xerrors.New("error NewMentorIDByVal")
+		return PlanID(""), xerrors.New("error NewPlanIDByVal")
 	}
 	return PlanID(id), nil
 }

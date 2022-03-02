@@ -1,6 +1,7 @@
 package contractdm
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
@@ -24,7 +25,11 @@ var (
 )
 
 func TestMain(m *testing.M) {
-	setup()
+	err := setup()
+	if err != nil {
+		fmt.Printf("%+v", err)
+		return
+	}
 	m.Run()
 }
 

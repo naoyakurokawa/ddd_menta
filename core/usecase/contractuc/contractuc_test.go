@@ -1,6 +1,8 @@
 package contractuc
 
 import (
+	"fmt"
+	"testing"
 	"time"
 
 	"github.com/naoyakurokawa/ddd_menta/core/domain/contractdm"
@@ -59,6 +61,25 @@ var (
 	userCareers []userdm.UserCareer
 	userSkills  []userdm.UserSkill
 )
+
+func TestMain(m *testing.M) {
+	err := setupUser()
+	if err != nil {
+		fmt.Printf("%+v", err)
+		return
+	}
+	err = setupMentor()
+	if err != nil {
+		fmt.Printf("%+v", err)
+		return
+	}
+	err = setupContract()
+	if err != nil {
+		fmt.Printf("%+v", err)
+		return
+	}
+	m.Run()
+}
 
 func setupUser() error {
 	//ユーザー
