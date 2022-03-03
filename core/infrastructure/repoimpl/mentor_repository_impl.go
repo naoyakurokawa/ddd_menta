@@ -19,8 +19,8 @@ func NewMentorRepositoryImpl(conn *gorm.DB) mentordm.MentorRepository {
 
 func (mr *MentorRepositoryImpl) Create(mentor *mentordm.Mentor) error {
 	var m datamodel.Mentor
-	m.UserID = string(mentor.UserID())
-	m.MentorID = string(mentor.MentorID())
+	m.UserID = mentor.UserID().String()
+	m.MentorID = mentor.MentorID().String()
 	m.Title = mentor.Title()
 	m.MainImg = mentor.MainImg()
 	m.SubImg = mentor.SubImg()
@@ -34,32 +34,32 @@ func (mr *MentorRepositoryImpl) Create(mentor *mentordm.Mentor) error {
 		return err
 	}
 	// メンタープラン登録
-	for i := 0; i < len(m.Plans); i++ {
+	for _, p := range m.Plans {
 		plans := &datamodel.Plan{
-			PlanID:     string(m.Plans[i].PlanID()),
+			PlanID:     p.PlanID().String(),
 			MentorID:   m.MentorID,
-			Title:      m.Plans[i].Title(),
-			Category:   m.Plans[i].Category(),
-			Tag:        m.Plans[i].Tag(),
-			Detail:     m.Plans[i].Detial(),
-			PlanType:   uint16(m.Plans[i].PlanType()),
-			Price:      m.Plans[i].Price(),
-			PlanStatus: uint16(m.Plans[i].PlanStatus()),
-			CreatedAt:  time.Time(m.Plans[i].CreatedAt()),
+			Title:      p.Title(),
+			Category:   p.Category(),
+			Tag:        p.Tag(),
+			Detail:     p.Detial(),
+			PlanType:   p.PlanType().Uint16(),
+			Price:      p.Price(),
+			PlanStatus: p.PlanStatus().Uint16(),
+			CreatedAt:  p.CreatedAt().Time(),
 		}
 		if err := mr.conn.Create(&plans).Error; err != nil {
 			return err
 		}
 	}
 	// メンタースキル登録
-	for i := 0; i < len(m.MentorSkills); i++ {
+	for _, s := range m.MentorSkills {
 		mentorSkills := &datamodel.MentorSkill{
-			MentorSkillID:   string(m.MentorSkills[i].MentorSkillID()),
+			MentorSkillID:   s.MentorSkillID().String(),
 			MentorID:        m.MentorID,
-			Tag:             m.MentorSkills[i].Tag(),
-			Assessment:      m.MentorSkills[i].Assessment(),
-			ExperienceYears: mentordm.ExperienceYears.Uint16(m.MentorSkills[i].ExperienceYears()),
-			CreatedAt:       time.Time(m.MentorSkills[i].CreatedAt()),
+			Tag:             s.Tag(),
+			Assessment:      s.Assessment(),
+			ExperienceYears: mentordm.ExperienceYears.Uint16(s.ExperienceYears()),
+			CreatedAt:       s.CreatedAt().Time(),
 		}
 		if err := mr.conn.Create(&mentorSkills).Error; err != nil {
 			return err
@@ -70,25 +70,49 @@ func (mr *MentorRepositoryImpl) Create(mentor *mentordm.Mentor) error {
 }
 
 func (mr *MentorRepositoryImpl) FindByID(mentorID mentordm.MentorID) (*mentordm.Mentor, error) {
-	var (
-		dataModelMentorSkills []mentordm.MentorSkill
-		dataModelPlan         []mentordm.Plan
-	)
-
-	dataModeMentor := &datamodel.Mentor{
-		MentorID:     "",
-		UserID:       "",
-		Title:        "",
-		MainImg:      "",
-		SubImg:       "",
-		Category:     "",
-		Detail:       "",
-		CreatedAt:    time.Now(),
-		Plans:        dataModelPlan,
-		MentorSkills: dataModelMentorSkills,
-	}
-	if err := mr.conn.Where("mentor_id = ?", string(mentorID)).Find(&dataModeMentor).Error; err != nil {
+	dataModeMentor := &datamodel.Mentor{}
+	dataModelPlans := []datamodel.Plan{}
+	dataModelMentorSkills := []datamodel.MentorSkill{}
+	if err := mr.conn.Where("mentor_id = ?", mentorID.String()).Find(&dataModeMentor).Error; err != nil {
 		return nil, err
+	}
+
+	if err := mr.conn.Where("mentor_id = ?", mentorID.String()).Find(&dataModelPlans).Error; err != nil {
+		return nil, err
+	}
+	mentorPlans := make([]mentordm.Plan, len(dataModelPlans))
+	for _, p := range dataModelPlans {
+		plan, err := mentordm.ReconstructPlan(
+			p.PlanID,
+			p.Title,
+			p.Category,
+			p.Tag,
+			p.Detail,
+			p.PlanType,
+			p.Price,
+			p.PlanStatus,
+		)
+		if err != nil {
+			return nil, err
+		}
+		mentorPlans = append(mentorPlans, *plan)
+	}
+
+	if err := mr.conn.Where("mentor_id = ?", string(mentorID)).Find(&dataModelMentorSkills).Error; err != nil {
+		return nil, err
+	}
+	mentorSkills := make([]mentordm.MentorSkill, len(dataModelMentorSkills))
+	for _, ms := range dataModelMentorSkills {
+		mentorSkill, err := mentordm.ReconstructMentorSkill(
+			ms.MentorSkillID,
+			ms.Tag,
+			ms.Assessment,
+			ms.ExperienceYears,
+		)
+		if err != nil {
+			return nil, err
+		}
+		mentorSkills = append(mentorSkills, *mentorSkill)
 	}
 
 	mentor, err := mentordm.Reconstruct(
@@ -99,8 +123,8 @@ func (mr *MentorRepositoryImpl) FindByID(mentorID mentordm.MentorID) (*mentordm.
 		dataModeMentor.SubImg,
 		dataModeMentor.Category,
 		dataModeMentor.Detail,
-		dataModelMentorSkills,
-		dataModelPlan,
+		mentorSkills,
+		mentorPlans,
 	)
 	if err != nil {
 		return nil, err

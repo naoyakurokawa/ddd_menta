@@ -16,18 +16,12 @@ func (p PlanType) Names() []string {
 	}
 }
 
-func (p PlanType) String() (string, error) {
-	if p != Once && Subscription != p {
-		return "", xerrors.New("PlanType must be 1 or 2")
-	}
-	return p.Names()[p-1], nil
+func (p PlanType) String() string {
+	return p.Names()[p-1]
 }
 
-func (p PlanType) Uint16() (uint16, error) {
-	if p != Once && Subscription != p {
-		return 0, xerrors.New("PlanType must be 1 or 2")
-	}
-	return uint16(p), nil
+func (p PlanType) Uint16() uint16 {
+	return uint16(p)
 }
 
 func NewPlanType(planType uint16) (PlanType, error) {

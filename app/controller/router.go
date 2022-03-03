@@ -9,5 +9,6 @@ func InitRouting(e *echo.Echo) {
 
 	e.POST("/user_create", NewCreateUserController())
 	e.POST("/mentor_create", NewCreateMentorController())
+	e.POST("/contract_create", NewCreateContractController())
 
 }

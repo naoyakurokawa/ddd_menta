@@ -1,8 +1,6 @@
 package mentordm
 
 import (
-	"unicode/utf8"
-
 	"github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
 	"golang.org/x/xerrors"
 )
@@ -28,13 +26,13 @@ func NewMentorSkill(
 	experienceYears ExperienceYears,
 ) (*MentorSkill, error) {
 	//入力データチェック
-	if len(tag) == 0 {
+	if isEmpty(tag) {
 		return nil, xerrors.New("tag must not be empty")
 	}
-	if utf8.RuneCountInString(tag) > tagMaxLength {
+	if isOver(tag, tagMaxLength) {
 		return nil, xerrors.Errorf("tag must less than %d: %s", tagMaxLength, tag)
 	}
-	if assessment < assessmentMinNum || assessmentMaxNum < assessment {
+	if isBetween(assessment, assessmentMinNum, assessmentMaxNum) {
 		return nil, xerrors.Errorf("assessment must between %d and %d", assessmentMinNum, assessmentMaxNum)
 	}
 
@@ -43,6 +41,41 @@ func NewMentorSkill(
 		tag:             tag,
 		assessment:      assessment,
 		experienceYears: experienceYears,
+		createdAt:       sharedvo.NewCreatedAt(),
+	}
+
+	return mentorSkill, nil
+}
+
+func ReconstructMentorSkill(
+	mentorSkillID string,
+	tag string,
+	assessment uint16,
+	experienceYears uint16,
+) (*MentorSkill, error) {
+	if isEmpty(tag) {
+		return nil, xerrors.New("tag must not be empty")
+	}
+	if isOver(tag, tagMaxLength) {
+		return nil, xerrors.Errorf("tag must less than %d: %s", tagMaxLength, tag)
+	}
+	if isBetween(assessment, assessmentMinNum, assessmentMaxNum) {
+		return nil, xerrors.Errorf("assessment must between %d and %d", assessmentMinNum, assessmentMaxNum)
+	}
+
+	castedMentorSkillID, err := NewMentorSkillIDByVal(mentorSkillID)
+	if err != nil {
+		return nil, xerrors.New("error NewMentorSkillIDByVal")
+	}
+	experienceYearsIns, err := NewExperienceYears(experienceYears)
+	if err != nil {
+		return nil, xerrors.New("error NewExperienceYears")
+	}
+	mentorSkill := &MentorSkill{
+		mentorSkillID:   castedMentorSkillID,
+		tag:             tag,
+		assessment:      assessment,
+		experienceYears: experienceYearsIns,
 		createdAt:       sharedvo.NewCreatedAt(),
 	}
 

@@ -28,7 +28,7 @@ func TestString(t *testing.T) {
 			t.Errorf("failed to newPlanStatus")
 		}
 		expected := "相談できます"
-		actual, _ := planStatus1.String()
+		actual := planStatus1.String()
 		assert.Equal(t, expected, actual)
 	})
 
@@ -38,7 +38,7 @@ func TestString(t *testing.T) {
 			t.Errorf("failed to newPlanStatus")
 		}
 		expected := "今、忙しいです"
-		actual, _ := planStatus2.String()
+		actual := planStatus2.String()
 		assert.Equal(t, expected, actual)
 	})
 
@@ -48,7 +48,7 @@ func TestString(t *testing.T) {
 			t.Errorf("failed to newPlanStatus")
 		}
 		expected := "表示しない"
-		actual, _ := planStatus3.String()
+		actual := planStatus3.String()
 		assert.Equal(t, expected, actual)
 	})
 
@@ -61,7 +61,7 @@ func TestUint16(t *testing.T) {
 			t.Errorf("failed to newPlanStatus")
 		}
 		expected := uint16(1)
-		actual, _ := planStatus1.Uint16()
+		actual := planStatus1.Uint16()
 		assert.Equal(t, expected, actual)
 	})
 }

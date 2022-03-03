@@ -33,11 +33,11 @@ func NewPlan(
 	planStatus PlanStatus,
 ) (*Plan, error) {
 	//入力データチェック
-	if utf8.RuneCountInString(title) > planTitleMaxLength {
-		return nil, xerrors.Errorf("title must less than %d: %s", planTitleMaxLength, title)
-	}
 	if len(title) == 0 {
 		return nil, xerrors.New("title must not be empty")
+	}
+	if utf8.RuneCountInString(title) > planTitleMaxLength {
+		return nil, xerrors.Errorf("title must less than %d: %s", planTitleMaxLength, title)
 	}
 	if len(category) == 0 {
 		return nil, xerrors.New("category must not be empty")
@@ -64,6 +64,65 @@ func NewPlan(
 		planType:   planType,
 		price:      price,
 		planStatus: planStatus,
+		createdAt:  sharedvo.NewCreatedAt(),
+	}
+
+	return plan, nil
+}
+
+func ReconstructPlan(
+	planID string,
+	title string,
+	category string,
+	tag string,
+	detial string,
+	planType uint16,
+	price uint16,
+	planStatus uint16,
+) (*Plan, error) {
+	if len(title) == 0 {
+		return nil, xerrors.New("title must not be empty")
+	}
+	if utf8.RuneCountInString(title) > planTitleMaxLength {
+		return nil, xerrors.Errorf("title must less than %d: %s", planTitleMaxLength, title)
+	}
+	if len(category) == 0 {
+		return nil, xerrors.New("category must not be empty")
+	}
+	if len(tag) == 0 {
+		return nil, xerrors.New("tag must not be empty")
+	}
+	if len(detial) == 0 {
+		return nil, xerrors.New("detial must not be empty")
+	}
+	if utf8.RuneCountInString(detial) > planDetialMaxLength {
+		return nil, xerrors.Errorf("detial must less than %d: %s", planDetialMaxLength, detial)
+	}
+	if price == 0 {
+		return nil, xerrors.New("price must more than 0")
+	}
+
+	castedPlanID, err := NewPlanIDByVal(planID)
+	if err != nil {
+		return nil, xerrors.New("error NewMentorIDByVal")
+	}
+	planTypeIns, err := NewPlanType(planType)
+	if err != nil {
+		return nil, xerrors.New("error NewMentorIDByVal")
+	}
+	planStatusIns, err := NewPlanStatus(planStatus)
+	if err != nil {
+		return nil, xerrors.New("error NewMentorIDByVal")
+	}
+	plan := &Plan{
+		planID:     castedPlanID,
+		title:      title,
+		category:   category,
+		tag:        tag,
+		detial:     detial,
+		planType:   planTypeIns,
+		price:      price,
+		planStatus: planStatusIns,
 		createdAt:  sharedvo.NewCreatedAt(),
 	}
 
@@ -103,4 +162,8 @@ func (p *Plan) PlanStatus() PlanStatus {
 
 func (p *Plan) CreatedAt() sharedvo.CreatedAt {
 	return p.createdAt
+}
+
+func (p *Plan) isActive(requestPlanID PlanID) bool {
+	return p.planID == requestPlanID && p.planStatus == Active
 }

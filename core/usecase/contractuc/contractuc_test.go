@@ -1,6 +1,8 @@
-package repoimpl
+package contractuc
 
 import (
+	"fmt"
+	"testing"
 	"time"
 
 	"github.com/naoyakurokawa/ddd_menta/core/domain/contractdm"
@@ -37,18 +39,19 @@ type mentorParams struct {
 	planDetial            string
 	planType              mentordm.PlanType
 	planPrice             uint16
-	planStatus            mentordm.PlanStatus
+	planActiveStatus      mentordm.PlanStatus
+	planBusyStatus        mentordm.PlanStatus
 	createdAt             time.Time
 }
 
 type contractParams struct {
-	contractID     contractdm.ContractID
-	userID         userdm.UserID
-	mentorID       mentordm.MentorID
-	planID         mentordm.PlanID
-	contractStatus contractdm.ContractStatus
-	createdAt      time.Time
-	updatedAt      time.Time
+	contractID contractdm.ContractID
+	userID     userdm.UserID
+	mentorID   mentordm.MentorID
+	planID     mentordm.PlanID
+	status     contractdm.ContractStatus
+	createdAt  time.Time
+	updatedAt  time.Time
 }
 
 var (
@@ -58,6 +61,25 @@ var (
 	userCareers []userdm.UserCareer
 	userSkills  []userdm.UserSkill
 )
+
+func TestMain(m *testing.M) {
+	err := setupUser()
+	if err != nil {
+		fmt.Printf("%+v", err)
+		return
+	}
+	err = setupMentor()
+	if err != nil {
+		fmt.Printf("%+v", err)
+		return
+	}
+	err = setupContract()
+	if err != nil {
+		fmt.Printf("%+v", err)
+		return
+	}
+	m.Run()
+}
 
 func setupUser() error {
 	//ユーザー
@@ -93,7 +115,11 @@ func setupMentor() error {
 	if err != nil {
 		return xerrors.New("error NewPlanType")
 	}
-	planStatus, err := mentordm.NewPlanStatus(uint16(1))
+	activePlanStatus, err := mentordm.NewPlanStatus(uint16(1))
+	if err != nil {
+		return xerrors.New("error NewPlanStatus")
+	}
+	busyPlanStatus, err := mentordm.NewPlanStatus(uint16(2))
 	if err != nil {
 		return xerrors.New("error NewPlanStatus")
 	}
@@ -117,7 +143,8 @@ func setupMentor() error {
 		"DDDの設計手法を学べます",
 		planType,
 		uint16(1000),
-		planStatus,
+		activePlanStatus,
+		busyPlanStatus,
 		time.Date(2000, 1, 1, 0, 0, 0, 0, time.Local),
 	}
 	return nil
@@ -128,7 +155,7 @@ func setupContract() error {
 	userID := userdm.NewUserID()
 	mentorID := mentordm.NewMentorID()
 	planID := mentordm.NewPlanID()
-	contractStatus, err := contractdm.NewContractStatus(uint16(1))
+	status, err := contractdm.NewContractStatus(uint16(1))
 	if err != nil {
 		return xerrors.New("error NewStatus")
 	}
@@ -137,7 +164,7 @@ func setupContract() error {
 		userID,
 		mentorID,
 		planID,
-		contractStatus,
+		status,
 		time.Date(2000, 1, 1, 0, 0, 0, 0, time.Local),
 		time.Date(2000, 1, 1, 0, 0, 0, 0, time.Local),
 	}

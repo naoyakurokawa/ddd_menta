@@ -29,7 +29,7 @@ func TestStringPlanType(t *testing.T) {
 			t.Errorf("failed to NewPlanType")
 		}
 		expected := "単発"
-		actual, _ := planType1.String()
+		actual := planType1.String()
 		assert.Equal(t, expected, actual)
 	})
 
@@ -39,7 +39,7 @@ func TestStringPlanType(t *testing.T) {
 			t.Errorf("failed to NewPlanType")
 		}
 		expected := "月額"
-		actual, _ := planType2.String()
+		actual := planType2.String()
 		assert.Equal(t, expected, actual)
 	})
 }
@@ -51,7 +51,7 @@ func TestUint16PlanType(t *testing.T) {
 			t.Errorf("failed to NewPlanType")
 		}
 		expected := uint16(2)
-		actual, _ := planType2.Uint16()
+		actual := planType2.Uint16()
 		assert.Equal(t, expected, actual)
 	})
 }

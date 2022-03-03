@@ -29,7 +29,7 @@ func (ur *UserRepositoryImpl) Create(user *userdm.User) (*userdm.User, error) {
 	}
 	// hex.EncodeToString([]byte("あ"))
 
-	u.UserID = user.UserID().Value()
+	u.UserID = user.UserID().String()
 	u.Name = user.Name()
 	u.Email = user.Email().Value()
 	u.Password = string(hash)
@@ -84,7 +84,7 @@ func (ur *UserRepositoryImpl) FindByID(userID userdm.UserID) (*userdm.User, erro
 		CreatedAt:   time.Now(),
 		UserCareers: dataModelCareer,
 	}
-	if err := ur.Conn.Where("user_id = ?", userID.Value()).Find(&dataModelUser).Error; err != nil {
+	if err := ur.Conn.Where("user_id = ?", userID.String()).Find(&dataModelUser).Error; err != nil {
 		return nil, err
 	}
 	user, err := userdm.NewUser(

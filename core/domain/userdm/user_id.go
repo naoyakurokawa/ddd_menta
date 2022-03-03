@@ -20,10 +20,10 @@ func NewUserIDByVal(strId string) (UserID, error) {
 }
 
 func (u UserID) Equals(u2 UserID) bool {
-	return u.Value() == u2.Value()
+	return u.String() == u2.String()
 }
 
-func (u UserID) Value() string {
+func (u UserID) String() string {
 	return string(u)
 }
 

@@ -26,3 +26,7 @@ func NewEmptyMentorID() MentorID {
 func (i MentorID) Equals(i2 MentorID) bool {
 	return i == i2
 }
+
+func (i MentorID) String() string {
+	return string(i)
+}

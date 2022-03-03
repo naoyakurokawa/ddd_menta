@@ -179,3 +179,36 @@ INSERT INTO plans (
   1000,
   1
 );
+
+DROP TABLE IF EXISTS contracts;
+CREATE TABLE contracts
+(
+  contract_id VARCHAR(255) NOT NULL,
+  user_id VARCHAR(255) NOT NULL,
+  mentor_id VARCHAR(255) NOT NULL,
+  plan_id VARCHAR(255) NOT NULL,
+  contract_status INT NOT NULL,
+  created_at TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL,
+  PRIMARY KEY (contract_id),
+  FOREIGN KEY (user_id) REFERENCES users(user_id),
+  FOREIGN KEY (plan_id) REFERENCES plans(plan_id)
+);
+
+INSERT INTO contracts (
+  contract_id,
+  user_id,
+  mentor_id,
+  plan_id,
+  contract_status,
+  created_at,
+  updated_at
+) VALUES (
+  "e2e908dc-5981-4c4a-8e98-4487d3e122ad", 
+  "e2e908dc-5981-4c4a-8e98-4487d3e122ad", 
+  "e2e908dc-5981-4c4a-8e98-4487d3e122ad",
+  "e2e908dc-5981-4c4a-8e98-4487d3e122ad",
+  1,
+  "2022-02-22 00:00:00.000000",
+  "2022-02-22 00:00:00.000000"
+);
