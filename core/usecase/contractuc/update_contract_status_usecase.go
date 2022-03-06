@@ -33,7 +33,6 @@ func (uc *UpdateContractStatusUsecaseImpl) UpdateContractStatus(
 		return err
 	}
 
-	//ステータス更新可能か確認
 	contract, err := uc.contractRepo.FindByID(contractIDIns)
 	if err != nil {
 		return err
