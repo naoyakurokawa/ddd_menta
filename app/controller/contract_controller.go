@@ -1,9 +1,11 @@
 package controller
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/labstack/echo"
+	"github.com/naoyakurokawa/ddd_menta/core/domain/contractdm"
 	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/db"
 	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/repoimpl"
 	"github.com/naoyakurokawa/ddd_menta/core/usecase/contractuc"
@@ -18,8 +20,9 @@ func NewContractController(cu contractuc.CreateContractUsecase) *ContractControl
 }
 
 type contractRequest struct {
-	MentorID string
-	PlanID   string
+	ContractID string
+	MentorID   string
+	PlanID     string
 }
 
 func NewCreateContractController() echo.HandlerFunc {
@@ -47,5 +50,47 @@ func NewCreateContractController() echo.HandlerFunc {
 		}
 
 		return c.JSON(http.StatusCreated, "success create contract")
+	}
+}
+
+func NewUpdateUnderContractController() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		conn := db.NewDB()
+		contractRepository := repoimpl.NewContractRepositoryImpl(conn)
+		updateUnderContractUsecase := contractuc.NewUpdateContractStatusUsecase(contractRepository)
+
+		var req contractRequest
+		if err := c.Bind(&req); err != nil {
+			return c.JSON(http.StatusBadRequest, err.Error())
+		}
+
+		err := updateUnderContractUsecase.UpdateContractStatus(req.ContractID, contractdm.UnderContract.Uint16())
+		if err != nil {
+			log.Printf("failed to NewUpdateUnderContractController: %+v", err)
+			return c.JSON(http.StatusCreated, "can't update contract")
+		}
+
+		return c.JSON(http.StatusCreated, "success update contract")
+	}
+}
+
+func NewUpdateTerminatedContractController() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		conn := db.NewDB()
+		contractRepository := repoimpl.NewContractRepositoryImpl(conn)
+		updateUnderContractUsecase := contractuc.NewUpdateContractStatusUsecase(contractRepository)
+
+		var req contractRequest
+		if err := c.Bind(&req); err != nil {
+			return c.JSON(http.StatusBadRequest, err.Error())
+		}
+
+		err := updateUnderContractUsecase.UpdateContractStatus(req.ContractID, contractdm.TerminatedContract.Uint16())
+		if err != nil {
+			log.Printf("failed to NewUpdateUnderContractController: %+v", err)
+			return c.JSON(http.StatusCreated, "can't update contract")
+		}
+
+		return c.JSON(http.StatusCreated, "success update contract")
 	}
 }

@@ -45,13 +45,15 @@ type mentorParams struct {
 }
 
 type contractParams struct {
-	contractID contractdm.ContractID
-	userID     userdm.UserID
-	mentorID   mentordm.MentorID
-	planID     mentordm.PlanID
-	status     contractdm.ContractStatus
-	createdAt  time.Time
-	updatedAt  time.Time
+	contractID               contractdm.ContractID
+	userID                   userdm.UserID
+	mentorID                 mentordm.MentorID
+	planID                   mentordm.PlanID
+	unapprovedStatus         contractdm.ContractStatus
+	underContractStatus      contractdm.ContractStatus
+	terminatedContractStatus contractdm.ContractStatus
+	createdAt                time.Time
+	updatedAt                time.Time
 }
 
 var (
@@ -155,7 +157,9 @@ func setupContract() error {
 	userID := userdm.NewUserID()
 	mentorID := mentordm.NewMentorID()
 	planID := mentordm.NewPlanID()
-	status, err := contractdm.NewContractStatus(uint16(1))
+	unapprovedStatus, err := contractdm.NewContractStatus(uint16(1))
+	underContractStatus, err := contractdm.NewContractStatus(uint16(2))
+	terminatedContractStatus, err := contractdm.NewContractStatus(uint16(3))
 	if err != nil {
 		return xerrors.New("error NewStatus")
 	}
@@ -164,7 +168,9 @@ func setupContract() error {
 		userID,
 		mentorID,
 		planID,
-		status,
+		unapprovedStatus,
+		underContractStatus,
+		terminatedContractStatus,
 		time.Date(2000, 1, 1, 0, 0, 0, 0, time.Local),
 		time.Date(2000, 1, 1, 0, 0, 0, 0, time.Local),
 	}
