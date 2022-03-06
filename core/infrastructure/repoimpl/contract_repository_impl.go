@@ -51,8 +51,8 @@ func (cr *ContractRepositoryImpl) FindByID(contractID contractdm.ContractID) (*c
 }
 
 func (cr *ContractRepositoryImpl) UpdateContractStatus(
-	contractID *contractdm.ContractID,
-	contractStatus *contractdm.ContractStatus,
+	contractID contractdm.ContractID,
+	contractStatus contractdm.ContractStatus,
 ) error {
 	dataModelContract := datamodel.Contract{}
 	if err := cr.conn.Model(&dataModelContract).Where("contract_id = ?", contractID.String()).Update("contract_status", contractStatus.Uint16()).Error; err != nil {

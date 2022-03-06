@@ -64,7 +64,7 @@ func (mr *MockContractRepositoryMockRecorder) FindByID(contractID interface{}) *
 }
 
 // UpdateContractStatus mocks base method.
-func (m *MockContractRepository) UpdateContractStatus(contractID *contractdm.ContractID, contractStatus *contractdm.ContractStatus) error {
+func (m *MockContractRepository) UpdateContractStatus(contractID contractdm.ContractID, contractStatus contractdm.ContractStatus) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateContractStatus", contractID, contractStatus)
 	ret0, _ := ret[0].(error)

@@ -157,20 +157,15 @@ func setupContract() error {
 	userID := userdm.NewUserID()
 	mentorID := mentordm.NewMentorID()
 	planID := mentordm.NewPlanID()
-	unapprovedStatus, err := contractdm.NewContractStatus(uint16(1))
-	underContractStatus, err := contractdm.NewContractStatus(uint16(2))
-	terminatedContractStatus, err := contractdm.NewContractStatus(uint16(3))
-	if err != nil {
-		return xerrors.New("error NewStatus")
-	}
+
 	cp = contractParams{
 		contractID,
 		userID,
 		mentorID,
 		planID,
-		unapprovedStatus,
-		underContractStatus,
-		terminatedContractStatus,
+		contractdm.Unapproved,
+		contractdm.UnderContract,
+		contractdm.TerminatedContract,
 		time.Date(2000, 1, 1, 0, 0, 0, 0, time.Local),
 		time.Date(2000, 1, 1, 0, 0, 0, 0, time.Local),
 	}

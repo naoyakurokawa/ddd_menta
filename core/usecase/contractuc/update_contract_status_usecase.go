@@ -32,15 +32,19 @@ func (uc *UpdateContractStatusUsecaseImpl) UpdateContractStatus(
 	if err != nil {
 		return err
 	}
+
+	//ステータス更新可能か確認
+	contract, err := uc.contractRepo.FindByID(contractIDIns)
+	if err != nil {
+		return err
+	}
 	contractStatusIns, err := contractdm.NewContractStatus(contractStatus)
 	if err != nil {
 		return err
 	}
-
-	//ステータス更新可能か確認
-	if !contractdm.NewCanChangeContractStatusDomainService(uc.contractRepo).Exec(contractIDIns, contractStatusIns) {
+	if !contract.CanUpdateContractStatus(contractStatusIns) {
 		return xerrors.New("can't update contract")
 	}
 
-	return uc.contractRepo.UpdateContractStatus(&contractIDIns, &contractStatusIns)
+	return uc.contractRepo.UpdateContractStatus(contractIDIns, contractStatusIns)
 }
