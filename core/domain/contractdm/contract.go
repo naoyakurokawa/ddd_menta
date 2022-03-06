@@ -116,3 +116,9 @@ func StrCastUint(str string) (uint16, error) {
 	}
 	return uint16(ui), nil
 }
+
+func (c *Contract) CanUpdateContractStatus(
+	requestContractStatus ContractStatus,
+) bool {
+	return requestContractStatus.Uint16() == c.contractStatus.Uint16()+1
+}

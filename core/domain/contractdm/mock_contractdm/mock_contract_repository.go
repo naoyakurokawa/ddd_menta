@@ -62,3 +62,17 @@ func (mr *MockContractRepositoryMockRecorder) FindByID(contractID interface{}) *
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByID", reflect.TypeOf((*MockContractRepository)(nil).FindByID), contractID)
 }
+
+// UpdateContractStatus mocks base method.
+func (m *MockContractRepository) UpdateContractStatus(contractID contractdm.ContractID, contractStatus contractdm.ContractStatus) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateContractStatus", contractID, contractStatus)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateContractStatus indicates an expected call of UpdateContractStatus.
+func (mr *MockContractRepositoryMockRecorder) UpdateContractStatus(contractID, contractStatus interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateContractStatus", reflect.TypeOf((*MockContractRepository)(nil).UpdateContractStatus), contractID, contractStatus)
+}
