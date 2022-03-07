@@ -32,7 +32,7 @@ func NewMentor(
 	mainImg string,
 	subImg string,
 	category string,
-	detial string,
+	detail string,
 	mentorSkills []MentorSkill,
 	plans []Plan,
 ) (*Mentor, error) {
@@ -43,10 +43,10 @@ func NewMentor(
 	if isOver(title, titleMaxLength) {
 		return nil, xerrors.Errorf("title must less than %d: %s", titleMaxLength, title)
 	}
-	if isEmpty(detial) {
+	if isEmpty(detail) {
 		return nil, xerrors.New("detial must not be empty")
 	}
-	if isOver(detial, detialMaxLength) {
+	if isOver(detail, detialMaxLength) {
 		return nil, xerrors.Errorf("title must less than %d: %s", titleMaxLength, title)
 	}
 
@@ -57,7 +57,7 @@ func NewMentor(
 		mainImg:      mainImg,
 		subImg:       subImg,
 		category:     category,
-		detial:       detial,
+		detial:       detail,
 		createdAt:    sharedvo.NewCreatedAt(),
 		mentorSkills: mentorSkills,
 		plans:        plans,

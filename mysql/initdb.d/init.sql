@@ -212,3 +212,41 @@ INSERT INTO contracts (
   "2022-02-22 00:00:00.000000",
   "2022-02-22 00:00:00.000000"
 );
+
+DROP TABLE IF EXISTS recruits;
+CREATE TABLE recruits
+(
+  recruit_id VARCHAR(255) NOT NULL,
+  user_id VARCHAR(255) NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  budget INT NOT NULL,
+  recruit_type INT NOT NULL,
+  detail TEXT NOT NULL,
+  recruit_status INT NOT NULL,
+  created_at TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL,
+  PRIMARY KEY (recruit_id),
+  FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+INSERT INTO recruits (
+  recruit_id,
+  user_id,
+  title,
+  budget,
+  recruit_type,
+  detail,
+  recruit_status,
+  created_at,
+  updated_at
+) VALUES (
+  "e2e908dc-5981-4c4a-8e98-4487d3e122ad", 
+  "e2e908dc-5981-4c4a-8e98-4487d3e122ad", 
+  "DDDの基礎を教えて下さい",
+  5000,
+  1,
+  "DDDによる開発をサポートしてもらいたく募集しました",
+  1,
+  "2022-03-22 00:00:00.000000",
+  "2022-03-22 00:00:00.000000"
+);
