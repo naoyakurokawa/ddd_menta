@@ -35,7 +35,6 @@ func NewRecruit(
 	detail string,
 	recruitStatus RecruitStatus,
 ) (*Recruit, error) {
-	//入力データチェック
 	if isEmpty(title) {
 		return nil, xerrors.New("title must not be empty")
 	}
@@ -59,6 +58,61 @@ func NewRecruit(
 		recruitType:   recruitType,
 		detail:        detail,
 		recruitStatus: recruitStatus,
+		createdAt:     sharedvo.NewCreatedAt(),
+		updatedAt:     sharedvo.NewUpdatedAt(),
+	}
+
+	return recruit, nil
+}
+
+func Reconstruct(
+	recruitID string,
+	userID string,
+	title string,
+	budget uint16,
+	recruitType uint16,
+	detail string,
+	recruitStatus uint16,
+) (*Recruit, error) {
+	if isEmpty(title) {
+		return nil, xerrors.New("title must not be empty")
+	}
+	if isOver(title, titleMaxLength) {
+		return nil, xerrors.Errorf("title must less than %d: %s", titleMaxLength, title)
+	}
+	if isLow(budget, minBudget) {
+		return nil, xerrors.New("budget more than ¥1000")
+	}
+	if isEmpty(detail) {
+		return nil, xerrors.New("detial must not be empty")
+	}
+	if isOver(detail, detialMaxLength) {
+		return nil, xerrors.Errorf("title must less than %d: %s", titleMaxLength, title)
+	}
+	castedRecruitID, err := NewRecruitIDByVal(recruitID)
+	if err != nil {
+		return nil, xerrors.New("error NewRecruitIDByVal")
+	}
+	castedUserID, err := userdm.NewUserIDByVal(userID)
+	if err != nil {
+		return nil, xerrors.New("error NewUserIDByVal")
+	}
+	recruitTypeIns, err := NewRecruitType(recruitType)
+	if err != nil {
+		return nil, xerrors.New("error NewRecruitType")
+	}
+	recruitStatusIns, err := NewRecruitStatus(recruitStatus)
+	if err != nil {
+		return nil, xerrors.New("error NewRecruitStatus")
+	}
+	recruit := &Recruit{
+		recruitID:     castedRecruitID,
+		userID:        castedUserID,
+		title:         title,
+		budget:        budget,
+		recruitType:   recruitTypeIns,
+		detail:        detail,
+		recruitStatus: recruitStatusIns,
 		createdAt:     sharedvo.NewCreatedAt(),
 		updatedAt:     sharedvo.NewUpdatedAt(),
 	}

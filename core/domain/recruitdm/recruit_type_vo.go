@@ -24,7 +24,7 @@ func (r RecruitType) Uint16() uint16 {
 	return uint16(r)
 }
 
-func NewPlanType(recruitType uint16) (RecruitType, error) {
+func NewRecruitType(recruitType uint16) (RecruitType, error) {
 	if recruitType != 1 && 2 != recruitType {
 		return 0, xerrors.New("RecruitType must be 1 or 2")
 	}
