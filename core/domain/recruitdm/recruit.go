@@ -12,7 +12,7 @@ type Recruit struct {
 	recruitID     RecruitID
 	userID        userdm.UserID
 	title         string
-	budget        uint16
+	budget        uint32
 	recruitType   RecruitType
 	detail        string
 	recruitStatus RecruitStatus
@@ -30,7 +30,7 @@ func NewRecruit(
 	recruitID RecruitID,
 	userID userdm.UserID,
 	title string,
-	budget uint16,
+	budget uint32,
 	recruitType RecruitType,
 	detail string,
 	recruitStatus RecruitStatus,
@@ -69,7 +69,7 @@ func Reconstruct(
 	recruitID string,
 	userID string,
 	title string,
-	budget uint16,
+	budget uint32,
 	recruitType uint16,
 	detail string,
 	recruitStatus uint16,
@@ -132,7 +132,7 @@ func (r *Recruit) Title() string {
 	return r.title
 }
 
-func (r *Recruit) Budget() uint16 {
+func (r *Recruit) Budget() uint32 {
 	return r.budget
 }
 
@@ -160,6 +160,6 @@ func isOver(s string, maxlength int) bool {
 	return utf8.RuneCountInString(s) > maxlength
 }
 
-func isLow(u, min uint16) bool {
+func isLow(u, min uint32) bool {
 	return min > u
 }

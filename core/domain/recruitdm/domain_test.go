@@ -12,7 +12,7 @@ type recruitParams struct {
 	recruitID               RecruitID
 	userID                  userdm.UserID
 	title                   string
-	budget                  uint16
+	budget                  uint32
 	recruitTypeOnce         RecruitType
 	recruitTypeSubscription RecruitType
 	detail                  string
