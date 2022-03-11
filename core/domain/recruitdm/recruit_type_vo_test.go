@@ -1,14 +1,15 @@
 package recruitdm
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"golang.org/x/xerrors"
 )
 
 func TestNewRecruitType(t *testing.T) {
+	asserts := assert.New(t)
 	for _, td := range []struct {
 		title       string
 		input       uint16
@@ -22,13 +23,14 @@ func TestNewRecruitType(t *testing.T) {
 		{
 			title:       "RecruitTypeが3のとき_エラーが発生すること",
 			input:       uint16(3),
-			expectedErr: errors.New("RecruitType must be 1 or 2"),
+			expectedErr: xerrors.New("RecruitType must be 1 or 2"),
 		},
 	} {
 		t.Run(td.title, func(t *testing.T) {
 			_, err := NewRecruitType(td.input)
 			if td.expectedErr != nil {
 				require.Error(t, err)
+				asserts.Equal(err.Error(), td.expectedErr.Error())
 			} else {
 				require.NoError(t, err)
 			}
