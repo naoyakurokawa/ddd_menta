@@ -5,6 +5,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/recruitdm"
 	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/datamodel"
+	"golang.org/x/xerrors"
 )
 
 type RecruitRepositoryImpl struct {
@@ -25,7 +26,7 @@ func (rr *RecruitRepositoryImpl) Create(recruit *recruitdm.Recruit) error {
 	r.Detail = recruit.Detail()
 	r.RecruitStatus = recruit.RecruitStatus().Uint16()
 	if err := rr.conn.Create(&r).Error; err != nil {
-		return err
+		return xerrors.Errorf("fail to create recruit: %w", err)
 	}
 
 	return nil
@@ -34,7 +35,7 @@ func (rr *RecruitRepositoryImpl) Create(recruit *recruitdm.Recruit) error {
 func (rr *RecruitRepositoryImpl) FindByID(recruitID recruitdm.RecruitID) (*recruitdm.Recruit, error) {
 	dataModelRecruit := datamodel.Recruit{}
 	if err := rr.conn.Where("recruit_id = ?", recruitID.String()).Find(&dataModelRecruit).Error; err != nil {
-		return nil, err
+		return nil, xerrors.Errorf("fail to find by recruitID : %w", err)
 	}
 
 	return recruitdm.Reconstruct(
