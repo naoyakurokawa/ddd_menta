@@ -236,3 +236,43 @@ func TestReconstruct(t *testing.T) {
 		})
 	}
 }
+
+func TestIsCreate(t *testing.T) {
+	asserts := assert.New(t)
+	for _, td := range []struct {
+		title         string
+		recruitStatus RecruitStatus
+		expected      bool
+	}{
+		{
+			title:         "RecruitStatustitleが「下書き」時_trueとなること",
+			recruitStatus: rp.recruitStatusDraft,
+			expected:      true,
+		},
+		{
+			title:         "RecruitStatustitleが「公開」時_trueとなること",
+			recruitStatus: rp.recruitStatusPublished,
+			expected:      true,
+		},
+		{
+			title:         "RecruitStatustitleが「募集終了」時_falseとなること",
+			recruitStatus: rp.recruitStatusTerminated,
+			expected:      false,
+		},
+	} {
+		t.Run(td.title, func(t *testing.T) {
+			recruit, err := NewRecruit(
+				rp.recruitID,
+				rp.userID,
+				rp.title,
+				rp.budget,
+				rp.recruitTypeOnce,
+				rp.detail,
+				td.recruitStatus,
+			)
+			require.NoError(t, err)
+			actual := recruit.IsCreate()
+			asserts.Equal(actual, td.expected)
+		})
+	}
+}

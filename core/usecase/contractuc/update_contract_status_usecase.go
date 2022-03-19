@@ -33,11 +33,12 @@ func (uc *UpdateContractStatusUsecaseImpl) UpdateContractStatus(
 		return err
 	}
 
-	contract, err := uc.contractRepo.FindByID(contractIDIns)
+	contractStatusIns, err := contractdm.NewContractStatus(contractStatus)
 	if err != nil {
 		return err
 	}
-	contractStatusIns, err := contractdm.NewContractStatus(contractStatus)
+
+	contract, err := uc.contractRepo.FindByID(contractIDIns)
 	if err != nil {
 		return err
 	}

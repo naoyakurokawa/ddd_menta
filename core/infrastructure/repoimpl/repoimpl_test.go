@@ -5,6 +5,7 @@ import (
 
 	"github.com/naoyakurokawa/ddd_menta/core/domain/contractdm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/mentordm"
+	"github.com/naoyakurokawa/ddd_menta/core/domain/recruitdm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
 	"golang.org/x/xerrors"
 )
@@ -51,10 +52,23 @@ type contractParams struct {
 	updatedAt      time.Time
 }
 
+type recruitParams struct {
+	recruitID     recruitdm.RecruitID
+	userID        userdm.UserID
+	title         string
+	budget        uint32
+	recruitType   recruitdm.RecruitType
+	detail        string
+	recruitStatus recruitdm.RecruitStatus
+	createdAt     time.Time
+	updatedAt     time.Time
+}
+
 var (
 	up          userParams
 	mp          mentorParams
 	cp          contractParams
+	rp          recruitParams
 	userCareers []userdm.UserCareer
 	userSkills  []userdm.UserSkill
 )
@@ -138,6 +152,22 @@ func setupContract() error {
 		mentorID,
 		planID,
 		contractStatus,
+		time.Date(2000, 1, 1, 0, 0, 0, 0, time.Local),
+		time.Date(2000, 1, 1, 0, 0, 0, 0, time.Local),
+	}
+	return nil
+}
+
+func setupRecruit() error {
+	recruitID := recruitdm.NewRecruitID()
+	rp = recruitParams{
+		recruitID,
+		up.userID,
+		"DDDの基礎を教えて下さい",
+		5000,
+		recruitdm.Once,
+		"DDDによる開発をサポートしてもらいたく募集しました",
+		recruitdm.Draft,
 		time.Date(2000, 1, 1, 0, 0, 0, 0, time.Local),
 		time.Date(2000, 1, 1, 0, 0, 0, 0, time.Local),
 	}

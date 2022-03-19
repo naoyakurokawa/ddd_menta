@@ -18,14 +18,14 @@ func TestUpdateContractStatus(t *testing.T) {
 	for _, td := range []struct {
 		title                 string
 		contractID            string
-		requestContractStatus contractdm.ContractStatus
+		requestContractStatus uint16
 		expectedErr           error
 		prepareMock           func(f *fields) error
 	}{
 		{
 			title:                 "Contractが未承認で_契約中に更新しようとするとき_エラーが発生しないこと",
 			contractID:            cp.contractID.String(),
-			requestContractStatus: cp.underContractStatus,
+			requestContractStatus: cp.underContractStatus.Uint16(),
 			expectedErr:           nil,
 			prepareMock: func(f *fields) error {
 				contract, err := contractdm.NewContract(
@@ -48,7 +48,7 @@ func TestUpdateContractStatus(t *testing.T) {
 		{
 			title:                 "Contractが未承認で_契約終了に更新しようとするとき_エラーが発生すること",
 			contractID:            cp.contractID.String(),
-			requestContractStatus: cp.terminatedContractStatus,
+			requestContractStatus: cp.terminatedContractStatus.Uint16(),
 			expectedErr:           errors.New("can't update contract"),
 			prepareMock: func(f *fields) error {
 				contract, err := contractdm.NewContract(
@@ -70,7 +70,7 @@ func TestUpdateContractStatus(t *testing.T) {
 		{
 			title:                 "リクエストするContractIDが空の場合_エラーが発生すること",
 			contractID:            "",
-			requestContractStatus: 0,
+			requestContractStatus: cp.underContractStatus.Uint16(),
 			expectedErr:           errors.New("error NewContractIDByVal"),
 			prepareMock:           nil,
 		},
@@ -95,7 +95,7 @@ func TestUpdateContractStatus(t *testing.T) {
 			contractUsecase := NewUpdateContractStatusUsecase(f.contractRepository)
 			err := contractUsecase.UpdateContractStatus(
 				td.contractID,
-				td.requestContractStatus.Uint16(),
+				td.requestContractStatus,
 			)
 
 			if td.expectedErr != nil {

@@ -163,3 +163,7 @@ func isOver(s string, maxlength int) bool {
 func isLow(u, min uint32) bool {
 	return min > u
 }
+
+func (r *Recruit) IsCreate() bool {
+	return r.recruitStatus == Draft || r.recruitStatus == Published
+}
