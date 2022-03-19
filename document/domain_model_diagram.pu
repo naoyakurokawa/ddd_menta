@@ -11,6 +11,7 @@ package ユーザー {
   }
 
   object 経歴 {
+    経歴ID
     ユーザーID
     西暦from
     西暦to
@@ -18,6 +19,8 @@ package ユーザー {
   }
 
   object ユーザースキル {
+    ユーザースキルID
+    ユーザーID
     タグ名
     評価
     年数
@@ -60,6 +63,7 @@ package メンター {
   }
 
   object 提供プラン {
+    提供プランID
     メンター概要ID
     タイトル
     カテゴリー
@@ -71,6 +75,8 @@ package メンター {
   }
 
   object メンタースキル {
+    メンター概要ID
+    メンタースキルID
     タグ名
     評価
     年数
@@ -79,14 +85,23 @@ package メンター {
 
 package 提案 {
   object 提案 {
+    提案ID
+    メンターID
     メンター募集ID
+    価格
     提案内容
+    ステータス
   }
 }
 
 note top of 提案
-提案内容: 2000文字以内
-提案できるのはスキルを5個以上持つユーザのみ
+・提案内容: 2000文字以内
+・提案できるのはスキルを5個以上持つユーザのみ
+・価格：1000円以上
+・ステータス
+  ・提案中
+  ・承認
+  ・終了
 end note
 
 note left of 提供プラン
@@ -104,6 +119,7 @@ end note
 
 package メンティー {
   object メンター募集 {
+    メンター募集ID
     ユーザーID
     タイトル
     予算
@@ -128,6 +144,10 @@ end note
 
 package 契約 {
   object 契約 {
+    契約ID
+    ユーザーID
+    メンターID
+    プランID 
     ステータス
   }
 }
@@ -137,6 +157,20 @@ note bottom of 契約
   契約中
   契約終了
 end note
-契約 "0..1" --> "1" 提案
+
+package 個人契約 {
+  object 個人契約 {
+    個人契約ID
+    提案ID 
+    ステータス
+  }
+}
+note bottom of 個人契約
+ステータス
+  契約中
+  契約終了
+end note
+
+提案 "1" <-- "0..n" 個人契約
 
 @enduml
