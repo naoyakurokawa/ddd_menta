@@ -116,6 +116,10 @@ func (s *Suggestion) SuggestionID() SuggestionID {
 	return s.suggestionID
 }
 
+func (s *Suggestion) MentorID() mentordm.MentorID {
+	return s.mentorID
+}
+
 func (s *Suggestion) RecruitID() recruitdm.RecruitID {
 	return s.recruitID
 }
