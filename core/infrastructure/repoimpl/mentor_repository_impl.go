@@ -81,7 +81,7 @@ func (mr *MentorRepositoryImpl) FindByID(mentorID mentordm.MentorID) (*mentordm.
 		return nil, err
 	}
 	mentorPlans := make([]mentordm.Plan, len(dataModelPlans))
-	for _, p := range dataModelPlans {
+	for i, p := range dataModelPlans {
 		plan, err := mentordm.ReconstructPlan(
 			p.PlanID,
 			p.Title,
@@ -95,14 +95,14 @@ func (mr *MentorRepositoryImpl) FindByID(mentorID mentordm.MentorID) (*mentordm.
 		if err != nil {
 			return nil, err
 		}
-		mentorPlans = append(mentorPlans, *plan)
+		mentorPlans[i] = *plan
 	}
 
 	if err := mr.conn.Where("mentor_id = ?", string(mentorID)).Find(&dataModelMentorSkills).Error; err != nil {
 		return nil, err
 	}
 	mentorSkills := make([]mentordm.MentorSkill, len(dataModelMentorSkills))
-	for _, ms := range dataModelMentorSkills {
+	for i, ms := range dataModelMentorSkills {
 		mentorSkill, err := mentordm.ReconstructMentorSkill(
 			ms.MentorSkillID,
 			ms.Tag,
@@ -112,7 +112,7 @@ func (mr *MentorRepositoryImpl) FindByID(mentorID mentordm.MentorID) (*mentordm.
 		if err != nil {
 			return nil, err
 		}
-		mentorSkills = append(mentorSkills, *mentorSkill)
+		mentorSkills[i] = *mentorSkill
 	}
 
 	mentor, err := mentordm.Reconstruct(

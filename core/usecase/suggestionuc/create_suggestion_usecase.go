@@ -4,6 +4,7 @@ import (
 	"github.com/naoyakurokawa/ddd_menta/core/domain/mentordm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/recruitdm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/suggestiondm"
+	"golang.org/x/xerrors"
 )
 
 type CreateSuggestionUsecase interface {
@@ -19,13 +20,19 @@ type CreateSuggestionUsecase interface {
 
 type CreateSuggestionUsecaseImpl struct {
 	suggestionRepo suggestiondm.SuggestionRepository
+	mentorRepo     mentordm.MentorRepository
+	recruitRepo    recruitdm.RecruitRepository
 }
 
 func NewCreateSuggestionUsecase(
 	suggestionRepo suggestiondm.SuggestionRepository,
+	mentorRepo mentordm.MentorRepository,
+	recruitRepo recruitdm.RecruitRepository,
 ) CreateSuggestionUsecase {
 	return &CreateSuggestionUsecaseImpl{
 		suggestionRepo: suggestionRepo,
+		mentorRepo:     mentorRepo,
+		recruitRepo:    recruitRepo,
 	}
 }
 
@@ -67,9 +74,17 @@ func (ru *CreateSuggestionUsecaseImpl) Create(
 		return err
 	}
 
-	//メンター募集のステータスが公開以外の場合は提案不可
+	// メンター募集のステータスが公開以外の場合は提案不可
+	isPublishedDomainServiceDomainService := recruitdm.NewIsPublishedDomainServiceDomainService(ru.recruitRepo)
+	if !isPublishedDomainServiceDomainService.Exec(suggestion.RecruitID()) {
+		return xerrors.New("This recruit is not active")
+	}
 
-	//メンターがスキル5つ未満の場合は提案不可
+	// メンターがスキル5つ未満の場合は提案不可
+	checkNumMentorSkillDomainService := mentordm.NewCheckNumMentorSkillDomainService(ru.mentorRepo)
+	if !checkNumMentorSkillDomainService.Exec(suggestion.MentorID()) {
+		return xerrors.New("Can be suggested if you have 5 or more mentor skills")
+	}
 
 	return ru.suggestionRepo.Create(suggestion)
 }

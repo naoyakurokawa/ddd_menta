@@ -30,7 +30,13 @@ func NewCreateSuggestionController() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		conn := db.NewDB()
 		suggestionRepository := repoimpl.NewSuggestionRepositoryImpl(conn)
-		suggestionCreateUsecase := suggestionuc.NewCreateSuggestionUsecase(suggestionRepository)
+		mentorRepository := repoimpl.NewMentorRepositoryImpl(conn)
+		recruitRepository := repoimpl.NewRecruitRepositoryImpl(conn)
+		suggestionCreateUsecase := suggestionuc.NewCreateSuggestionUsecase(
+			suggestionRepository,
+			mentorRepository,
+			recruitRepository,
+		)
 
 		var req suggestionRequest
 		if err := c.Bind(&req); err != nil {
