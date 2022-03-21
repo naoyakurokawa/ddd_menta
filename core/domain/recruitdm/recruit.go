@@ -168,6 +168,6 @@ func (r *Recruit) CanCreate() bool {
 	return r.recruitStatus == Draft || r.recruitStatus == Published
 }
 
-func (r *Recruit) CanSuggestion() bool {
+func (r *Recruit) IsPublished() bool {
 	return r.recruitStatus == Published
 }

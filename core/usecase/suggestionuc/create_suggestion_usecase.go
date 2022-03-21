@@ -79,7 +79,7 @@ func (ru *CreateSuggestionUsecaseImpl) Create(
 		return err
 	}
 
-	if !recruit.CanSuggestion() {
+	if !recruit.IsPublished() {
 		return xerrors.New("This recruit is not active")
 	}
 
