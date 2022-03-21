@@ -237,7 +237,7 @@ func TestReconstruct(t *testing.T) {
 	}
 }
 
-func TestIsCreate(t *testing.T) {
+func TestCanCreate(t *testing.T) {
 	asserts := assert.New(t)
 	for _, td := range []struct {
 		title         string
@@ -271,7 +271,7 @@ func TestIsCreate(t *testing.T) {
 				td.recruitStatus,
 			)
 			require.NoError(t, err)
-			actual := recruit.IsCreate()
+			actual := recruit.CanCreate()
 			asserts.Equal(actual, td.expected)
 		})
 	}

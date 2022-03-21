@@ -32,7 +32,7 @@ func (rr *RecruitRepositoryImpl) Create(recruit *recruitdm.Recruit) error {
 	return nil
 }
 
-func (rr *RecruitRepositoryImpl) FindByID(recruitID recruitdm.RecruitID) (*recruitdm.Recruit, error) {
+func (rr *RecruitRepositoryImpl) FetchByID(recruitID recruitdm.RecruitID) (*recruitdm.Recruit, error) {
 	dataModelRecruit := datamodel.Recruit{}
 	if err := rr.conn.Where("recruit_id = ?", recruitID.String()).Find(&dataModelRecruit).Error; err != nil {
 		return nil, xerrors.Errorf("fail to find by recruitID : %w", err)

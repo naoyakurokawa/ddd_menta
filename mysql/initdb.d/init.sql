@@ -250,3 +250,42 @@ INSERT INTO recruits (
   "2022-03-22 00:00:00.000000",
   "2022-03-22 00:00:00.000000"
 );
+
+DROP TABLE IF EXISTS suggestions;
+CREATE TABLE suggestions
+(
+  suggestion_id VARCHAR(255) NOT NULL,
+  mentor_id VARCHAR(255) NOT NULL,
+  recruit_id VARCHAR(255) NOT NULL,
+  price INT NOT NULL,
+  suggestion_type INT NOT NULL,
+  detail TEXT NOT NULL,
+  suggestion_status INT NOT NULL,
+  created_at TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL,
+  PRIMARY KEY (suggestion_id),
+  FOREIGN KEY (mentor_id) REFERENCES mentors(mentor_id),
+  FOREIGN KEY (recruit_id) REFERENCES recruits(recruit_id)
+);
+
+INSERT INTO suggestions (
+  suggestion_id,
+  mentor_id,
+  recruit_id,
+  price,
+  suggestion_type,
+  detail,
+  suggestion_status,
+  created_at,
+  updated_at
+) VALUES (
+  "e2e908dc-5981-4c4a-8e98-4487d3e122ad", 
+  "e2e908dc-5981-4c4a-8e98-4487d3e122ad", 
+  "e2e908dc-5981-4c4a-8e98-4487d3e122ad", 
+  5000,
+  1,
+  "DDDの設計から開発までサポートします",
+  1,
+  "2022-03-22 00:00:00.000000",
+  "2022-03-22 00:00:00.000000"
+);
