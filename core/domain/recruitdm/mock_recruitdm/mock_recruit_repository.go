@@ -48,17 +48,17 @@ func (mr *MockRecruitRepositoryMockRecorder) Create(recruit interface{}) *gomock
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockRecruitRepository)(nil).Create), recruit)
 }
 
-// FindByID mocks base method.
-func (m *MockRecruitRepository) FindByID(recruitID recruitdm.RecruitID) (*recruitdm.Recruit, error) {
+// FetchByID mocks base method.
+func (m *MockRecruitRepository) FetchByID(recruitID recruitdm.RecruitID) (*recruitdm.Recruit, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindByID", recruitID)
+	ret := m.ctrl.Call(m, "FetchByID", recruitID)
 	ret0, _ := ret[0].(*recruitdm.Recruit)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// FindByID indicates an expected call of FindByID.
-func (mr *MockRecruitRepositoryMockRecorder) FindByID(recruitID interface{}) *gomock.Call {
+// FetchByID indicates an expected call of FetchByID.
+func (mr *MockRecruitRepositoryMockRecorder) FetchByID(recruitID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByID", reflect.TypeOf((*MockRecruitRepository)(nil).FindByID), recruitID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FetchByID", reflect.TypeOf((*MockRecruitRepository)(nil).FetchByID), recruitID)
 }

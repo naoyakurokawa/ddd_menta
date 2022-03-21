@@ -64,7 +64,7 @@ func (ru *CreateRecruitUsecaseImpl) Create(
 	}
 
 	// メンター募集生成時は、「下書き」もしくは「公開」のみ可能
-	if !recruit.IsCreate() {
+	if !recruit.CanCreate() {
 		return xerrors.New("RecruitStatus must be Draft or Published when create")
 	}
 

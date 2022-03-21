@@ -164,6 +164,10 @@ func isLow(u, min uint32) bool {
 	return min > u
 }
 
-func (r *Recruit) IsCreate() bool {
+func (r *Recruit) CanCreate() bool {
 	return r.recruitStatus == Draft || r.recruitStatus == Published
+}
+
+func (r *Recruit) CanSuggestion() bool {
+	return r.recruitStatus == Published
 }

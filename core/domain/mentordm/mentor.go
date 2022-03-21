@@ -24,6 +24,7 @@ type Mentor struct {
 
 const titleMaxLength = 255
 const detialMaxLength = 2000
+const canSuggestionNumOfSkills = 5
 
 func NewMentor(
 	mentorID MentorID,
@@ -230,4 +231,8 @@ func StrCastUint(str string) (uint16, error) {
 		return 0, err
 	}
 	return uint16(ui), nil
+}
+
+func (m *Mentor) CanSuggestion() bool {
+	return len(m.mentorSkills) >= canSuggestionNumOfSkills
 }

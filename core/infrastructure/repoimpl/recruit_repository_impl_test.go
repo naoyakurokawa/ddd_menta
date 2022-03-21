@@ -41,7 +41,7 @@ func TestRecruitRepoCreate(t *testing.T) {
 	err = recruitRepository.Create(recruit)
 	require.NoError(t, err)
 
-	selectedRecruit, err := recruitRepository.FindByID(rp.recruitID)
+	selectedRecruit, err := recruitRepository.FetchByID(rp.recruitID)
 	require.NoError(t, err)
 
 	// 検証 (作成したメンター募集がDB登録されているか)

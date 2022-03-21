@@ -74,15 +74,21 @@ func (ru *CreateSuggestionUsecaseImpl) Create(
 		return err
 	}
 
-	// メンター募集のステータスが公開以外の場合は提案不可
-	isPublishedDomainServiceDomainService := recruitdm.NewIsPublishedDomainServiceDomainService(ru.recruitRepo)
-	if !isPublishedDomainServiceDomainService.Exec(suggestion.RecruitID()) {
+	recruit, err := ru.recruitRepo.FetchByID(recruitIDIns)
+	if err != nil {
+		return err
+	}
+
+	if !recruit.CanSuggestion() {
 		return xerrors.New("This recruit is not active")
 	}
 
-	// メンターがスキル5つ未満の場合は提案不可
-	checkNumMentorSkillDomainService := mentordm.NewCheckNumMentorSkillDomainService(ru.mentorRepo)
-	if !checkNumMentorSkillDomainService.Exec(suggestion.MentorID()) {
+	mentor, err := ru.mentorRepo.FindByID(mentorIDIns)
+	if err != nil {
+		return err
+	}
+
+	if !mentor.CanSuggestion() {
 		return xerrors.New("Can be suggested if you have 5 or more mentor skills")
 	}
 
