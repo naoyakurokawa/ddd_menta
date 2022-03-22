@@ -32,7 +32,7 @@ func (sr *SuggestionRepositoryImpl) Create(suggestion *suggestiondm.Suggestion) 
 	return nil
 }
 
-func (sr *SuggestionRepositoryImpl) FindByID(suggestionID suggestiondm.SuggestionID) (*suggestiondm.Suggestion, error) {
+func (sr *SuggestionRepositoryImpl) FetchByID(suggestionID suggestiondm.SuggestionID) (*suggestiondm.Suggestion, error) {
 	dataModelSuggestion := datamodel.Suggestion{}
 	if err := sr.conn.Where("suggestion_id = ?", suggestionID.String()).Find(&dataModelSuggestion).Error; err != nil {
 		return nil, err
