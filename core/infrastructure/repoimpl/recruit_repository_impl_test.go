@@ -23,7 +23,7 @@ func TestRecruitRepoCreate(t *testing.T) {
 	)
 	require.NoError(t, err)
 	userRepository := NewUserRepositoryImpl(db.NewDB())
-	_, err = userRepository.Create(user)
+	err = userRepository.Create(user)
 	require.NoError(t, err)
 
 	setupRecruit()

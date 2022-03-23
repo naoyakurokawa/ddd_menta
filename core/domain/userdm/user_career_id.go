@@ -1,19 +1,13 @@
 package userdm
 
 import (
-	"github.com/google/uuid"
+	"github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
 )
 
-type UserCareerID string
+type UserCareerID sharedvo.ID
 
-func NewUserCareerID() (UserCareerID, error) {
-	u, err := uuid.NewRandom()
-	if err != nil {
-		return UserCareerID(""), err
-	}
-	us := u.String()
-
-	return UserCareerID(us), nil
+func NewUserCareerID() UserCareerID {
+	return UserCareerID(sharedvo.NewID())
 }
 
 func (u UserCareerID) Equals(u2 UserCareerID) bool {

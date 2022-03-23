@@ -11,24 +11,20 @@ import (
 )
 
 type UserController struct {
-	userCreateUsecase useruc.UserCreateUsecase
+	userCreateUsecase useruc.CreateUserUsecase
 }
 
-func NewUserController(uu useruc.UserCreateUsecase) *UserController {
+func NewUserController(uu useruc.CreateUserUsecase) *UserController {
 	return &UserController{userCreateUsecase: uu}
 }
 
 type requestUser struct {
-	Name            string
-	Email           string
-	Password        string
-	Profile         string
-	From            []string
-	To              []string
-	Detail          []string
-	Tag             []string
-	Assessment      []string
-	ExperienceYears []string
+	Name        string
+	Email       string
+	Password    string
+	Profile     string
+	UserCareers []useruc.UserCareer
+	UserSkills  []useruc.UserSkill
 }
 
 // Create userを保存するときのハンドラー
@@ -46,15 +42,18 @@ func NewCreateUserController() echo.HandlerFunc {
 		}
 
 		//usecaseのCreate → infraのCreate
-		createdUser, err := userCreateUsecase.Create(req.Name, req.Email, req.Password, req.Profile, req.From, req.To, req.Detail, req.Tag, req.Assessment, req.ExperienceYears)
+		err := userCreateUsecase.Create(
+			req.Name,
+			req.Email,
+			req.Password,
+			req.Profile,
+			req.UserCareers,
+			req.UserSkills,
+		)
 		if err != nil {
 			return err
 		}
 
-		res := responseUser{
-			userID: createdUser.UserID(),
-		}
-
-		return c.JSON(http.StatusCreated, res)
+		return c.JSON(http.StatusCreated, "success create user")
 	}
 }

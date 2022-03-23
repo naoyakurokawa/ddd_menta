@@ -1,20 +1,22 @@
 package userdm
 
 import (
-	"github.com/google/uuid"
+	"github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
 	"golang.org/x/xerrors"
 )
 
-type UserSkillID string
+type UserSkillID sharedvo.ID
 
-func NewUserSkillID() (UserSkillID, error) {
-	u, err := uuid.NewRandom()
+func NewUserSkillID() UserSkillID {
+	return UserSkillID(sharedvo.NewID())
+}
+
+func NewUserSkillIDByVal(strId string) (UserSkillID, error) {
+	id, err := sharedvo.NewIDByVal(strId)
 	if err != nil {
-		return UserSkillID(""), err
+		return UserSkillID(""), xerrors.New("error NewUserSkillIDByVal")
 	}
-	us := u.String()
-
-	return UserSkillID(us), nil
+	return UserSkillID(id), nil
 }
 
 func (u UserSkillID) Equals(u2 UserSkillID) bool {

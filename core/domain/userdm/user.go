@@ -1,6 +1,7 @@
 package userdm
 
 import (
+	"strconv"
 	"time"
 	"unicode/utf8"
 
@@ -92,4 +93,52 @@ func (u *User) UserCareers() []UserCareer {
 
 func (u *User) UserSkills() []UserSkill {
 	return u.userSkills
+}
+
+func (u *User) AddUserCareer(
+	from string,
+	to string,
+	detail string,
+) (*User, error) {
+	userCareerID := NewUserCareerID()
+	userCareer, err := NewUserCareer(
+		userCareerID,
+		from,
+		to,
+		detail,
+	)
+	if err != nil {
+		return nil, xerrors.New("error NewUserCareer")
+	}
+	u.userCareers = append(u.userCareers, *userCareer)
+
+	return u, nil
+}
+
+func (u *User) AddUserSkill(
+	tag string,
+	assessment uint16,
+	experienceYears ExperienceYears,
+) (*User, error) {
+	userSkillID := NewUserSkillID()
+	userSkill, err := NewUserSkill(
+		userSkillID,
+		tag,
+		assessment,
+		experienceYears,
+	)
+	if err != nil {
+		return nil, xerrors.New("error NewUserSkill")
+	}
+	u.userSkills = append(u.userSkills, *userSkill)
+
+	return u, nil
+}
+
+func StrCastUint(str string) (uint16, error) {
+	ui, err := strconv.ParseUint(str, 10, 16)
+	if err != nil {
+		return 0, err
+	}
+	return uint16(ui), nil
 }
