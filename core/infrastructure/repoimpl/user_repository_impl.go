@@ -88,16 +88,31 @@ func (ur *UserRepositoryImpl) FetchById(userID userdm.UserID) (*userdm.User, err
 	if err := ur.Conn.Where("user_id = ?", userID.String()).Find(&dataModelUser).Error; err != nil {
 		return nil, err
 	}
-	user, err := userdm.NewUser(
+
+	return userdm.NewUser(
 		userdm.UserIDType(dataModelUser.UserID),
 		dataModelUser.Name,
 		userdm.EmailType(dataModelUser.Email),
 		userdm.PasswordType(dataModelUser.Password),
 		dataModelUser.Profile,
 		dataModelUser.UserCareers,
-		dataModelUser.UserSkills)
-	if err != nil {
+		dataModelUser.UserSkills,
+	)
+}
+
+func (ur *UserRepositoryImpl) FetchByEmail(email userdm.Email) (*userdm.User, error) {
+	dataModelUser := &datamodel.User{}
+	if err := ur.Conn.Where("email = ?", email.Value()).Find(&dataModelUser).Error; err != nil {
 		return nil, err
 	}
-	return user, nil
+
+	return userdm.NewUser(
+		userdm.UserIDType(dataModelUser.UserID),
+		dataModelUser.Name,
+		userdm.EmailType(dataModelUser.Email),
+		userdm.PasswordType(dataModelUser.Password),
+		dataModelUser.Profile,
+		dataModelUser.UserCareers,
+		dataModelUser.UserSkills,
+	)
 }

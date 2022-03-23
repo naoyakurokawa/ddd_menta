@@ -2,6 +2,7 @@ package useruc
 
 import (
 	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
+	"golang.org/x/xerrors"
 )
 
 // UserUsecase user usecaseのinterface
@@ -56,6 +57,12 @@ func (uu *CreateUserUsecaseImpl) Create(
 	if err != nil {
 		return err
 	}
+
+	canRegisterEmailDomainService := userdm.NewCanRegisterEmailDomainService(uu.userRepo)
+	if !canRegisterEmailDomainService.Exec(emailIns) {
+		return xerrors.New("Duplicated Email")
+	}
+
 	passwordIns, err := userdm.NewPassword(password)
 	if err != nil {
 		return err

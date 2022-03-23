@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/labstack/echo"
@@ -50,8 +51,10 @@ func NewCreateUserController() echo.HandlerFunc {
 			req.UserCareers,
 			req.UserSkills,
 		)
+
 		if err != nil {
-			return err
+			log.Printf("failed to NewCreateUserController: %+v", err)
+			return c.JSON(http.StatusCreated, "failed create user")
 		}
 
 		return c.JSON(http.StatusCreated, "success create user")

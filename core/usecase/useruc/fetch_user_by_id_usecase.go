@@ -18,9 +18,5 @@ func NewUserFindByIDUsecase(userRepo userdm.UserRepository) FetchUserByIdUsecase
 }
 
 func (uu *FetchUserByIdUsecaseImpl) FetchById(userID userdm.UserID) (*userdm.User, error) {
-	selectedUser, err := uu.userRepo.FetchById(userID)
-	if err != nil {
-		return nil, err
-	}
-	return selectedUser, nil
+	return uu.userRepo.FetchById(userID)
 }
