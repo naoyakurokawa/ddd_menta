@@ -1,24 +1,16 @@
-package repoimpl
+package suggestionuc
 
 import (
+	"fmt"
+	"testing"
 	"time"
 
-	"github.com/naoyakurokawa/ddd_menta/core/domain/contractdm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/mentordm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/recruitdm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/suggestiondm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
 	"golang.org/x/xerrors"
 )
-
-type userParams struct {
-	userID    userdm.UserID
-	name      string
-	email     userdm.Email
-	password  userdm.Password
-	profile   string
-	createdAt time.Time
-}
 
 type mentorParams struct {
 	userID                userdm.UserID
@@ -39,30 +31,24 @@ type mentorParams struct {
 	planDetial            string
 	planType              mentordm.PlanType
 	planPrice             uint16
-	planStatus            mentordm.PlanStatus
+	planActiveStatus      mentordm.PlanStatus
+	planBusyStatus        mentordm.PlanStatus
 	createdAt             time.Time
 }
 
-type contractParams struct {
-	contractID     contractdm.ContractID
-	userID         userdm.UserID
-	mentorID       mentordm.MentorID
-	planID         mentordm.PlanID
-	contractStatus contractdm.ContractStatus
-	createdAt      time.Time
-	updatedAt      time.Time
-}
-
 type recruitParams struct {
-	recruitID     recruitdm.RecruitID
-	userID        userdm.UserID
-	title         string
-	budget        uint32
-	recruitType   recruitdm.RecruitType
-	detail        string
-	recruitStatus recruitdm.RecruitStatus
-	createdAt     time.Time
-	updatedAt     time.Time
+	recruitID               recruitdm.RecruitID
+	userID                  userdm.UserID
+	title                   string
+	budget                  uint32
+	recruitTypeOnce         recruitdm.RecruitType
+	recruitTypeSubscription recruitdm.RecruitType
+	detail                  string
+	recruitStatusDraft      recruitdm.RecruitStatus
+	recruitStatusPublished  recruitdm.RecruitStatus
+	recruitStatusTerminated recruitdm.RecruitStatus
+	createdAt               time.Time
+	updatedAt               time.Time
 }
 
 type suggestionParams struct {
@@ -81,40 +67,35 @@ type suggestionParams struct {
 }
 
 var (
-	up           userParams
-	mp           mentorParams
-	cp           contractParams
-	rp           recruitParams
-	sp           suggestionParams
-	userCareers  []userdm.UserCareer
-	userSkills   []userdm.UserSkill
-	mentorSkills []mentordm.MentorSkill
-	mentorPlans  []mentordm.Plan
+	mp          mentorParams
+	rp          recruitParams
+	sp          suggestionParams
+	userCareers []userdm.UserCareer
+	userSkills  []userdm.UserSkill
+	mentorPlans []mentordm.Plan
 )
 
-func setupUser() error {
-	//ユーザー
-	userID := userdm.NewUserID()
-	email, err := userdm.NewEmail("test@gmail.com")
+func TestMain(m *testing.M) {
+	err := setupMentor()
 	if err != nil {
-		return xerrors.New("error NewEmail")
+		fmt.Printf("%+v", err)
+		return
 	}
-	password, err := userdm.NewPassword("test12345678")
+	err = setupRecruit()
 	if err != nil {
-		return xerrors.New("error NewPassword")
+		fmt.Printf("%+v", err)
+		return
 	}
-	up = userParams{
-		userID,
-		"テストユーザー",
-		email,
-		password,
-		"テストユーザーです",
-		time.Date(2000, 1, 1, 0, 0, 0, 0, time.Local),
+	err = setupSuggestion()
+	if err != nil {
+		fmt.Printf("%+v", err)
+		return
 	}
-	return nil
+	m.Run()
 }
 
 func setupMentor() error {
+	userID := userdm.NewUserID()
 	mentorID := mentordm.NewMentorID()
 	mentorSkillID := mentordm.NewMentorSkillID()
 	planID := mentordm.NewPlanID()
@@ -126,13 +107,17 @@ func setupMentor() error {
 	if err != nil {
 		return xerrors.New("error NewPlanType")
 	}
-	planStatus, err := mentordm.NewPlanStatus(uint16(1))
+	activePlanStatus, err := mentordm.NewPlanStatus(uint16(1))
+	if err != nil {
+		return xerrors.New("error NewPlanStatus")
+	}
+	busyPlanStatus, err := mentordm.NewPlanStatus(uint16(2))
 	if err != nil {
 		return xerrors.New("error NewPlanStatus")
 	}
 
 	mp = mentorParams{
-		up.userID,
+		userID,
 		mentorID,
 		"プログラミング全般のメンタリング",
 		"/main.jpg",
@@ -150,28 +135,8 @@ func setupMentor() error {
 		"DDDの設計手法を学べます",
 		planType,
 		uint16(1000),
-		planStatus,
-		time.Date(2000, 1, 1, 0, 0, 0, 0, time.Local),
-	}
-	return nil
-}
-
-func setupContract() error {
-	contractID := contractdm.NewContractID()
-	userID := userdm.NewUserID()
-	mentorID := mentordm.NewMentorID()
-	planID := mentordm.NewPlanID()
-	contractStatus, err := contractdm.NewContractStatus(uint16(1))
-	if err != nil {
-		return xerrors.New("error NewStatus")
-	}
-	cp = contractParams{
-		contractID,
-		userID,
-		mentorID,
-		planID,
-		contractStatus,
-		time.Date(2000, 1, 1, 0, 0, 0, 0, time.Local),
+		activePlanStatus,
+		busyPlanStatus,
 		time.Date(2000, 1, 1, 0, 0, 0, 0, time.Local),
 	}
 	return nil
@@ -179,14 +144,18 @@ func setupContract() error {
 
 func setupRecruit() error {
 	recruitID := recruitdm.NewRecruitID()
+	userID := userdm.NewUserID()
 	rp = recruitParams{
 		recruitID,
-		up.userID,
+		userID,
 		"DDDの基礎を教えて下さい",
 		5000,
 		recruitdm.Once,
+		recruitdm.Subscription,
 		"DDDによる開発をサポートしてもらいたく募集しました",
 		recruitdm.Draft,
+		recruitdm.Published,
+		recruitdm.Terminated,
 		time.Date(2000, 1, 1, 0, 0, 0, 0, time.Local),
 		time.Date(2000, 1, 1, 0, 0, 0, 0, time.Local),
 	}
