@@ -10,7 +10,6 @@ import (
 
 type UserCareer struct {
 	userCareerID UserCareerID
-	userID       UserID
 	from         time.Time
 	to           time.Time
 	detail       string
@@ -22,13 +21,15 @@ const detailMaxLength = 1000
 var oldestCareerYear = time.Date(1970, 1, 1, 0, 0, 0, 0, time.UTC)
 
 // NewUserCareer user_careerのコンストラクタ
-func NewUserCareer(userCareerID UserCareerID, userID UserID, from string, to string, detail string) (*UserCareer, error) {
+func NewUserCareer(
+	userCareerID UserCareerID,
+	from string,
+	to string,
+	detail string,
+) (*UserCareer, error) {
 	//入力データチェック
 	if len(userCareerID) == 0 {
 		return nil, xerrors.New("userCareerID must not be empty")
-	}
-	if len(userID) == 0 {
-		return nil, xerrors.New("userID must not be empty")
 	}
 	if len(from) == 0 {
 		return nil, xerrors.New("career period must not be empty")
@@ -61,7 +62,6 @@ func NewUserCareer(userCareerID UserCareerID, userID UserID, from string, to str
 	now := time.Now()
 	userCareer := &UserCareer{
 		userCareerID: userCareerID,
-		userID:       userID,
 		from:         fromTime,
 		to:           toTime,
 		detail:       detail,
@@ -93,10 +93,6 @@ func stringToTime(str string) time.Time {
 
 func (u *UserCareer) UserCareerID() UserCareerID {
 	return u.userCareerID
-}
-
-func (u *UserCareer) UserID() UserID {
-	return u.userID
 }
 
 func (u *UserCareer) From() time.Time {

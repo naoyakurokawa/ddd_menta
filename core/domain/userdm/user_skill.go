@@ -11,7 +11,6 @@ import (
 
 type UserSkill struct {
 	userSkillID     UserSkillID
-	userID          UserID
 	tag             string
 	assessment      uint16
 	experienceYears ExperienceYears
@@ -25,7 +24,12 @@ const (
 )
 
 // NewUserSkill userSkillのコンストラクタ
-func NewUserSkill(userSkillID UserSkillID, userID UserID, tag string, assessment uint16, experienceYears ExperienceYears) (*UserSkill, error) {
+func NewUserSkill(
+	userSkillID UserSkillID,
+	tag string,
+	assessment uint16,
+	experienceYears ExperienceYears,
+) (*UserSkill, error) {
 	//入力データチェック
 	if len(tag) == 0 {
 		return nil, xerrors.New("tag must not be empty")
@@ -41,7 +45,6 @@ func NewUserSkill(userSkillID UserSkillID, userID UserID, tag string, assessment
 
 	userSkill := &UserSkill{
 		userSkillID:     userSkillID,
-		userID:          userID,
 		tag:             tag,
 		assessment:      assessment,
 		experienceYears: experienceYears,
@@ -53,10 +56,6 @@ func NewUserSkill(userSkillID UserSkillID, userID UserID, tag string, assessment
 
 func (u *UserSkill) UserSkillID() UserSkillID {
 	return u.userSkillID
-}
-
-func (u *UserSkill) UserID() UserID {
-	return u.userID
 }
 
 func (u *UserSkill) Tag() string {

@@ -29,7 +29,7 @@ func TestContractRepoCreate(t *testing.T) {
 	)
 	require.NoError(t, err)
 	userRepository := NewUserRepositoryImpl(db.NewDB())
-	_, err = userRepository.Create(user)
+	err = userRepository.Create(user)
 	require.NoError(t, err)
 
 	// メンター作成
@@ -84,7 +84,7 @@ func TestContractRepoCreate(t *testing.T) {
 	)
 	require.NoError(t, err)
 	userRepository2 := NewUserRepositoryImpl(db.NewDB())
-	_, err = userRepository2.Create(user2)
+	err = userRepository2.Create(user2)
 	require.NoError(t, err)
 
 	//契約

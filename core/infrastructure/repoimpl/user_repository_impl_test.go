@@ -17,22 +17,14 @@ func TestUserRepo_Create(t *testing.T) {
 
 	userID := userdm.NewUserID()
 	userCareers := make([]userdm.UserCareer, 2)
-	userCareerID1, err := userdm.NewUserCareerID()
-	if err != nil {
-		t.Errorf("failed to NewUserCareerID: %v", err)
-		return
-	}
-	userCareerID2, err := userdm.NewUserCareerID()
-	if err != nil {
-		t.Errorf("failed to NewUserCareerID: %v", err)
-		return
-	}
-	userCareer1, err := userdm.NewUserCareer(userCareerID1, userID, "2013-06-02 15:04:05", "2013-06-02 15:04:05", "PHPエンジニア")
+	userCareerID1 := userdm.NewUserCareerID()
+	userCareerID2 := userdm.NewUserCareerID()
+	userCareer1, err := userdm.NewUserCareer(userCareerID1, "2013-06-02 15:04:05", "2013-06-02 15:04:05", "PHPエンジニア")
 	if err != nil {
 		t.Errorf("failed to NewUserCareer: %v", err)
 		return
 	}
-	userCareer2, err := userdm.NewUserCareer(userCareerID2, userID, "2013-06-02 15:04:05", "2013-06-02 15:04:05", "Goエンジニア")
+	userCareer2, err := userdm.NewUserCareer(userCareerID2, "2013-06-02 15:04:05", "2013-06-02 15:04:05", "Goエンジニア")
 	if err != nil {
 		t.Errorf("failed to NewUserCareer: %v", err)
 		return
@@ -41,7 +33,7 @@ func TestUserRepo_Create(t *testing.T) {
 	userCareers[1] = *userCareer2
 
 	userSkills := make([]userdm.UserSkill, 1)
-	userSkillID, err := userdm.NewUserSkillID()
+	userSkillID := userdm.NewUserSkillID()
 	if err != nil {
 		t.Errorf("failed to NewUserSkillID: %v", err)
 		return
@@ -51,7 +43,7 @@ func TestUserRepo_Create(t *testing.T) {
 		t.Errorf("failed to NewExperienceYears: %v", err)
 		return
 	}
-	userSkill, err := userdm.NewUserSkill(userSkillID, userID, "Golang", 5, experienceYears)
+	userSkill, err := userdm.NewUserSkill(userSkillID, "Golang", 5, experienceYears)
 	if err != nil {
 		t.Errorf("failed to NewUserSkill: %v", err)
 		return
@@ -64,22 +56,30 @@ func TestUserRepo_Create(t *testing.T) {
 		return
 	}
 
-	user, err := userdm.NewUser(userID, name, emailIns, password, profile, userCareers, userSkills)
+	user, err := userdm.NewUser(
+		userID,
+		name,
+		emailIns,
+		password,
+		profile,
+		userCareers,
+		userSkills,
+	)
 	if err != nil {
 		t.Errorf("failed to NewUser: %v", err)
 		return
 	}
 
 	userRepository := NewUserRepositoryImpl(db.NewDB())
-	createdUser, err := userRepository.Create(user)
+	err = userRepository.Create(user)
 	if err != nil {
 		t.Errorf("failed to userRepository.Create: %v", err)
 	}
-	selectedUser, err := userRepository.FindByID(createdUser.UserID())
+	selectedUser, err := userRepository.FetchById(user.UserID())
 	if err != nil {
 		t.Errorf("failed to FindByID: %v", err)
 	}
-	if !createdUser.UserID().Equals(selectedUser.UserID()) {
+	if !user.UserID().Equals(selectedUser.UserID()) {
 		t.Errorf("failed to CreateUser")
 	}
 }

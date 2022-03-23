@@ -20,12 +20,12 @@ func NewUserRepositoryImpl(conn *gorm.DB) userdm.UserRepository {
 
 // todo:gormのスライスによるinsertは以下のエラー発生 要調査
 // エラー：reflect: call of reflect.Value.Interface on zero Value
-func (ur *UserRepositoryImpl) Create(user *userdm.User) (*userdm.User, error) {
+func (ur *UserRepositoryImpl) Create(user *userdm.User) error {
 	var u datamodel.User
 
 	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password().Value()), 12)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	// hex.EncodeToString([]byte("あ"))
 
@@ -40,7 +40,7 @@ func (ur *UserRepositoryImpl) Create(user *userdm.User) (*userdm.User, error) {
 
 	// User登録
 	if err := ur.Conn.Create(&u).Error; err != nil {
-		return nil, err
+		return err
 	}
 	// UserCareer登録
 	for i := 0; i < len(u.UserCareers); i++ {
@@ -53,7 +53,7 @@ func (ur *UserRepositoryImpl) Create(user *userdm.User) (*userdm.User, error) {
 			CreatedAt:    u.UserCareers[i].CreatedAt(),
 		}
 		if err := ur.Conn.Create(&userCareer).Error; err != nil {
-			return nil, err
+			return err
 		}
 	}
 	// UserSkill登録
@@ -67,13 +67,13 @@ func (ur *UserRepositoryImpl) Create(user *userdm.User) (*userdm.User, error) {
 			CreatedAt:       u.UserSkills[i].CreatedAt(),
 		}
 		if err := ur.Conn.Create(&userSkill).Error; err != nil {
-			return nil, err
+			return err
 		}
 	}
-	return user, nil
+	return err
 }
 
-func (ur *UserRepositoryImpl) FindByID(userID userdm.UserID) (*userdm.User, error) {
+func (ur *UserRepositoryImpl) FetchById(userID userdm.UserID) (*userdm.User, error) {
 	var dataModelCareer []userdm.UserCareer
 	dataModelUser := &datamodel.User{
 		UserID:      "",

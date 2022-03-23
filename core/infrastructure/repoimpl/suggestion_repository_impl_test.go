@@ -69,7 +69,7 @@ func TestSuggestionRepoCreate(t *testing.T) {
 			)
 			require.NoError(t, err)
 			userRepository := NewUserRepositoryImpl(tx)
-			_, err = userRepository.Create(user)
+			err = userRepository.Create(user)
 			require.NoError(t, err)
 
 			//メンター募集作成
@@ -101,7 +101,7 @@ func TestSuggestionRepoCreate(t *testing.T) {
 			)
 			require.NoError(t, err)
 			userRepository2 := NewUserRepositoryImpl(tx)
-			_, err = userRepository2.Create(user2)
+			err = userRepository2.Create(user2)
 			require.NoError(t, err)
 
 			// メンター作成

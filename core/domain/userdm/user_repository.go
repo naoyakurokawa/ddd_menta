@@ -1,6 +1,6 @@
 package userdm
 
 type UserRepository interface {
-	Create(user *User) (*User, error)
-	FindByID(userID UserID) (*User, error)
+	Create(user *User) error
+	FetchById(userID UserID) (*User, error)
 }
