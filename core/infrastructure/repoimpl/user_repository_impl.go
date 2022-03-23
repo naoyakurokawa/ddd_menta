@@ -43,28 +43,29 @@ func (ur *UserRepositoryImpl) Create(user *userdm.User) error {
 		return err
 	}
 	// UserCareer登録
-	for i := 0; i < len(u.UserCareers); i++ {
+	for _, uc := range u.UserCareers {
 		userCareer := &datamodel.UserCareer{
-			UserCareerID: userdm.UserCareerID.Value(u.UserCareers[i].UserCareerID()),
+			UserCareerID: uc.UserCareerID().Value(),
 			UserID:       u.UserID,
-			From:         u.UserCareers[i].From(),
-			To:           u.UserCareers[i].To(),
-			Detail:       u.UserCareers[i].Detail(),
-			CreatedAt:    u.UserCareers[i].CreatedAt(),
+			From:         uc.From(),
+			To:           uc.To(),
+			Detail:       uc.Detail(),
+			CreatedAt:    uc.CreatedAt(),
 		}
 		if err := ur.Conn.Create(&userCareer).Error; err != nil {
 			return err
 		}
 	}
+
 	// UserSkill登録
-	for i := 0; i < len(u.UserSkills); i++ {
+	for _, us := range u.UserSkills {
 		userSkill := &datamodel.UserSkill{
-			UserSkillID:     userdm.UserSkillID.Value(u.UserSkills[i].UserSkillID()),
+			UserSkillID:     us.UserSkillID().Value(),
 			UserID:          u.UserID,
-			Tag:             u.UserSkills[i].Tag(),
-			Assessment:      u.UserSkills[i].Assessment(),
-			ExperienceYears: userdm.ExperienceYears.Uint16(u.UserSkills[i].ExperienceYears()),
-			CreatedAt:       u.UserSkills[i].CreatedAt(),
+			Tag:             us.Tag(),
+			Assessment:      us.Assessment(),
+			ExperienceYears: us.Assessment(),
+			CreatedAt:       us.CreatedAt(),
 		}
 		if err := ur.Conn.Create(&userSkill).Error; err != nil {
 			return err
