@@ -58,8 +58,8 @@ func (uu *CreateUserUsecaseImpl) Create(
 		return err
 	}
 
-	canRegisterEmailDomainService := userdm.NewCanRegisterEmailDomainService(uu.userRepo)
-	if !canRegisterEmailDomainService.Exec(emailIns) {
+	checkDuplicateEmailDomainService := userdm.NewCheckDuplicateEmailDomainService(uu.userRepo)
+	if !checkDuplicateEmailDomainService.Exec(emailIns) {
 		return xerrors.New("Duplicated Email")
 	}
 

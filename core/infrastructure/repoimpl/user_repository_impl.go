@@ -7,6 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
 	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/datamodel"
+	"github.com/naoyakurokawa/ddd_menta/customerrors"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -103,6 +104,11 @@ func (ur *UserRepositoryImpl) FetchById(userID userdm.UserID) (*userdm.User, err
 func (ur *UserRepositoryImpl) FetchByEmail(email userdm.Email) (*userdm.User, error) {
 	dataModelUser := &datamodel.User{}
 	if err := ur.Conn.Where("email = ?", email.Value()).Find(&dataModelUser).Error; err != nil {
+		return nil, err
+	}
+
+	if dataModelUser != nil {
+		err := customerrors.Conflict
 		return nil, err
 	}
 
