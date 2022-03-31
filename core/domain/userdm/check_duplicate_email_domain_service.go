@@ -1,8 +1,6 @@
 package userdm
 
 import (
-	"errors"
-
 	"github.com/naoyakurokawa/ddd_menta/customerrors"
 )
 
@@ -18,7 +16,7 @@ func NewCheckDuplicateEmailDomainService(userRepository UserRepository) *checkDu
 
 func (s *checkDuplicateEmailDomainService) Exec(email Email) bool {
 	user, err := s.userRepository.FetchByEmail(email)
-	if err != nil && errors.Is(err, customerrors.Conflict) {
+	if err != nil && customerrors.NewConflict().Equals(err) {
 		return false
 	}
 	return user == nil
