@@ -7,6 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
 	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/datamodel"
+	"github.com/naoyakurokawa/ddd_menta/customerrors"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -34,7 +35,7 @@ func (ur *UserRepositoryImpl) Create(user *userdm.User) error {
 	u.Email = user.Email().Value()
 	u.Password = string(hash)
 	u.Profile = user.Profile()
-	u.CreatedAt = user.CreatedAt()
+	u.CreatedAt = time.Time(user.CreatedAt())
 	u.UserCareers = user.UserCareers()
 	u.UserSkills = user.UserSkills()
 
@@ -88,16 +89,36 @@ func (ur *UserRepositoryImpl) FetchById(userID userdm.UserID) (*userdm.User, err
 	if err := ur.Conn.Where("user_id = ?", userID.String()).Find(&dataModelUser).Error; err != nil {
 		return nil, err
 	}
-	user, err := userdm.NewUser(
+
+	return userdm.NewUser(
 		userdm.UserIDType(dataModelUser.UserID),
 		dataModelUser.Name,
 		userdm.EmailType(dataModelUser.Email),
 		userdm.PasswordType(dataModelUser.Password),
 		dataModelUser.Profile,
 		dataModelUser.UserCareers,
-		dataModelUser.UserSkills)
-	if err != nil {
+		dataModelUser.UserSkills,
+	)
+}
+
+func (ur *UserRepositoryImpl) FetchByEmail(email userdm.Email) (*userdm.User, error) {
+	dataModelUser := &datamodel.User{}
+	if err := ur.Conn.Where("email = ?", email.Value()).Find(&dataModelUser).Error; err != nil {
 		return nil, err
 	}
-	return user, nil
+
+	if dataModelUser != nil {
+		err := customerrors.NewConflict()
+		return nil, err
+	}
+
+	return userdm.Reconstruct(
+		dataModelUser.UserID,
+		dataModelUser.Name,
+		dataModelUser.Email,
+		dataModelUser.Password,
+		dataModelUser.Profile,
+		dataModelUser.UserCareers,
+		dataModelUser.UserSkills,
+	)
 }
