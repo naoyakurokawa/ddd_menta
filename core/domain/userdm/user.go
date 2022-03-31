@@ -2,9 +2,9 @@ package userdm
 
 import (
 	"strconv"
-	"time"
 	"unicode/utf8"
 
+	"github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
 	"golang.org/x/xerrors"
 )
 
@@ -14,7 +14,7 @@ type User struct {
 	email       Email
 	password    Password
 	profile     string
-	createdAt   time.Time
+	createdAt   sharedvo.CreatedAt
 	userCareers []UserCareer
 	userSkills  []UserSkill
 }
@@ -47,15 +47,62 @@ func NewUser(userID UserID, name string, email Email, password Password, profile
 		return nil, xerrors.Errorf("profile must less than %d: %s", profileMaxLength, profile)
 	}
 
-	now := time.Now()
-
 	user := &User{
 		userID:      userID,
 		name:        name,
 		email:       email,
 		password:    password,
 		profile:     profile,
-		createdAt:   now,
+		createdAt:   sharedvo.NewCreatedAt(),
+		userCareers: userCareers,
+		userSkills:  userSkills,
+	}
+
+	return user, nil
+}
+
+func Reconstruct(
+	userID string,
+	name string,
+	email string,
+	password string,
+	profile string,
+	userCareers []UserCareer,
+	userSkills []UserSkill,
+) (*User, error) {
+	if len(name) == 0 {
+		return nil, xerrors.New("name must not be empty")
+	}
+	if utf8.RuneCountInString(name) > nameMaxLength {
+		return nil, xerrors.Errorf("name must less than %d: %s", nameMaxLength, name)
+	}
+	if len(profile) == 0 {
+		return nil, xerrors.New("profile must not be empty")
+	}
+	if utf8.RuneCountInString(profile) > profileMaxLength {
+		return nil, xerrors.Errorf("profile must less than %d: %s", profileMaxLength, profile)
+	}
+
+	castedUserID, err := NewUserIDByVal(userID)
+	if err != nil {
+		return nil, xerrors.New("error NewUserIDByVal")
+	}
+	emailIns, err := NewEmail(email)
+	if err != nil {
+		return nil, xerrors.New("error NewEmail")
+	}
+	passwordIns, err := NewPassword(password)
+	if err != nil {
+		return nil, xerrors.New("error NewPassword")
+	}
+
+	user := &User{
+		userID:      castedUserID,
+		name:        name,
+		email:       emailIns,
+		password:    passwordIns,
+		profile:     profile,
+		createdAt:   sharedvo.NewCreatedAt(),
 		userCareers: userCareers,
 		userSkills:  userSkills,
 	}
@@ -83,7 +130,7 @@ func (u *User) Profile() string {
 	return u.profile
 }
 
-func (u *User) CreatedAt() time.Time {
+func (u *User) CreatedAt() sharedvo.CreatedAt {
 	return u.createdAt
 }
 

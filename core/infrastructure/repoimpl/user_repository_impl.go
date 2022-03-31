@@ -35,7 +35,7 @@ func (ur *UserRepositoryImpl) Create(user *userdm.User) error {
 	u.Email = user.Email().Value()
 	u.Password = string(hash)
 	u.Profile = user.Profile()
-	u.CreatedAt = user.CreatedAt()
+	u.CreatedAt = time.Time(user.CreatedAt())
 	u.UserCareers = user.UserCareers()
 	u.UserSkills = user.UserSkills()
 
@@ -108,16 +108,15 @@ func (ur *UserRepositoryImpl) FetchByEmail(email userdm.Email) (*userdm.User, er
 	}
 
 	if dataModelUser != nil {
-		// err := customerrors.Conflict
 		err := customerrors.NewConflict()
 		return nil, err
 	}
 
-	return userdm.NewUser(
-		userdm.UserIDType(dataModelUser.UserID),
+	return userdm.Reconstruct(
+		dataModelUser.UserID,
 		dataModelUser.Name,
-		userdm.EmailType(dataModelUser.Email),
-		userdm.PasswordType(dataModelUser.Password),
+		dataModelUser.Email,
+		dataModelUser.Password,
 		dataModelUser.Profile,
 		dataModelUser.UserCareers,
 		dataModelUser.UserSkills,
