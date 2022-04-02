@@ -15,3 +15,4 @@
 |  提案          |  Suggestion        | Suggestions           |  メンター募集に対し、メンターが提案する解決策  |
 |  プラン申込     |  PlanRequest (PlanReq)  | PlanRequests      |  メンターの提供プランに対し、メンティーが申し込むこと  |
 |  契約          |  Contract          | Contracts             |  メンティーからのプラン申込に対し、メンターが許可すると成立する  |
+|  個人契約          |  PersonalContract          | PersonalContracts             |  メンターからの提案にメンティーが了承すると成立する  |
