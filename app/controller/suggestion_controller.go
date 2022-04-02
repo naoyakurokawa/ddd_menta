@@ -56,7 +56,7 @@ func NewCreateSuggestionController() echo.HandlerFunc {
 
 		if err != nil {
 			log.Printf("failed to NewCreateSuggestionController: %+v", err)
-			return c.JSON(http.StatusCreated, "failed create suggestion")
+			return c.JSON(http.StatusBadRequest, "failed create suggestion")
 		}
 
 		return c.JSON(http.StatusCreated, "success create suggestion")

@@ -50,7 +50,7 @@ func NewCreateRecruitController() echo.HandlerFunc {
 
 		if err != nil {
 			log.Printf("failed to NewCreateRecruitController: %+v", err)
-			return c.JSON(http.StatusCreated, "failed create recruit")
+			return c.JSON(http.StatusBadRequest, "failed create recruit")
 		}
 
 		return c.JSON(http.StatusCreated, "success create recruit")

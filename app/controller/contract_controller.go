@@ -46,7 +46,8 @@ func NewCreateContractController() echo.HandlerFunc {
 		)
 
 		if err != nil {
-			return err
+			log.Printf("failed to NewCreateContractController: %+v", err)
+			return c.JSON(http.StatusBadRequest, "failed create contract")
 		}
 
 		return c.JSON(http.StatusCreated, "success create contract")
@@ -67,7 +68,7 @@ func NewUpdateUnderContractController() echo.HandlerFunc {
 		err := updateUnderContractUsecase.UpdateContractStatus(req.ContractID, contractdm.UnderContract.Uint16())
 		if err != nil {
 			log.Printf("failed to NewUpdateUnderContractController: %+v", err)
-			return c.JSON(http.StatusCreated, "can't update contract")
+			return c.JSON(http.StatusBadRequest, "can't update contract")
 		}
 
 		return c.JSON(http.StatusCreated, "success update contract")
