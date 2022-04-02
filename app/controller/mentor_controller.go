@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/labstack/echo"
@@ -52,7 +53,8 @@ func NewCreateMentorController() echo.HandlerFunc {
 		)
 
 		if err != nil {
-			return err
+			log.Printf("failed to NewCreateMentorController: %+v", err)
+			return c.JSON(http.StatusBadRequest, "failed create mentor")
 		}
 
 		return c.JSON(http.StatusCreated, "success create mentor")
