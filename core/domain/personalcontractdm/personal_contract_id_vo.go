@@ -14,7 +14,7 @@ func NewPersonalContractID() PersonalContractID {
 func NewPersonalContractIDByVal(strId string) (PersonalContractID, error) {
 	id, err := sharedvo.NewIDByVal(strId)
 	if err != nil {
-		return PersonalContractID(""), xerrors.New("error NewContractIDByVal")
+		return PersonalContractID(""), xerrors.New("error NewPersonalContractIDByVal")
 	}
 	return PersonalContractID(id), nil
 }

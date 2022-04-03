@@ -16,7 +16,7 @@ type PersonalContract struct {
 	updatedAt              sharedvo.UpdatedAt
 }
 
-func NewContract(
+func NewPersonalContract(
 	personalContractID PersonalContractID,
 	suggestionID suggestiondm.SuggestionID,
 	personalContractStatus PersonalContractStatus,
@@ -88,10 +88,4 @@ func StrCastUint(str string) (uint16, error) {
 		return 0, err
 	}
 	return uint16(ui), nil
-}
-
-func (c *PersonalContract) CanUpdatePersonalContractStatus(
-	requestPersonalContractStatus PersonalContractStatus,
-) bool {
-	return requestPersonalContractStatus.Uint16() == c.personalContractStatus.Uint16()+1
 }
