@@ -18,7 +18,7 @@ func TestNewContract(t *testing.T) {
 		personalContractStatus PersonalContractStatus
 	}{
 		{
-			title:                  "エラーが発生しないこと",
+			title:                  "正しいパラメータの場合_エラーが発生せず_想定通りのPersonalContractが生成されること",
 			personalContractID:     pp.personalContractID,
 			suggestionID:           pp.suggestionID,
 			personalContractStatus: pp.personalContractStatus,
@@ -54,7 +54,7 @@ func TestReconstruct(t *testing.T) {
 		expectedErr            error
 	}{
 		{
-			title:                  "エラーが発生しないこと",
+			title:                  "正しいパラメータの場合_エラーが発生せず_想定通りのPersonalContractが生成されること",
 			personalContractID:     pp.personalContractID.String(),
 			suggestionID:           pp.suggestionID.String(),
 			personalContractStatus: pp.personalContractStatus.Uint16(),

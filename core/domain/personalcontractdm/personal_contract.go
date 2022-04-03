@@ -62,24 +62,24 @@ func Reconstruct(
 	return personaContract, nil
 }
 
-func (c *PersonalContract) PersonalContractID() PersonalContractID {
-	return c.personalContractID
+func (p *PersonalContract) PersonalContractID() PersonalContractID {
+	return p.personalContractID
 }
 
-func (c *PersonalContract) SuggestionID() suggestiondm.SuggestionID {
-	return c.suggestionID
+func (p *PersonalContract) SuggestionID() suggestiondm.SuggestionID {
+	return p.suggestionID
 }
 
-func (c *PersonalContract) PersonalContractStatus() PersonalContractStatus {
-	return c.personalContractStatus
+func (p *PersonalContract) PersonalContractStatus() PersonalContractStatus {
+	return p.personalContractStatus
 }
 
-func (c *PersonalContract) CreatedAt() sharedvo.CreatedAt {
-	return c.createdAt
+func (p *PersonalContract) CreatedAt() sharedvo.CreatedAt {
+	return p.createdAt
 }
 
-func (c *PersonalContract) UpdatedAt() sharedvo.UpdatedAt {
-	return c.updatedAt
+func (p *PersonalContract) UpdatedAt() sharedvo.UpdatedAt {
+	return p.updatedAt
 }
 
 func StrCastUint(str string) (uint16, error) {
