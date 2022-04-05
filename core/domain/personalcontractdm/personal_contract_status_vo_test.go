@@ -3,6 +3,7 @@ package personalcontractdm
 import (
 	"testing"
 
+	"github.com/naoyakurokawa/ddd_menta/customerrors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -10,28 +11,28 @@ import (
 func TestNewPersonalContractStatus(t *testing.T) {
 	asserts := assert.New(t)
 	for _, td := range []struct {
-		title  string
-		input  uint16
-		output string
+		title       string
+		input       uint16
+		expectedErr error
 	}{
 		{
-			title:  "PersonalContractStatusが1のとき_エラーが発生しないこと",
-			input:  uint16(1),
-			output: "",
+			title:       "PersonalContractStatusが1のとき_エラーが発生しないこと",
+			input:       uint16(1),
+			expectedErr: nil,
 		},
 		{
-			title:  "PersonalContractStatusが4のとき_エラーが発生すること",
-			input:  uint16(4),
-			output: "PersonalContractStatus must be 1 or 2 or 3",
+			title:       "PersonalContractStatusが4のとき_エラーが発生すること",
+			input:       uint16(4),
+			expectedErr: customerrors.NewInvalidParameter(),
 		},
 	} {
 		t.Run(td.title, func(t *testing.T) {
 			_, err := NewPersonalContractStatus(td.input)
-			strErr := ""
-			if err != nil {
-				strErr = err.Error()
+			if td.expectedErr == nil {
+				require.NoError(t, err)
+			} else {
+				asserts.Equal(td.expectedErr.Error(), err.Error())
 			}
-			asserts.Equal(td.output, strErr)
 		})
 	}
 }

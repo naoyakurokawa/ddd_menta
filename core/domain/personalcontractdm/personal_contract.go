@@ -5,7 +5,7 @@ import (
 
 	"github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/suggestiondm"
-	"golang.org/x/xerrors"
+	"github.com/naoyakurokawa/ddd_menta/customerrors"
 )
 
 type PersonalContract struct {
@@ -40,15 +40,15 @@ func Reconstruct(
 ) (*PersonalContract, error) {
 	castedPersonalContractID, err := NewPersonalContractIDByVal(personalContractID)
 	if err != nil {
-		return nil, xerrors.New("error NewPersonalContractIDByVal")
+		return nil, customerrors.NewInvalidParameter()
 	}
 	castedSuggestionID, err := suggestiondm.NewSuggestionIDByVal(suggestionID)
 	if err != nil {
-		return nil, xerrors.New("error NewSuggestionIDByVal")
+		return nil, customerrors.NewInvalidParameter()
 	}
 	personalContractStatusIns, err := NewPersonalContractStatus(personalContractStatus)
 	if err != nil {
-		return nil, xerrors.New("error NewPersonalContractStatus")
+		return nil, customerrors.NewInvalidParameter()
 	}
 
 	personaContract := &PersonalContract{

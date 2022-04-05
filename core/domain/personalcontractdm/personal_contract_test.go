@@ -4,9 +4,9 @@ import (
 	"testing"
 
 	"github.com/naoyakurokawa/ddd_menta/core/domain/suggestiondm"
+	"github.com/naoyakurokawa/ddd_menta/customerrors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"golang.org/x/xerrors"
 )
 
 func TestNewContract(t *testing.T) {
@@ -65,21 +65,21 @@ func TestReconstruct(t *testing.T) {
 			personalContractID:     "",
 			suggestionID:           pp.suggestionID.String(),
 			personalContractStatus: pp.personalContractStatus.Uint16(),
-			expectedErr:            xerrors.New("error NewPersonalContractIDByVal"),
+			expectedErr:            customerrors.NewInvalidParameter(),
 		},
 		{
 			title:                  "suggestionIDが空文字の時_エラーが発生すること",
 			personalContractID:     pp.personalContractID.String(),
 			suggestionID:           "",
 			personalContractStatus: pp.personalContractStatus.Uint16(),
-			expectedErr:            xerrors.New("error NewSuggestionIDByVal"),
+			expectedErr:            customerrors.NewInvalidParameter(),
 		},
 		{
 			title:                  "personalContractStatusが0の時_エラーが発生すること",
 			personalContractID:     pp.personalContractID.String(),
 			suggestionID:           pp.suggestionID.String(),
 			personalContractStatus: 0,
-			expectedErr:            xerrors.New("error NewPersonalContractStatus"),
+			expectedErr:            customerrors.NewInvalidParameter(),
 		},
 	} {
 		t.Run(td.title, func(t *testing.T) {

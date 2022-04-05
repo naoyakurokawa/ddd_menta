@@ -1,6 +1,8 @@
 package personalcontractdm
 
-import "golang.org/x/xerrors"
+import (
+	"github.com/naoyakurokawa/ddd_menta/customerrors"
+)
 
 type PersonalContractStatus uint16
 
@@ -20,7 +22,7 @@ func (s PersonalContractStatus) Names() []string {
 
 func (s PersonalContractStatus) String() (string, error) {
 	if !s.isWithinRange() {
-		return "", xerrors.New("PersonalContractStatus must be 1 or 2 or 3")
+		return "", customerrors.NewInvalidParameter()
 	}
 	return s.Names()[s-1], nil
 }
@@ -31,7 +33,7 @@ func (s PersonalContractStatus) Uint16() uint16 {
 
 func NewPersonalContractStatus(s uint16) (PersonalContractStatus, error) {
 	if s != 1 && s != 2 && s != 3 {
-		return 0, xerrors.New("PersonalContractStatus must be 1 or 2 or 3")
+		return 0, customerrors.NewInvalidParameter()
 	}
 	return PersonalContractStatus(s), nil
 }
