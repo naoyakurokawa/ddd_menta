@@ -289,3 +289,29 @@ INSERT INTO suggestions (
   "2022-03-22 00:00:00.000000",
   "2022-03-22 00:00:00.000000"
 );
+
+DROP TABLE IF EXISTS personal_contracts;
+CREATE TABLE personal_contracts
+(
+  personal_contract_id VARCHAR(255) NOT NULL,
+  suggestion_id VARCHAR(255) NOT NULL,
+  personal_contract_status INT NOT NULL,
+  created_at TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL,
+  PRIMARY KEY (personal_contract_id),
+  FOREIGN KEY (suggestion_id) REFERENCES suggestions(suggestion_id)
+);
+
+INSERT INTO personal_contracts (
+  personal_contract_id,
+  suggestion_id,
+  personal_contract_status,
+  created_at,
+  updated_at
+) VALUES (
+  "e2e908dc-5981-4c4a-8e98-4487d3e122ad", 
+  "e2e908dc-5981-4c4a-8e98-4487d3e122ad", 
+  1,
+  "2022-03-22 00:00:00.000000",
+  "2022-03-22 00:00:00.000000"
+);
