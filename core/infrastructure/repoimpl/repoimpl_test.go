@@ -5,6 +5,7 @@ import (
 
 	"github.com/naoyakurokawa/ddd_menta/core/domain/contractdm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/mentordm"
+	"github.com/naoyakurokawa/ddd_menta/core/domain/personalcontractdm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/recruitdm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/suggestiondm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
@@ -80,12 +81,23 @@ type suggestionParams struct {
 	updatedAt                  time.Time
 }
 
+type personalContractParams struct {
+	personalContractID       personalcontractdm.PersonalContractID
+	suggestionID             suggestiondm.SuggestionID
+	unapprovedStatus         personalcontractdm.PersonalContractStatus
+	underContractStatus      personalcontractdm.PersonalContractStatus
+	terminatedContractStatus personalcontractdm.PersonalContractStatus
+	createdAt                time.Time
+	updatedAt                time.Time
+}
+
 var (
 	up           userParams
 	mp           mentorParams
 	cp           contractParams
 	rp           recruitParams
 	sp           suggestionParams
+	pp           personalContractParams
 	userCareers  []userdm.UserCareer
 	userSkills   []userdm.UserSkill
 	mentorSkills []mentordm.MentorSkill
@@ -206,6 +218,20 @@ func setupSuggestion() error {
 		suggestiondm.Unapproved,
 		suggestiondm.Approval,
 		suggestiondm.Terminated,
+		time.Date(2000, 1, 1, 0, 0, 0, 0, time.Local),
+		time.Date(2000, 1, 1, 0, 0, 0, 0, time.Local),
+	}
+	return nil
+}
+
+func setupPersonalContact() error {
+	personalContactID := personalcontractdm.NewPersonalContractID()
+	pp = personalContractParams{
+		personalContactID,
+		sp.suggestionID,
+		personalcontractdm.Unapproved,
+		personalcontractdm.UnderContract,
+		personalcontractdm.TerminatedContract,
 		time.Date(2000, 1, 1, 0, 0, 0, 0, time.Local),
 		time.Date(2000, 1, 1, 0, 0, 0, 0, time.Local),
 	}

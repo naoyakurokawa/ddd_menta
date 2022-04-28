@@ -155,3 +155,7 @@ func isOver(s string, maxlength int) bool {
 func isLow(u, min uint32) bool {
 	return min > u
 }
+
+func (s *Suggestion) IsUnapproved() bool {
+	return s.suggestionStatus == Unapproved
+}

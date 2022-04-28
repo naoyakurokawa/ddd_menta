@@ -26,7 +26,11 @@ func NewCreatePersonalContractController() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		conn := db.NewDB()
 		personalContractRepository := repoimpl.NewPersonalContractRepositoryImpl(conn)
-		contractCreateUsecase := personalcontractuc.NewCreatePersonalContractUsecase(personalContractRepository)
+		suggestionRepository := repoimpl.NewSuggestionRepositoryImpl(conn)
+		contractCreateUsecase := personalcontractuc.NewCreatePersonalContractUsecase(
+			personalContractRepository,
+			suggestionRepository,
+		)
 
 		var req personalContractRequest
 		if err := c.Bind(&req); err != nil {

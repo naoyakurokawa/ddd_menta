@@ -3,6 +3,7 @@ package personalcontractuc
 import (
 	"github.com/naoyakurokawa/ddd_menta/core/domain/personalcontractdm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/suggestiondm"
+	"github.com/naoyakurokawa/ddd_menta/customerrors"
 )
 
 type CreatePersonalContractUsecase interface {
@@ -13,13 +14,16 @@ type CreatePersonalContractUsecase interface {
 
 type CreatePersonalContractUsecaseImpl struct {
 	personalContractRepo personalcontractdm.PersonalContractRepository
+	suggestionRepo       suggestiondm.SuggestionRepository
 }
 
 func NewCreatePersonalContractUsecase(
 	personalContractRepo personalcontractdm.PersonalContractRepository,
+	suggestionRepo suggestiondm.SuggestionRepository,
 ) CreatePersonalContractUsecase {
 	return &CreatePersonalContractUsecaseImpl{
 		personalContractRepo: personalContractRepo,
+		suggestionRepo:       suggestionRepo,
 	}
 }
 
@@ -31,10 +35,15 @@ func (pu *CreatePersonalContractUsecaseImpl) Create(
 	if err != nil {
 		return err
 	}
-	// castedPersonalContractStatus, err := personalcontractdm.NewPersonalContractStatus(personalContractStatus)
-	// if err != nil {
-	// 	return err
-	// }
+
+	// 提案のステータスが提案中でない場合は、契約不可
+	suggestion, err := pu.suggestionRepo.FetchByID(suggestionIDIns)
+	if err != nil {
+		return err
+	}
+	if !suggestion.IsUnapproved() {
+		return customerrors.NewInvalidParameter()
+	}
 
 	// メンティーが提案を承認した際に生成されるためStatusは契約中
 	personalContract, err := personalcontractdm.GenWhenCreate(
