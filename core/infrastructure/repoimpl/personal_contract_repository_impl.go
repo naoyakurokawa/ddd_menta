@@ -32,7 +32,7 @@ func (pr *PersonalContractRepositoryImpl) Create(personalContract *personalcontr
 	return nil
 }
 
-func (cr *PersonalContractRepositoryImpl) FindByID(
+func (cr *PersonalContractRepositoryImpl) FetchByID(
 	personalContractID personalcontractdm.PersonalContractID,
 ) (*personalcontractdm.PersonalContract, error) {
 	dataModelPersonalContract := datamodel.PersonalContract{}

@@ -48,17 +48,17 @@ func (mr *MockPersonalContractRepositoryMockRecorder) Create(personalContract in
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockPersonalContractRepository)(nil).Create), personalContract)
 }
 
-// FindByID mocks base method.
-func (m *MockPersonalContractRepository) FindByID(personalContractID personalcontractdm.PersonalContractID) (*personalcontractdm.PersonalContract, error) {
+// FetchByID mocks base method.
+func (m *MockPersonalContractRepository) FetchByID(personalContractID personalcontractdm.PersonalContractID) (*personalcontractdm.PersonalContract, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindByID", personalContractID)
+	ret := m.ctrl.Call(m, "FetchByID", personalContractID)
 	ret0, _ := ret[0].(*personalcontractdm.PersonalContract)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// FindByID indicates an expected call of FindByID.
-func (mr *MockPersonalContractRepositoryMockRecorder) FindByID(personalContractID interface{}) *gomock.Call {
+// FetchByID indicates an expected call of FetchByID.
+func (mr *MockPersonalContractRepositoryMockRecorder) FetchByID(personalContractID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByID", reflect.TypeOf((*MockPersonalContractRepository)(nil).FindByID), personalContractID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FetchByID", reflect.TypeOf((*MockPersonalContractRepository)(nil).FetchByID), personalContractID)
 }
