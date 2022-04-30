@@ -3,7 +3,6 @@ package repoimpl
 import (
 	"time"
 
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/personalcontractdm"
 	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/datamodel"
@@ -36,7 +35,7 @@ func (cr *PersonalContractRepositoryImpl) FetchByID(
 	personalContractID personalcontractdm.PersonalContractID,
 ) (*personalcontractdm.PersonalContract, error) {
 	dataModelPersonalContract := datamodel.PersonalContract{}
-	if err := cr.conn.Where("personal_contract_id = ?", string(personalContractID)).Find(&dataModelPersonalContract).Error; err != nil {
+	if err := cr.conn.Where("personal_contract_id = ?", personalContractID.String()).Find(&dataModelPersonalContract).Error; err != nil {
 		return nil, err
 	}
 
