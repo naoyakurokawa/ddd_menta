@@ -14,5 +14,6 @@ func InitRouting(e *echo.Echo) {
 	e.POST("/contract/update_terminated_contract", NewUpdateTerminatedContractController())
 	e.POST("/recruit/create", NewCreateRecruitController())
 	e.POST("/suggestion/create", NewCreateSuggestionController())
+	e.POST("/personal_contract/create", NewCreatePersonalContractController())
 
 }

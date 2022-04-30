@@ -1,7 +1,6 @@
 package repoimpl
 
 import (
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/suggestiondm"
 	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/datamodel"
