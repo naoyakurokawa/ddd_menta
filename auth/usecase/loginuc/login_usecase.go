@@ -21,12 +21,6 @@ type LoginUsecaseImpl struct {
 	userRepo userdm.UserRepository
 }
 
-type jwtCustomClaims struct {
-	UserID string `json:"userID"`
-	Email  string `json:"email"`
-	jwt.StandardClaims
-}
-
 func NewLoginUsecase(userRepo userdm.UserRepository) LoginUsecase {
 	return &LoginUsecaseImpl{userRepo: userRepo}
 }
@@ -50,7 +44,7 @@ func (lu *LoginUsecaseImpl) Login(
 		return "", err
 	}
 
-	claims := &jwtCustomClaims{
+	claims := &config.JwtCustomClaims{
 		user.UserID().String(),
 		user.Email().Value(),
 		jwt.StandardClaims{

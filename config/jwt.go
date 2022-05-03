@@ -5,7 +5,7 @@ import (
 	"github.com/labstack/echo/middleware"
 )
 
-type jwtCustomClaims struct {
+type JwtCustomClaims struct {
 	UserID string `json:"userID"`
 	Email  string `json:"email"`
 	jwt.StandardClaims
@@ -14,6 +14,6 @@ type jwtCustomClaims struct {
 var SigningKey = []byte("secret")
 
 var JwtConfig = middleware.JWTConfig{
-	Claims:     &jwtCustomClaims{},
+	Claims:     &JwtCustomClaims{},
 	SigningKey: SigningKey,
 }

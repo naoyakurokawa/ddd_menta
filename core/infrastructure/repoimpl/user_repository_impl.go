@@ -105,10 +105,6 @@ func (ur *UserRepositoryImpl) FetchByEmail(email userdm.Email) (*userdm.User, er
 		return nil, err
 	}
 
-	// if dataModelUser != nil {
-	// 	err := customerrors.NewConflict()
-	// 	return nil, err
-	// }
 	return userdm.Reconstruct(
 		dataModelUser.UserID,
 		dataModelUser.Name,
