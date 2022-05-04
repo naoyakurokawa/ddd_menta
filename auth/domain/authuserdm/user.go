@@ -1,13 +1,16 @@
 package authuserdm
 
-import "golang.org/x/crypto/bcrypt"
+import (
+	"github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
+	"golang.org/x/crypto/bcrypt"
+)
 
 type User struct {
-	email    Email
-	password Password
+	email    sharedvo.Email
+	password sharedvo.Password
 }
 
-func NewUser(email Email, password Password) (*User, error) {
+func NewUser(email sharedvo.Email, password sharedvo.Password) (*User, error) {
 	user := &User{
 		email:    email,
 		password: password,
@@ -20,11 +23,11 @@ func Reconstruct(
 	email string,
 	password string,
 ) (*User, error) {
-	emailIns, err := NewEmail(email)
+	emailIns, err := sharedvo.NewEmail(email)
 	if err != nil {
 		return nil, err
 	}
-	passwordIns, err := NewPassword(password)
+	passwordIns, err := sharedvo.NewPassword(password)
 	if err != nil {
 		return nil, err
 	}
@@ -45,6 +48,6 @@ func (u *User) VerifyPassword(hashPass string) bool {
 	return true
 }
 
-func (u *User) Password() Password {
+func (u *User) Password() sharedvo.Password {
 	return u.password
 }

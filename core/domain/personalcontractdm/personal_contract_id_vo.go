@@ -2,7 +2,7 @@ package personalcontractdm
 
 import (
 	"github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
-	"golang.org/x/xerrors"
+	"github.com/naoyakurokawa/ddd_menta/customerrors"
 )
 
 type PersonalContractID sharedvo.ID
@@ -14,7 +14,7 @@ func NewPersonalContractID() PersonalContractID {
 func NewPersonalContractIDByVal(strId string) (PersonalContractID, error) {
 	id, err := sharedvo.NewIDByVal(strId)
 	if err != nil {
-		return PersonalContractID(""), xerrors.New("error NewPersonalContractIDByVal")
+		return PersonalContractID(""), customerrors.NewInvalidParameter("error NewPersonalContractIDByVal")
 	}
 	return PersonalContractID(id), nil
 }

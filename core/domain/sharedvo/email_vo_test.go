@@ -1,4 +1,4 @@
-package userdm
+package sharedvo
 
 import (
 	"strings"

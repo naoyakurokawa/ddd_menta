@@ -33,12 +33,12 @@ func NewLoginController() echo.HandlerFunc {
 
 		t, err := loginUsecase.Login(req.Email, req.Password)
 
-		if err != nil && customerrors.NewInvalidParameter().Equals(err) {
+		if err != nil && customerrors.NewInvalidParameter("").Equals(err) {
 			log.Printf("failed to NewLoginController: %+v", err)
 			return c.JSON(http.StatusBadRequest, "failed login")
 		}
 
-		if err != nil && customerrors.NewUnauthorized().Equals(err) {
+		if err != nil && customerrors.NewUnauthorized("password is incorrect").Equals(err) {
 			log.Printf("failed to NewLoginController: %+v", err)
 			return c.JSON(http.StatusUnauthorized, "failed login")
 		}

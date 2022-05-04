@@ -1,6 +1,7 @@
 package customerrors
 
 import (
+	"fmt"
 	"net/http"
 )
 
@@ -34,18 +35,19 @@ type invalidParameter struct {
 	err        error
 	code       code
 	httpStatus int
+	message    string
 }
 
 func (e *invalidParameter) Error() string {
-	return e.code.string()
+	return fmt.Sprintf("code: %s, message: %s", e.code, e.message)
 }
 
 func (e *invalidParameter) Equals(target error) bool {
 	return e.Error() == target.Error()
 }
 
-func NewInvalidParameter() *invalidParameter {
-	return &invalidParameter{code: InvalidParameterCode, httpStatus: http.StatusBadRequest}
+func NewInvalidParameter(message string) *invalidParameter {
+	return &invalidParameter{code: InvalidParameterCode, httpStatus: http.StatusBadRequest, message: message}
 }
 
 type notFound struct {
@@ -80,16 +82,17 @@ type unauthorized struct {
 	err        error
 	code       code
 	httpStatus int
+	message    string
 }
 
 func (e *unauthorized) Error() string {
-	return e.code.string()
+	return fmt.Sprintf("code: %s, message: %s", e.code, e.message)
 }
 
 func (e *unauthorized) Equals(target error) bool {
 	return e.Error() == target.Error()
 }
 
-func NewUnauthorized() *unauthorized {
-	return &unauthorized{code: UnauthorizedCode, httpStatus: http.StatusUnauthorized}
+func NewUnauthorized(message string) *unauthorized {
+	return &unauthorized{code: UnauthorizedCode, httpStatus: http.StatusUnauthorized, message: message}
 }

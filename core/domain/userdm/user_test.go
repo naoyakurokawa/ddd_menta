@@ -3,6 +3,8 @@ package userdm
 import (
 	"strings"
 	"testing"
+
+	"github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
 )
 
 func TestNewUser(t *testing.T) {
@@ -13,12 +15,12 @@ func TestNewUser(t *testing.T) {
 		profile  = "エンジニアです"
 	)
 	userID := NewUserID()
-	emailIns, err := NewEmail(email)
+	emailIns, err := sharedvo.NewEmail(email)
 	if err != nil {
 		t.Errorf("failed to NewEmail: %v", err)
 		return
 	}
-	passwordIns, err := NewPassword(password)
+	passwordIns, err := sharedvo.NewPassword(password)
 	if err != nil {
 		t.Errorf("failed to NewPassword: %v", err)
 		return
@@ -51,7 +53,7 @@ func TestNewUser(t *testing.T) {
 	})
 
 	t.Run("Emailが空", func(t *testing.T) {
-		blankEmail := Email("")
+		blankEmail := sharedvo.Email("")
 		_, err := NewUser(userID, name, blankEmail, passwordIns, profile, userCareers, userSkills)
 		if err == nil {
 			t.Errorf("failed to Email empty validation")
@@ -59,7 +61,7 @@ func TestNewUser(t *testing.T) {
 	})
 
 	t.Run("Passwordが空", func(t *testing.T) {
-		blankPassword := Password("")
+		blankPassword := sharedvo.Password("")
 		_, err := NewUser(userID, name, email, blankPassword, profile, userCareers, userSkills)
 		if err == nil {
 			t.Errorf("failed to Password empty validation")

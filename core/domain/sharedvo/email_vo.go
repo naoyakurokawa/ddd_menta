@@ -1,6 +1,7 @@
-package authuserdm
+package sharedvo
 
 import (
+	"fmt"
 	"regexp"
 	"unicode/utf8"
 
@@ -19,15 +20,15 @@ const emailMaxLength = 255
 // NewEmail emailのコンストラクタ
 func NewEmail(email string) (Email, error) {
 	if len(email) == 0 {
-		return Email(""), customerrors.NewInvalidParameter()
+		return Email(""), customerrors.NewInvalidParameter("email must not be empty")
 	}
 
 	if utf8.RuneCountInString(email) > emailMaxLength {
-		return Email(""), customerrors.NewInvalidParameter()
+		return Email(""), customerrors.NewInvalidParameter(fmt.Sprintf("email must less than %d: %s", emailMaxLength, email))
 	}
 
 	if ok := emailRegExp.MatchString(email); !ok {
-		return Email(""), customerrors.NewInvalidParameter()
+		return Email(""), customerrors.NewInvalidParameter(fmt.Sprintf("invalid email format. email is %s", email))
 	}
 
 	return Email(email), nil

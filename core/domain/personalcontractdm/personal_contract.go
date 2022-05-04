@@ -40,15 +40,15 @@ func Reconstruct(
 ) (*PersonalContract, error) {
 	castedPersonalContractID, err := NewPersonalContractIDByVal(personalContractID)
 	if err != nil {
-		return nil, customerrors.NewInvalidParameter()
+		return nil, err
 	}
 	castedSuggestionID, err := suggestiondm.NewSuggestionIDByVal(suggestionID)
 	if err != nil {
-		return nil, customerrors.NewInvalidParameter()
+		return nil, err
 	}
 	personalContractStatusIns, err := NewPersonalContractStatus(personalContractStatus)
 	if err != nil {
-		return nil, customerrors.NewInvalidParameter()
+		return nil, customerrors.NewInvalidParameter("PersonalContractStatus must be 1 or 2 or 3")
 	}
 
 	personaContract := &PersonalContract{

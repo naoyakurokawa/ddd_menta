@@ -65,21 +65,21 @@ func TestReconstruct(t *testing.T) {
 			personalContractID:     "",
 			suggestionID:           pp.suggestionID.String(),
 			personalContractStatus: pp.personalContractStatus.Uint16(),
-			expectedErr:            customerrors.NewInvalidParameter(),
+			expectedErr:            customerrors.NewInvalidParameter("error NewPersonalContractIDByVal"),
 		},
 		{
 			title:                  "suggestionIDが空文字の時_エラーが発生すること",
 			personalContractID:     pp.personalContractID.String(),
 			suggestionID:           "",
 			personalContractStatus: pp.personalContractStatus.Uint16(),
-			expectedErr:            customerrors.NewInvalidParameter(),
+			expectedErr:            customerrors.NewInvalidParameter("error NewSuggestionIDByVal"),
 		},
 		{
 			title:                  "personalContractStatusが0の時_エラーが発生すること",
 			personalContractID:     pp.personalContractID.String(),
 			suggestionID:           pp.suggestionID.String(),
 			personalContractStatus: 0,
-			expectedErr:            customerrors.NewInvalidParameter(),
+			expectedErr:            customerrors.NewInvalidParameter("PersonalContractStatus must be 1 or 2 or 3"),
 		},
 	} {
 		t.Run(td.title, func(t *testing.T) {

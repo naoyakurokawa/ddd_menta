@@ -22,7 +22,7 @@ func (s PersonalContractStatus) Names() []string {
 
 func (s PersonalContractStatus) String() (string, error) {
 	if !s.isWithinRange() {
-		return "", customerrors.NewInvalidParameter()
+		return "", customerrors.NewInvalidParameter("PersonalContractStatus must be 1 or 2 or 3")
 	}
 	return s.Names()[s-1], nil
 }
@@ -33,7 +33,7 @@ func (s PersonalContractStatus) Uint16() uint16 {
 
 func NewPersonalContractStatus(s uint16) (PersonalContractStatus, error) {
 	if s != 1 && s != 2 && s != 3 {
-		return 0, customerrors.NewInvalidParameter()
+		return 0, customerrors.NewInvalidParameter("PersonalContractStatus must be 1 or 2 or 3")
 	}
 	return PersonalContractStatus(s), nil
 }

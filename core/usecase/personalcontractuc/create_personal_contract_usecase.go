@@ -42,7 +42,7 @@ func (pu *CreatePersonalContractUsecaseImpl) Create(
 		return err
 	}
 	if !suggestion.IsUnapproved() {
-		return customerrors.NewInvalidParameter()
+		return customerrors.NewInvalidParameter("suggestion must be unapproved")
 	}
 
 	// メンティーが提案を承認した際に生成されるためStatusは契約中

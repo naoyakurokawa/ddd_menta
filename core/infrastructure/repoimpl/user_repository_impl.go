@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/jinzhu/gorm"
+	"github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
 	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/datamodel"
 	"golang.org/x/crypto/bcrypt"
@@ -91,15 +92,15 @@ func (ur *UserRepositoryImpl) FetchById(userID userdm.UserID) (*userdm.User, err
 	return userdm.NewUser(
 		userdm.UserIDType(dataModelUser.UserID),
 		dataModelUser.Name,
-		userdm.EmailType(dataModelUser.Email),
-		userdm.PasswordType(dataModelUser.Password),
+		sharedvo.EmailType(dataModelUser.Email),
+		sharedvo.PasswordType(dataModelUser.Password),
 		dataModelUser.Profile,
 		dataModelUser.UserCareers,
 		dataModelUser.UserSkills,
 	)
 }
 
-func (ur *UserRepositoryImpl) FetchByEmail(email userdm.Email) (*userdm.User, error) {
+func (ur *UserRepositoryImpl) FetchByEmail(email sharedvo.Email) (*userdm.User, error) {
 	dataModelUser := &datamodel.User{}
 	if err := ur.Conn.Where("email = ?", email.Value()).Find(&dataModelUser).Error; err != nil {
 		return nil, err

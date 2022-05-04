@@ -3,6 +3,7 @@ package loginuc
 import (
 	"github.com/naoyakurokawa/ddd_menta/auth/domain/authuserdm"
 	"github.com/naoyakurokawa/ddd_menta/auth/infrastructure/jwt"
+	"github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
 	"github.com/naoyakurokawa/ddd_menta/customerrors"
 )
@@ -26,7 +27,7 @@ func (lu *LoginUsecaseImpl) Login(
 	email string,
 	password string,
 ) (string, error) {
-	emailIns, err := userdm.NewEmail(email)
+	emailIns, err := sharedvo.NewEmail(email)
 	if err != nil {
 		return "", err
 	}
@@ -35,9 +36,14 @@ func (lu *LoginUsecaseImpl) Login(
 		return "", err
 	}
 
-	user, err := authuserdm.Reconstruct(
-		email,
-		password,
+	passwordIns, err := sharedvo.NewPassword(password)
+	if err != nil {
+		return "", err
+	}
+
+	user, err := authuserdm.NewUser(
+		emailIns,
+		passwordIns,
 	)
 
 	if err != nil {
@@ -45,7 +51,7 @@ func (lu *LoginUsecaseImpl) Login(
 	}
 
 	if !user.VerifyPassword(registeredUser.Password().Value()) {
-		return "", customerrors.NewUnauthorized()
+		return "", customerrors.NewUnauthorized("password is incorrect")
 	}
 
 	t, err := jwt.NewToken(registeredUser.UserID().String(), registeredUser.Email().Value())
