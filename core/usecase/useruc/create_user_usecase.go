@@ -2,6 +2,7 @@ package useruc
 
 import (
 	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
+	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/mail"
 	"golang.org/x/xerrors"
 )
 
@@ -116,6 +117,8 @@ func (uu *CreateUserUsecaseImpl) Create(
 	if err != nil {
 		return err
 	}
+
+	mail.NewMailer().Send(email, "会員登録完了", "会員登録完了しました")
 
 	return nil
 }
