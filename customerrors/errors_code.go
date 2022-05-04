@@ -7,6 +7,7 @@ const (
 	ConflictCode            code = "Conflict"
 	InternalServerErrorCode code = "InternalServerError"
 	NotFoundCode            code = "NotFound"
+	UnauthorizedCode        code = "Unauthorized"
 )
 
 func (c code) string() string {

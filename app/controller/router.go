@@ -3,13 +3,13 @@ package controller
 import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	"github.com/naoyakurokawa/ddd_menta/config"
+	"github.com/naoyakurokawa/ddd_menta/auth/infrastructure/jwt"
 )
 
 // InitRouting routesの初期化
 func InitRouting(e *echo.Echo) {
 	r := e.Group("/contract")
-	r.Use(middleware.JWTWithConfig(config.JwtConfig))
+	r.Use(middleware.JWTWithConfig(jwt.JwtConfig))
 	e.POST("/user/create", NewCreateUserController())
 	e.POST("/mentor/create", NewCreateMentorController())
 	r.POST("/create", NewCreateContractController())

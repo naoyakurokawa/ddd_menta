@@ -71,3 +71,17 @@ func (e *internalServerError) Error() string {
 func NewInternalServerError() *internalServerError {
 	return &internalServerError{code: InternalServerErrorCode, httpStatus: http.StatusInternalServerError}
 }
+
+type unauthorized struct {
+	err        error
+	code       code
+	httpStatus int
+}
+
+func (u *unauthorized) Error() string {
+	return u.code.string()
+}
+
+func NewUnauthorized() *unauthorized {
+	return &unauthorized{code: UnauthorizedCode, httpStatus: http.StatusUnauthorized}
+}
