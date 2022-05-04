@@ -3,7 +3,6 @@ package repoimpl
 import (
 	"testing"
 
-	"github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
 	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/db"
 )
@@ -51,7 +50,7 @@ func TestUserRepo_Create(t *testing.T) {
 	}
 	userSkills[0] = *userSkill
 
-	emailIns, err := sharedvo.NewEmail(email)
+	emailIns, err := userdm.NewEmail(email)
 	if err != nil {
 		t.Errorf("failed to NewEmail: %v", err)
 		return

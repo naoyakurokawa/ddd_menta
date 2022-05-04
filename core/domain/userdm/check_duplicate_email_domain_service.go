@@ -1,7 +1,5 @@
 package userdm
 
-import "github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
-
 type checkDuplicateEmailDomainService struct {
 	userRepository UserRepository
 }
@@ -12,7 +10,7 @@ func NewCheckDuplicateEmailDomainService(userRepository UserRepository) *checkDu
 	}
 }
 
-func (s *checkDuplicateEmailDomainService) Exec(email sharedvo.Email) bool {
+func (s *checkDuplicateEmailDomainService) Exec(email Email) bool {
 	user, err := s.userRepository.FetchByEmail(email)
 	if err != nil && user != nil {
 		return false

@@ -3,7 +3,6 @@ package loginuc
 import (
 	"github.com/naoyakurokawa/ddd_menta/auth/domain/authuserdm"
 	"github.com/naoyakurokawa/ddd_menta/auth/infrastructure/jwt"
-	"github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
 	"github.com/naoyakurokawa/ddd_menta/customerrors"
 )
@@ -27,7 +26,7 @@ func (lu *LoginUsecaseImpl) Login(
 	email string,
 	password string,
 ) (string, error) {
-	emailIns, err := sharedvo.NewEmail(email)
+	emailIns, err := userdm.NewEmail(email)
 	if err != nil {
 		return "", err
 	}
@@ -36,13 +35,17 @@ func (lu *LoginUsecaseImpl) Login(
 		return "", err
 	}
 
-	passwordIns, err := sharedvo.NewPassword(password)
+	authUserEmailIns, err := authuserdm.NewEmail(email)
+	if err != nil {
+		return "", err
+	}
+	passwordIns, err := authuserdm.NewPassword(password)
 	if err != nil {
 		return "", err
 	}
 
 	user, err := authuserdm.NewUser(
-		emailIns,
+		authUserEmailIns,
 		passwordIns,
 	)
 

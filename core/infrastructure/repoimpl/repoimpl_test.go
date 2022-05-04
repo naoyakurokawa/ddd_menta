@@ -7,7 +7,6 @@ import (
 	"github.com/naoyakurokawa/ddd_menta/core/domain/mentordm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/personalcontractdm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/recruitdm"
-	"github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/suggestiondm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
 	"golang.org/x/xerrors"
@@ -16,8 +15,8 @@ import (
 type userParams struct {
 	userID    userdm.UserID
 	name      string
-	email     sharedvo.Email
-	password  sharedvo.Password
+	email     userdm.Email
+	password  userdm.Password
 	profile   string
 	createdAt time.Time
 }
@@ -108,11 +107,11 @@ var (
 func setupUser() error {
 	//ユーザー
 	userID := userdm.NewUserID()
-	email, err := sharedvo.NewEmail("test@gmail.com")
+	email, err := userdm.NewEmail("test@gmail.com")
 	if err != nil {
 		return xerrors.New("error NewEmail")
 	}
-	password, err := sharedvo.NewPassword("test12345678")
+	password, err := userdm.NewPassword("test12345678")
 	if err != nil {
 		return xerrors.New("error NewPassword")
 	}

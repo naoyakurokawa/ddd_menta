@@ -1,7 +1,6 @@
 package useruc
 
 import (
-	"github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
 	"golang.org/x/xerrors"
 )
@@ -54,7 +53,7 @@ func (uu *CreateUserUsecaseImpl) Create(
 	)
 
 	userID := userdm.NewUserID()
-	emailIns, err := sharedvo.NewEmail(email)
+	emailIns, err := userdm.NewEmail(email)
 	if err != nil {
 		return err
 	}
@@ -64,7 +63,7 @@ func (uu *CreateUserUsecaseImpl) Create(
 		return xerrors.New("Duplicated Email")
 	}
 
-	passwordIns, err := sharedvo.NewPassword(password)
+	passwordIns, err := userdm.NewPassword(password)
 	if err != nil {
 		return err
 	}

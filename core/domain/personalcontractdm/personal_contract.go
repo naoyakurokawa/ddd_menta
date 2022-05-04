@@ -5,7 +5,6 @@ import (
 
 	"github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/suggestiondm"
-	"github.com/naoyakurokawa/ddd_menta/customerrors"
 )
 
 type PersonalContract struct {
@@ -48,7 +47,7 @@ func Reconstruct(
 	}
 	personalContractStatusIns, err := NewPersonalContractStatus(personalContractStatus)
 	if err != nil {
-		return nil, customerrors.NewInvalidParameter("PersonalContractStatus must be 1 or 2 or 3")
+		return nil, err
 	}
 
 	personaContract := &PersonalContract{

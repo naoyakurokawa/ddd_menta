@@ -11,8 +11,8 @@ import (
 type User struct {
 	userID      UserID
 	name        string
-	email       sharedvo.Email
-	password    sharedvo.Password
+	email       Email
+	password    Password
 	profile     string
 	createdAt   sharedvo.CreatedAt
 	userCareers []UserCareer
@@ -23,7 +23,7 @@ const nameMaxLength = 255
 const profileMaxLength = 2000
 
 // NewUser userのコンストラクタ
-func NewUser(userID UserID, name string, email sharedvo.Email, password sharedvo.Password, profile string, userCareers []UserCareer, userSkills []UserSkill) (*User, error) {
+func NewUser(userID UserID, name string, email Email, password Password, profile string, userCareers []UserCareer, userSkills []UserSkill) (*User, error) {
 	//入力データチェック
 	if len(userID) == 0 {
 		return nil, xerrors.New("userID must not be empty")
@@ -87,11 +87,11 @@ func Reconstruct(
 	if err != nil {
 		return nil, xerrors.New("error NewUserIDByVal")
 	}
-	emailIns, err := sharedvo.NewEmail(email)
+	emailIns, err := NewEmail(email)
 	if err != nil {
 		return nil, xerrors.New("error NewEmail")
 	}
-	passwordIns, err := sharedvo.NewPassword(password)
+	passwordIns, err := NewPassword(password)
 	if err != nil {
 		return nil, xerrors.New("error NewPassword")
 	}
@@ -118,11 +118,11 @@ func (u *User) Name() string {
 	return u.name
 }
 
-func (u *User) Email() sharedvo.Email {
+func (u *User) Email() Email {
 	return u.email
 }
 
-func (u *User) Password() sharedvo.Password {
+func (u *User) Password() Password {
 	return u.password
 }
 
