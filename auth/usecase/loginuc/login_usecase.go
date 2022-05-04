@@ -39,6 +39,7 @@ func (lu *LoginUsecaseImpl) Login(
 		email,
 		password,
 	)
+
 	if err != nil {
 		return "", err
 	}

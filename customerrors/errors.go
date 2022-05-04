@@ -40,6 +40,10 @@ func (e *invalidParameter) Error() string {
 	return e.code.string()
 }
 
+func (e *invalidParameter) Equals(target error) bool {
+	return e.Error() == target.Error()
+}
+
 func NewInvalidParameter() *invalidParameter {
 	return &invalidParameter{code: InvalidParameterCode, httpStatus: http.StatusBadRequest}
 }
@@ -78,8 +82,12 @@ type unauthorized struct {
 	httpStatus int
 }
 
-func (u *unauthorized) Error() string {
-	return u.code.string()
+func (e *unauthorized) Error() string {
+	return e.code.string()
+}
+
+func (e *unauthorized) Equals(target error) bool {
+	return e.Error() == target.Error()
 }
 
 func NewUnauthorized() *unauthorized {

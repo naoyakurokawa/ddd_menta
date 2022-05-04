@@ -8,6 +8,7 @@ import (
 	"github.com/naoyakurokawa/ddd_menta/auth/usecase/loginuc"
 	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/db"
 	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/repoimpl"
+	"github.com/naoyakurokawa/ddd_menta/customerrors"
 )
 
 type loginRequest struct {
@@ -32,9 +33,14 @@ func NewLoginController() echo.HandlerFunc {
 
 		t, err := loginUsecase.Login(req.Email, req.Password)
 
-		if err != nil {
+		if err != nil && customerrors.NewInvalidParameter().Equals(err) {
 			log.Printf("failed to NewLoginController: %+v", err)
 			return c.JSON(http.StatusBadRequest, "failed login")
+		}
+
+		if err != nil && customerrors.NewUnauthorized().Equals(err) {
+			log.Printf("failed to NewLoginController: %+v", err)
+			return c.JSON(http.StatusUnauthorized, "failed login")
 		}
 
 		response := res{
