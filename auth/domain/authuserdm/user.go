@@ -7,7 +7,6 @@ type User struct {
 	password Password
 }
 
-// NewUser userのコンストラクタ
 func NewUser(email Email, password Password) (*User, error) {
 	user := &User{
 		email:    email,
