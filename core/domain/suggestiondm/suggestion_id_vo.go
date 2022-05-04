@@ -2,7 +2,7 @@ package suggestiondm
 
 import (
 	"github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
-	"golang.org/x/xerrors"
+	"github.com/naoyakurokawa/ddd_menta/customerrors"
 )
 
 type SuggestionID sharedvo.ID
@@ -14,7 +14,7 @@ func NewSuggestionID() SuggestionID {
 func NewSuggestionIDByVal(strId string) (SuggestionID, error) {
 	id, err := sharedvo.NewIDByVal(strId)
 	if err != nil {
-		return SuggestionID(""), xerrors.New("error NewSuggestionIDByVal")
+		return SuggestionID(""), customerrors.NewInvalidParameter("error NewSuggestionIDByVal")
 	}
 	return SuggestionID(id), nil
 }

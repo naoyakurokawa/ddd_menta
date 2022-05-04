@@ -6,7 +6,6 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
 	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/datamodel"
-	"github.com/naoyakurokawa/ddd_menta/customerrors"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -23,7 +22,7 @@ func NewUserRepositoryImpl(conn *gorm.DB) userdm.UserRepository {
 func (ur *UserRepositoryImpl) Create(user *userdm.User) error {
 	var u datamodel.User
 
-	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password().Value()), 12)
+	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password().Value()), bcrypt.DefaultCost)
 	if err != nil {
 		return err
 	}
@@ -103,11 +102,6 @@ func (ur *UserRepositoryImpl) FetchById(userID userdm.UserID) (*userdm.User, err
 func (ur *UserRepositoryImpl) FetchByEmail(email userdm.Email) (*userdm.User, error) {
 	dataModelUser := &datamodel.User{}
 	if err := ur.Conn.Where("email = ?", email.Value()).Find(&dataModelUser).Error; err != nil {
-		return nil, err
-	}
-
-	if dataModelUser != nil {
-		err := customerrors.NewConflict()
 		return nil, err
 	}
 

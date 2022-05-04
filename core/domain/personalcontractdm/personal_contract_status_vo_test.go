@@ -23,7 +23,7 @@ func TestNewPersonalContractStatus(t *testing.T) {
 		{
 			title:       "PersonalContractStatusが4のとき_エラーが発生すること",
 			input:       uint16(4),
-			expectedErr: customerrors.NewInvalidParameter(),
+			expectedErr: customerrors.NewInvalidParameter("PersonalContractStatus must be 1 or 2 or 3"),
 		},
 	} {
 		t.Run(td.title, func(t *testing.T) {

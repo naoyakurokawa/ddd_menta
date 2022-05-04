@@ -1,10 +1,11 @@
 package userdm
 
 import (
+	"fmt"
 	"regexp"
 	"unicode/utf8"
 
-	"golang.org/x/xerrors"
+	"github.com/naoyakurokawa/ddd_menta/customerrors"
 )
 
 type Email string
@@ -19,15 +20,15 @@ const emailMaxLength = 255
 // NewEmail emailのコンストラクタ
 func NewEmail(email string) (Email, error) {
 	if len(email) == 0 {
-		return Email(""), xerrors.New("email must not be empty")
+		return Email(""), customerrors.NewInvalidParameter("email must not be empty")
 	}
 
 	if utf8.RuneCountInString(email) > emailMaxLength {
-		return Email(""), xerrors.Errorf("email must less than %d: %s", emailMaxLength, email)
+		return Email(""), customerrors.NewInvalidParameter(fmt.Sprintf("email must less than %d: %s", emailMaxLength, email))
 	}
 
 	if ok := emailRegExp.MatchString(email); !ok {
-		return Email(""), xerrors.Errorf("invalid email format. email is %s", email)
+		return Email(""), customerrors.NewInvalidParameter(fmt.Sprintf("invalid email format. email is %s", email))
 	}
 
 	return Email(email), nil

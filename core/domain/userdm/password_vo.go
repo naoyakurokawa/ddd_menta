@@ -1,9 +1,10 @@
 package userdm
 
 import (
+	"fmt"
 	"unicode"
 
-	"golang.org/x/xerrors"
+	"github.com/naoyakurokawa/ddd_menta/customerrors"
 )
 
 type Password string
@@ -12,23 +13,23 @@ const passwordMinLength = 12
 
 func NewPassword(password string) (Password, error) {
 	if len(password) == 0 {
-		return Password(""), xerrors.New("password must not be empty")
+		return Password(""), customerrors.NewInvalidParameter("password must not be empty")
 	}
 
 	if len(password) < passwordMinLength {
-		return Password(""), xerrors.Errorf("password must more than %d length", passwordMinLength)
+		return Password(""), customerrors.NewInvalidParameter(fmt.Sprintf("password must more than %d length", passwordMinLength))
 	}
 
 	if !checkIncludeSpace(password) {
-		return Password(""), xerrors.Errorf("password not use spase")
+		return Password(""), customerrors.NewInvalidParameter("password not use spase")
 	}
 
 	if !checkIncludeAlphabet(password) {
-		return Password(""), xerrors.Errorf("password must use alphabet more than one")
+		return Password(""), customerrors.NewInvalidParameter("password must use alphabet more than one")
 	}
 
 	if !checkIncludeNumber(password) {
-		return Password(""), xerrors.Errorf("password must use number more than one")
+		return Password(""), customerrors.NewInvalidParameter("password must use number more than one")
 	}
 
 	return Password(password), nil

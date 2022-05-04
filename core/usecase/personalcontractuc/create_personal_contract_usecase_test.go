@@ -51,7 +51,7 @@ func TestCreate(t *testing.T) {
 		{
 			title:        "SuggestionStatusがUnapprovedではない場合_エラーが発生すること",
 			suggestionID: pp.suggestionID.String(),
-			expectedErr:  customerrors.NewInvalidParameter(),
+			expectedErr:  customerrors.NewInvalidParameter("suggestion must be unapproved"),
 			prepareMock: func(f *fields) error {
 				suggestion, err := suggestiondm.Reconstruct(
 					sp.suggestionID.String(),
