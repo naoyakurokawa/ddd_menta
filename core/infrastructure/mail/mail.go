@@ -1,6 +1,9 @@
 package mail
 
 import (
+	"os"
+	"strconv"
+
 	gomail "gopkg.in/gomail.v2"
 )
 
@@ -14,7 +17,7 @@ func NewMailer() *GoMailer {
 	}
 }
 
-// TODO 環境変数化、メールテンプレート化
+// TODO メールテンプレート化
 func (mailer *GoMailer) Send(
 	to string,
 	subject string,
@@ -25,7 +28,13 @@ func (mailer *GoMailer) Send(
 	mailer.Message.SetHeader("Subject", subject)
 	mailer.Message.SetBody("text/plain", body)
 
-	d := gomail.Dialer{Host: "localhost", Port: 1025}
+	host := os.Getenv("MAIL_HOST")
+	port, _ := strconv.Atoi(os.Getenv("MAIL_PORT"))
+
+	d := gomail.Dialer{
+		Host: host,
+		Port: port,
+	}
 	if err := d.DialAndSend(mailer.Message); err != nil {
 		panic(err)
 	}
