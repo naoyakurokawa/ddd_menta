@@ -1,11 +1,12 @@
 package db
 
 import (
-	"os"
+	"log"
 	"sync"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
+	"github.com/kelseyhightower/envconfig"
 )
 
 var (
@@ -13,13 +14,20 @@ var (
 	db   *gorm.DB
 )
 
+type Config struct {
+	DbUser     string `required:"true" default:"ddd_menta""`
+	DbPassword string `required:"true" default:"ddd_menta""`
+	DbHost     string `required:"true" default:"localhost""`
+	DbPort     string `required:"true" default:"3306""`
+	DbName     string `required:"true" default:"ddd_menta""`
+}
+
 func NewDB() *gorm.DB {
-	user := os.Getenv("DB_USER")
-	password := os.Getenv("DB_PASS")
-	host := os.Getenv("DB_HOST")
-	port := os.Getenv("DB_PORT")
-	name := os.Getenv("DB_NAME")
-	dbconf := user + ":" + password + "@tcp(" + host + ":" + port + ")/" + name + "?parseTime=true"
+	var config Config
+	if err := envconfig.Process("", &config); err != nil {
+		log.Fatalf("[ERROR] Failed to process env: %s", err.Error())
+	}
+	dbconf := config.DbUser + ":" + config.DbPassword + "@tcp(" + config.DbHost + ":" + config.DbPort + ")/" + config.DbName + "?parseTime=true"
 
 	once.Do(func() {
 		conn, err := gorm.Open("mysql", dbconf)
