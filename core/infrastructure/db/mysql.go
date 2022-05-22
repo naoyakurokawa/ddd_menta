@@ -5,6 +5,7 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
+	"github.com/naoyakurokawa/ddd_menta/config"
 )
 
 var (
@@ -13,9 +14,10 @@ var (
 )
 
 func NewDB() *gorm.DB {
-	//todo: 環境変数化
+	dbconf := config.Env.DBUser + ":" + config.Env.DBPassword + "@tcp(" + config.Env.DBHost + ":" + config.Env.DBPort + ")/" + config.Env.DBName + "?parseTime=true"
+
 	once.Do(func() {
-		conn, err := gorm.Open("mysql", "ddd_menta:ddd_menta@tcp(localhost)/ddd_menta?parseTime=true")
+		conn, err := gorm.Open("mysql", dbconf)
 		if err != nil {
 			panic(err)
 		}
