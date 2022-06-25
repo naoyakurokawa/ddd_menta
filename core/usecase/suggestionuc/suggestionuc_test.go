@@ -2,6 +2,7 @@ package suggestionuc
 
 import (
 	"fmt"
+	"os"
 	"testing"
 	"time"
 
@@ -89,7 +90,7 @@ func TestMain(m *testing.M) {
 		fmt.Printf("%+v", err)
 		return
 	}
-	m.Run()
+	os.Exit(m.Run())
 }
 
 func setupMentor() error {

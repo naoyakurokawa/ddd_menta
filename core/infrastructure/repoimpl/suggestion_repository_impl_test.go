@@ -57,7 +57,8 @@ func TestSuggestionRepoCreate(t *testing.T) {
 	} {
 		t.Run(td.title, func(t *testing.T) {
 			//ユーザー作成 (メンター募集をするユーザー)
-			setupUser()
+			err := setupUser()
+			require.NoError(t, err)
 			user, err := userdm.NewUser(
 				up.userID,
 				up.name,
@@ -73,7 +74,8 @@ func TestSuggestionRepoCreate(t *testing.T) {
 			require.NoError(t, err)
 
 			//メンター募集作成
-			setupRecruit()
+			err = setupRecruit()
+			require.NoError(t, err)
 			recruit, err := recruitdm.NewRecruit(
 				rp.recruitID,
 				rp.userID,
@@ -89,7 +91,8 @@ func TestSuggestionRepoCreate(t *testing.T) {
 			require.NoError(t, err)
 
 			//ユーザー作成 (メンターとなるユーザー)
-			setupUser()
+			err = setupUser()
+			require.NoError(t, err)
 			user2, err := userdm.NewUser(
 				up.userID,
 				up.name,
@@ -105,7 +108,8 @@ func TestSuggestionRepoCreate(t *testing.T) {
 			require.NoError(t, err)
 
 			// メンター作成
-			setupMentor()
+			err = setupMentor()
+			require.NoError(t, err)
 			mentor, err := mentordm.NewMentor(
 				mp.mentorID,
 				mp.userID,
@@ -124,7 +128,8 @@ func TestSuggestionRepoCreate(t *testing.T) {
 			require.NoError(t, err)
 
 			// 提案作成
-			setupSuggestion()
+			err = setupSuggestion()
+			require.NoError(t, err)
 			s := suggestionFields{
 				suggestionID:     sp.suggestionID.String(),
 				mentorID:         sp.mentorID.String(),

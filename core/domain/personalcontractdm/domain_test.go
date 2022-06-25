@@ -2,6 +2,7 @@ package personalcontractdm
 
 import (
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/naoyakurokawa/ddd_menta/core/domain/sharedvo"
@@ -26,7 +27,7 @@ func TestMain(m *testing.M) {
 		fmt.Printf("%+v", err)
 		return
 	}
-	m.Run()
+	os.Exit(m.Run())
 }
 
 func setup() error {
