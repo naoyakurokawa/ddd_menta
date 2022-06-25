@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo"
-	"github.com/naoyakurokawa/ddd_menta/core/domain/userdm"
 	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/db"
 	"github.com/naoyakurokawa/ddd_menta/core/infrastructure/repoimpl"
 	"github.com/naoyakurokawa/ddd_menta/core/usecase/useruc"
@@ -34,9 +33,6 @@ func NewCreateUserController() echo.HandlerFunc {
 		conn := db.NewDB()
 		userRepository := repoimpl.NewUserRepositoryImpl(conn)
 		userCreateUsecase := useruc.NewUserCreateUsecase(userRepository)
-		type responseUser struct {
-			userID userdm.UserID
-		}
 		var req requestUser
 		if err := c.Bind(&req); err != nil {
 			return c.JSON(http.StatusBadRequest, err.Error())

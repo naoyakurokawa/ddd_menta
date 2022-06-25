@@ -152,10 +152,6 @@ func isEmpty(s string) bool {
 	return len(s) == 0
 }
 
-func isZero(u uint16) bool {
-	return u == 0
-}
-
 func isOver(s string, maxlength int) bool {
 	return utf8.RuneCountInString(s) > maxlength
 }

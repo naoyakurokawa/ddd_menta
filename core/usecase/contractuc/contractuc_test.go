@@ -57,11 +57,9 @@ type contractParams struct {
 }
 
 var (
-	up          userParams
-	mp          mentorParams
-	cp          contractParams
-	userCareers []userdm.UserCareer
-	userSkills  []userdm.UserSkill
+	up userParams
+	mp mentorParams
+	cp contractParams
 )
 
 func TestMain(m *testing.M) {

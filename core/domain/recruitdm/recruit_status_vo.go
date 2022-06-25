@@ -32,7 +32,3 @@ func NewRecruitStatus(s uint16) (RecruitStatus, error) {
 	}
 	return RecruitStatus(s), nil
 }
-
-func (s RecruitStatus) isWithinRange() bool {
-	return s == Draft || s == Published || s == Terminated
-}

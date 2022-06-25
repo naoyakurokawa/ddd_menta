@@ -12,7 +12,8 @@ import (
 
 func TestCreate(t *testing.T) {
 	//ユーザー作成
-	setupUser()
+	err := setupUser()
+	require.NoError(t, err)
 	var (
 		mentorSkills []mentordm.MentorSkill
 		plans        []mentordm.Plan
@@ -32,7 +33,8 @@ func TestCreate(t *testing.T) {
 	require.NoError(t, err)
 
 	// メンター作成
-	setupMentor()
+	err = setupMentor()
+	require.NoError(t, err)
 	mentorSkill, err := mentordm.NewMentorSkill(
 		mp.mentorSkillID,
 		mp.mentorTag,

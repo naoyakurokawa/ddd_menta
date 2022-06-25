@@ -6,7 +6,6 @@ import (
 )
 
 type conflict struct {
-	err        error
 	code       code
 	httpStatus int
 }
@@ -32,7 +31,6 @@ func (e *conflict) Equals(target error) bool {
 }
 
 type invalidParameter struct {
-	err        error
 	code       code
 	httpStatus int
 	message    string
@@ -51,7 +49,6 @@ func NewInvalidParameter(message string) *invalidParameter {
 }
 
 type notFound struct {
-	err        error
 	code       code
 	httpStatus int
 }
@@ -65,7 +62,6 @@ func NewNotFound() *notFound {
 }
 
 type internalServerError struct {
-	err        error
 	code       code
 	httpStatus int
 }
@@ -79,7 +75,6 @@ func NewInternalServerError() *internalServerError {
 }
 
 type unauthorized struct {
-	err        error
 	code       code
 	httpStatus int
 	message    string

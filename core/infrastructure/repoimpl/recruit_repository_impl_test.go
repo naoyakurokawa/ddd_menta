@@ -11,7 +11,8 @@ import (
 )
 
 func TestRecruitRepoCreate(t *testing.T) {
-	setupUser()
+	err := setupUser()
+	require.NoError(t, err)
 	user, err := userdm.NewUser(
 		up.userID,
 		up.name,
@@ -26,7 +27,8 @@ func TestRecruitRepoCreate(t *testing.T) {
 	err = userRepository.Create(user)
 	require.NoError(t, err)
 
-	setupRecruit()
+	err = setupRecruit()
+	require.NoError(t, err)
 	recruit, err := recruitdm.NewRecruit(
 		rp.recruitID,
 		rp.userID,

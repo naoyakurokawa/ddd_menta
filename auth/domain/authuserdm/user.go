@@ -41,10 +41,7 @@ func Reconstruct(
 
 func (u *User) VerifyPassword(hashPass string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hashPass), []byte(u.Password()))
-	if err != nil {
-		return false
-	}
-	return true
+	return err == nil
 }
 
 func (u *User) Password() Password {

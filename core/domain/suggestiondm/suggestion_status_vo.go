@@ -32,7 +32,3 @@ func NewSuggestionStatus(s uint16) (SuggestionStatus, error) {
 	}
 	return SuggestionStatus(s), nil
 }
-
-func (s SuggestionStatus) isWithinRange() bool {
-	return s == Unapproved || s == Approval || s == Terminated
-}

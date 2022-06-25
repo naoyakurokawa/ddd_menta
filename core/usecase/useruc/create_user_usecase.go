@@ -83,11 +83,14 @@ func (uu *CreateUserUsecaseImpl) Create(
 	}
 
 	for _, uc := range userCareers {
-		user.AddUserCareer(
+		_, err = user.AddUserCareer(
 			uc.From,
 			uc.To,
 			uc.Detail,
 		)
+		if err != nil {
+			return err
+		}
 	}
 
 	for _, us := range userSkills {
@@ -106,11 +109,14 @@ func (uu *CreateUserUsecaseImpl) Create(
 			return err
 		}
 
-		user.AddUserSkill(
+		_, err = user.AddUserSkill(
 			us.Tag,
 			uintUserAssessment,
 			userExperienceYears,
 		)
+		if err != nil {
+			return err
+		}
 	}
 
 	err = uu.userRepo.Create(user)

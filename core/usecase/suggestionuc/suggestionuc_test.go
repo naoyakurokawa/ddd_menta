@@ -70,8 +70,6 @@ var (
 	mp          mentorParams
 	rp          recruitParams
 	sp          suggestionParams
-	userCareers []userdm.UserCareer
-	userSkills  []userdm.UserSkill
 	mentorPlans []mentordm.Plan
 )
 

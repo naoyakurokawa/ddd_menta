@@ -95,11 +95,14 @@ func (mu *CreateMentorUsecaseImpl) Create(
 			return err
 		}
 
-		mentor.AddMentorSkill(
+		_, err = mentor.AddMentorSkill(
 			m.Tag,
 			uintMentorAssessment,
 			mentorExperienceYears,
 		)
+		if err != nil {
+			return err
+		}
 	}
 
 	//メンタープラン追加
@@ -128,7 +131,7 @@ func (mu *CreateMentorUsecaseImpl) Create(
 			return err
 		}
 
-		mentor.AddPlan(
+		_, err = mentor.AddPlan(
 			p.PlanTitle,
 			p.PlanCategory,
 			p.PlanTag,
@@ -137,6 +140,9 @@ func (mu *CreateMentorUsecaseImpl) Create(
 			price,
 			planStatus,
 		)
+		if err != nil {
+			return err
+		}
 	}
 
 	//最終的にinfraのCreateメソッドを実行することになる

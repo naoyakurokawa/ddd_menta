@@ -13,7 +13,8 @@ import (
 
 func TestContractRepoCreate(t *testing.T) {
 	//ユーザー作成 (メンターとなるユーザー)
-	setupUser()
+	err := setupUser()
+	require.NoError(t, err)
 	var (
 		mentorSkills []mentordm.MentorSkill
 		plans        []mentordm.Plan
@@ -33,7 +34,8 @@ func TestContractRepoCreate(t *testing.T) {
 	require.NoError(t, err)
 
 	// メンター作成
-	setupMentor()
+	err = setupMentor()
+	require.NoError(t, err)
 	mentorSkill, err := mentordm.NewMentorSkill(
 		mp.mentorSkillID,
 		mp.mentorTag,
@@ -72,7 +74,8 @@ func TestContractRepoCreate(t *testing.T) {
 	require.NoError(t, err)
 
 	//ユーザー作成 (メンティーとなるユーザー)
-	setupUser()
+	err = setupUser()
+	require.NoError(t, err)
 	user2, err := userdm.NewUser(
 		up.userID,
 		up.name,
@@ -88,7 +91,8 @@ func TestContractRepoCreate(t *testing.T) {
 	require.NoError(t, err)
 
 	//契約
-	setupContract()
+	err = setupContract()
+	require.NoError(t, err)
 	contract, err := contractdm.NewContract(
 		cp.contractID,
 		up.userID,
@@ -96,6 +100,7 @@ func TestContractRepoCreate(t *testing.T) {
 		mp.planID,
 		contractdm.Unapproved,
 	)
+	require.NoError(t, err)
 
 	contractRepository := NewContractRepositoryImpl(db.NewDB())
 	err = contractRepository.Create(contract)

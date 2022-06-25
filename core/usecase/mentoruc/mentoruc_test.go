@@ -31,11 +31,8 @@ type mentorParams struct {
 }
 
 var (
-	up           userParams
-	mp           mentorParams
-	userCareers  []userdm.UserCareer
-	userSkills   []userdm.UserSkill
-	mentorSkills []mentordm.MentorSkill
+	up userParams
+	mp mentorParams
 )
 
 func setupUser() error {

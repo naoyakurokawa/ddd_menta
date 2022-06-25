@@ -46,7 +46,8 @@ func TestPersonalContractRepoCreate(t *testing.T) {
 	} {
 		t.Run(td.title, func(t *testing.T) {
 			//ユーザー作成 (メンター募集をするユーザー)
-			setupUser()
+			err := setupUser()
+			require.NoError(t, err)
 			user, err := userdm.NewUser(
 				up.userID,
 				up.name,
@@ -62,7 +63,8 @@ func TestPersonalContractRepoCreate(t *testing.T) {
 			require.NoError(t, err)
 
 			//メンター募集作成
-			setupRecruit()
+			err = setupRecruit()
+			require.NoError(t, err)
 			recruit, err := recruitdm.NewRecruit(
 				rp.recruitID,
 				rp.userID,
@@ -78,7 +80,8 @@ func TestPersonalContractRepoCreate(t *testing.T) {
 			require.NoError(t, err)
 
 			//ユーザー作成 (メンターとなるユーザー)
-			setupUser()
+			err = setupUser()
+			require.NoError(t, err)
 			user2, err := userdm.NewUser(
 				up.userID,
 				up.name,
@@ -94,7 +97,8 @@ func TestPersonalContractRepoCreate(t *testing.T) {
 			require.NoError(t, err)
 
 			// メンター作成
-			setupMentor()
+			err = setupMentor()
+			require.NoError(t, err)
 			mentor, err := mentordm.NewMentor(
 				mp.mentorID,
 				mp.userID,
@@ -113,7 +117,8 @@ func TestPersonalContractRepoCreate(t *testing.T) {
 			require.NoError(t, err)
 
 			// 提案作成
-			setupSuggestion()
+			err = setupSuggestion()
+			require.NoError(t, err)
 			suggestion, err := suggestiondm.NewSuggestion(
 				sp.suggestionID,
 				sp.mentorID,
@@ -130,7 +135,8 @@ func TestPersonalContractRepoCreate(t *testing.T) {
 			require.NoError(t, err)
 
 			// 提案契約作成
-			setupPersonalContact()
+			err = setupPersonalContact()
+			require.NoError(t, err)
 			p := personalContractFields{
 				personalContractID:     pp.personalContractID.String(),
 				suggestionID:           pp.suggestionID.String(),

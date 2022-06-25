@@ -89,7 +89,8 @@ func TestNewMentor(t *testing.T) {
 
 func TestAddMentorSkill(t *testing.T) {
 	t.Run("生成したMentorSkillがMentorに追加されていること", func(t *testing.T) {
-		setup()
+		err := setup()
+		require.NoError(t, err)
 
 		// 期待値
 		expectedTag := "Golang"
@@ -124,7 +125,8 @@ func TestAddMentorSkill(t *testing.T) {
 
 func TestAddPlan(t *testing.T) {
 	t.Run("生成したPlanがMentorに追加されていること", func(t *testing.T) {
-		setup()
+		err := setup()
+		require.NoError(t, err)
 
 		// 期待値
 		expectedTitle := "DDDのメンタリング"

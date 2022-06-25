@@ -10,14 +10,16 @@ import (
 )
 
 func TestCreate(t *testing.T) {
-	setupUser()
-	setupMentor()
+	err := setupUser()
+	require.NoError(t, err)
+	err = setupMentor()
+	require.NoError(t, err)
 
 	ctrl := gomock.NewController(t)
 	mockMentorRepository := mock.NewMockMentorRepository(ctrl)
 	mockMentorRepository.EXPECT().Create(gomock.Any()).Return(nil)
 	mentorUsecase := NewCreateMentorUsecase(mockMentorRepository)
-	err := mentorUsecase.Create(
+	err = mentorUsecase.Create(
 		mp.userID.String(),
 		mp.title,
 		mp.mainImg,
