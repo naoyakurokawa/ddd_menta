@@ -1,22 +1,9 @@
 linters:
   disable-all: true
   enable:
-    - deadcode
     - errcheck
-    - gci
-    - gofmt
-    - gosec
-    - gosimple
     - govet
-    - ifshort
-    - ineffassign
-    - nilerr
-    - structcheck
-    - typecheck
-    - unparam
-    - unused
-    - varcheck
-    - whitespace
+    - staticcheck
 
 linters-settings:
   gci:
