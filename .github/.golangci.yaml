@@ -1,0 +1,10 @@
+linters:
+  disable-all: true
+  enable:
+    - errcheck
+    - govet
+    - staticcheck
+
+linters-settings:
+  gci:
+    local-prefixes: github.com/naoyakurokawa/ddd_menta
