@@ -15,7 +15,7 @@ jobs:
       - name: check out
         uses: actions/checkout@v2
 
-      # 処理を高速化するために環境をキャッシュ
+      # キャッシュ
       - name: Cache
         uses: actions/cache@v2.1.0
         with:
