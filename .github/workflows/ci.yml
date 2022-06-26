@@ -28,7 +28,7 @@ jobs:
         uses: golangci/golangci-lint-action@v2
         with:
           version: v1.43
-          args: --config ../.github/.golangci.yaml
+          args: --config ../.golangci.yaml
 
       - name: Run tests
         run: |
